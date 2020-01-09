@@ -10,12 +10,10 @@
 #ifndef SOCKET_EXAMPLE_SHARED_H
 #define SOCKET_EXAMPLE_SHARED_H
 
-/*oOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoO*/
-
+#pragma region Defines
 #define SERVER_PORT 8888
 
 #define STRINGS_ARE_EQUAL( Str1, Str2 ) ( strcmp( (Str1), (Str2) ) == 0 )
-
-/*oOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoO*/
+#pragma endregion
 
 #endif // SOCKET_EXAMPLE_SHARED_H
