@@ -50,7 +50,6 @@ int getPORT()
 }
 #pragma endregion
 
-
 #pragma region Threads
 
 
@@ -59,6 +58,7 @@ int closeThread()
 {
 	TerminateThread(hThread, 0x555);
 	CloseHandle(hThread);
+	hThread = NULL;
 	return(NO_ERROR_VAL);
 }
 
@@ -145,6 +145,7 @@ int reConnectMenue(int* tryToConnect, int* opt)
 	*tryToConnect = TRUE_VAL;
 	free(printed);
 }
+
 void MainClient(char* ip, char* charPort, char* name)
 {
 	SOCKADDR_IN clientService;
