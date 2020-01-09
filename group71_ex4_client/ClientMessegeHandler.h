@@ -91,8 +91,8 @@
 
 	#pragma region StringHandlers
 
-			char* createTwoParramString(char* str, char* first, int second);
-			char* createThreeParramString(char* str, char* first, char* second, int third);
+			char* createTwoParramString(char* str, char* first, int second, int* result);
+			char* createThreeParramString(char* str, char* first, char* second, int third, int* result);
 
 	#pragma endregion
 

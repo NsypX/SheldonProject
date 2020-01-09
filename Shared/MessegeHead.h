@@ -65,11 +65,21 @@
 #pragma endregion
 
 	#pragma region ErrorCodes
-		#define NO_ERROR_VAL -100
+
+		#define NO_ERROR_VAL 1
+		#define GENERAL_ERROR -100
 		#define DISCONNECTED_FROM_SERVER -200
 		#define INPUT_ERROR -300
 		#define MALLOC_ERROR -400
 		#define ERROR_IN_CONNECTION -500
+		#define FILE_READ_ERROR -600
+		#define NO_PARAM_ERROR -700
+		#define THREAD_HANDLE_ERROR -800
+		#define MUTEX_ERROR -900
+		#define THREAD_WAIT_ERROR -1000
+		#define THREAD_TERMINATE_ERROR -1100
+		#define THREAD_ERROR -1200
+
 	#pragma endregion
 
 	#pragma region Numbers

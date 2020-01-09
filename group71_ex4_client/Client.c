@@ -136,6 +136,11 @@ Last updated by Amnon Drory, Winter 2011.
 
 #pragma region NormalFunctions
 
+	void exitCodeHandler(int exitCode)
+	{
+
+	}
+
 	/*
 	Description - Closing the seocket of client and clean wsa.
 	Parameters  - 
@@ -157,6 +162,7 @@ Last updated by Amnon Drory, Winter 2011.
 	*/
 	int reConnectMenue(int* tryToConnect, int* opt)
 	{
+		int result = NO_ERROR_VAL;
 		char* printed = NULL;
 
 		// Get the print base on message needed.
@@ -164,17 +170,17 @@ Last updated by Amnon Drory, Winter 2011.
 		{
 			case(RECONNECT_OPTION):
 			{
-				printed = createTwoParramString(FAILED_CONNECTION_MSSG, getIP_ADRESS(), getPORT());
+				printed = createTwoParramString(FAILED_CONNECTION_MSSG, getIP_ADRESS(), getPORT(),&result);
 				break;
 			}
 			case(QUIT_OPTION):
 			{
-				printed = createTwoParramString(DISCONECT_MSSG, getIP_ADRESS(), getPORT());
+				printed = createTwoParramString(DISCONECT_MSSG, getIP_ADRESS(), getPORT(), &result);
 				break;
 			}
 			case(PRINT_DENIE):
 			{
-				printed = createThreeParramString(SERVER_DENIE_MESSAGE_TEMP, SERVER_DENIED_MESSAGE, getIP_ADRESS(), getPORT());
+				printed = createThreeParramString(SERVER_DENIE_MESSAGE_TEMP, SERVER_DENIED_MESSAGE, getIP_ADRESS(), getPORT(), &result);
 				break;
 			}
 			default:
@@ -194,7 +200,7 @@ Last updated by Amnon Drory, Winter 2011.
 		*tryToConnect = TRUE_VAL;
 		free(printed);
 
-		return(NO_ERROR_VAL);
+		return(result);
 	}
 
 	/*
@@ -205,103 +211,105 @@ Last updated by Amnon Drory, Winter 2011.
 	Returns     - Error handle
 	*/
 	void MainClient(char* ip, char* charPort, char* name)
-{
-	SOCKADDR_IN clientService;
-
-	// Initialize Winsock.
-	WSADATA wsaData; //Create a WSADATA object called wsaData.
-	int printOption = PRINT_RETRY;
-	int connectHelper = SOCKET_ERROR;
-	int opt = RECONNECT_OPTION;
-	int tryToConnect = TRUE_VAL;
-	strcpy(IP_ADRESS, ip);
-	PORT = atoi(charPort);
-	setName(name);
-
-	// While not quit.
-	while (opt != QUIT_OPTION)
 	{
-		// Set quit if not answered..
-		opt = QUIT_OPTION;
+		SOCKADDR_IN clientService;
 
-		// Call WSAStartup and check for errors.
-		int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-		if (iResult != NO_ERROR)
-			printf("Error at WSAStartup()\n");
+		// Initialize Winsock.
+		WSADATA wsaData; //Create a WSADATA object called wsaData.
+		int printOption = PRINT_RETRY;
+		int connectHelper = SOCKET_ERROR;
+		int opt = RECONNECT_OPTION;
+		int tryToConnect = TRUE_VAL;
+		strcpy(IP_ADRESS, ip);
+		PORT = atoi(charPort);
+		setName(name);
+		int result = NO_ERROR_VAL;
 
-		// Create a socket.
-		m_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-		// Check for errors to ensure that the socket is a valid socket.
-		if (m_socket == INVALID_SOCKET) 
+		// While not quit.
+		while (opt != QUIT_OPTION)
 		{
-			printf("Error at socket(): %ld\n", WSAGetLastError());
-			WSACleanup();
-		}
+			// Set quit if not answered..
+			opt = QUIT_OPTION;
 
-		//Create a sockaddr_in object clientService and set  values.
-		clientService.sin_family = AF_INET;
-		clientService.sin_addr.s_addr = inet_addr(IP_ADRESS);
-		clientService.sin_port = htons(PORT); 
+			// Call WSAStartup and check for errors.
+			int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+			if (iResult != NO_ERROR)
+				printf("Error at WSAStartup()\n");
 
-		// Try to connect..
-		if (tryToConnect == TRUE_VAL)
-		{
-			tryToConnect = FALSE_VAL;
-			connectHelper = connect(m_socket, (SOCKADDR*)&clientService, sizeof(clientService));
-		}
+			// Create a socket.
+			m_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-		// If connection failed.
-		if (connectHelper == SOCKET_ERROR)
-		{
-			WSACleanup();
-			reConnectMenue(&tryToConnect, &opt);
-		}
-		else
-		{
-			// Print connection message to client.
-			char* printed = NULL;
-			printed = createTwoParramString(SERVER_CONNECTED_MESSAGE, getIP_ADRESS(), getPORT());
-			printf("%s", printed);
-			free(printed);
-
-			// Sending the name to the server.
-			sendClientRequest(CLIENT_REQUEST, getClientName(), m_socket);
-
-			// Run thread to read data from client.			
-			hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)RecvDataThread, NULL, 0, NULL);
-
-			// Wait for threads
-			WaitForSingleObject(hThread, INFINITE);
-
-			// Get Exit Code 
-			int exitcode = NO_ERROR;
-			GetExitCodeThread(hThread, &exitcode);
-
-			// Close Thread stuff.
-			closeThread();
-
-			// Close all
-			closeClient();
-
-			// Check exit code of client thread to know if message disconnect.
-			if (exitcode == DISCONNECT_TRY_CONNECT)
-			{			
-				// Set params for relogin
-				opt = RECONNECT_OPTION;
-				printOption = PRINT_DENIE;
-				connectHelper = SOCKET_ERROR;
-			}
-			else if (exitcode == SERVER_TIMEOUT)
+			// Check for errors to ensure that the socket is a valid socket.
+			if (m_socket == INVALID_SOCKET) 
 			{
-				// Set params for relogin
-				opt = RECONNECT_OPTION;
-				printOption = PRINT_TIMEOUT;
-				connectHelper = SOCKET_ERROR;
+				printf("Error at socket(): %ld\n", WSAGetLastError());
+				WSACleanup();
+			}
+
+			//Create a sockaddr_in object clientService and set  values.
+			clientService.sin_family = AF_INET;
+			clientService.sin_addr.s_addr = inet_addr(IP_ADRESS);
+			clientService.sin_port = htons(PORT); 
+
+			// Try to connect..
+			if (tryToConnect == TRUE_VAL)
+			{
+				tryToConnect = FALSE_VAL;
+				connectHelper = connect(m_socket, (SOCKADDR*)&clientService, sizeof(clientService));
+			}
+
+			// If connection failed.
+			if (connectHelper == SOCKET_ERROR)
+			{
+				WSACleanup();
+				reConnectMenue(&tryToConnect, &opt);
+			}
+			else
+			{
+				// Print connection message to client.
+				char* printed = NULL;
+				printed = createTwoParramString(SERVER_CONNECTED_MESSAGE, getIP_ADRESS(), getPORT(), &result);
+				printf("%s", printed);
+				free(printed);
+
+				// Sending the name to the server.
+				sendClientRequest(CLIENT_REQUEST, getClientName(), m_socket);
+
+				// Run thread to read data from client.			
+				hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)RecvDataThread, NULL, 0, NULL);
+
+				// Wait for threads
+				WaitForSingleObject(hThread, INFINITE);
+
+				// Get Exit Code 
+				int exitcode = NO_ERROR;
+				GetExitCodeThread(hThread, &exitcode);
+
+				// Close Thread stuff.
+				closeThread();
+
+				// Close all
+				closeClient();
+
+				// Check exit code of client thread to know if message disconnect.
+				if (exitcode == DISCONNECT_TRY_CONNECT)
+				{			
+					// Set params for relogin
+					opt = RECONNECT_OPTION;
+					printOption = PRINT_DENIE;
+					connectHelper = SOCKET_ERROR;
+				}
+				else if (exitcode == SERVER_TIMEOUT)
+				{
+					// Set params for relogin
+					opt = RECONNECT_OPTION;
+					printOption = PRINT_TIMEOUT;
+					connectHelper = SOCKET_ERROR;
+				}
 			}
 		}
-	}
-	return;
+	
+		return;
 }
 
 #pragma endregion
