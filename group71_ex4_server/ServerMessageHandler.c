@@ -547,8 +547,61 @@ int pharseClientMove(char* move, SockParams * param)
 
 int pharseClientReplay(SockParams * param)
 {
-	int result = sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, param);
-	return(NO_ERROR_VAL);
+	int result = NO_ERROR_VAL;
+
+	// Check what kind of replay.
+	if (isVsPlayer == TRUE_VAL)
+	{
+		if (isFileExist(GAME_SESSION_LOC) == FALSE_VAL)
+		{
+			firstPlayer = param;
+
+			// Creating the file.
+			createEmptyGameSession();
+
+			// Letting second player in.
+			releaseGameSessionMutex();
+
+			// Waiting for other player to arrive.
+			int waitTime = waitOtherPlayerMove();
+
+			// If arrived.
+			if (waitTime == 0)
+			{
+				sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, param);
+			}
+			else
+			{
+				// Else no opponent found.
+				remove(GAME_SESSION_LOC);
+				sendOponnentQuitMessage(SERVER_OPPONENT_QUIT, getName(secondPlayer->loc), param);
+			}
+		}
+		else
+		{
+			secondPlayer = param;
+
+			// Delete file.
+			remove(GAME_SESSION_LOC);
+
+			// Releasing mutex.
+			releaseGameSessionMutex();
+
+			// Let other player move
+			releaseOtherPlayerMove();
+
+			// Ask for another moove.
+			sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, param);
+			
+
+		}
+	}
+	else
+	{
+		result = sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, param);
+	}
+	
+	return(result);
 }
 
 int pharseClientRefresh(SockParams * param)

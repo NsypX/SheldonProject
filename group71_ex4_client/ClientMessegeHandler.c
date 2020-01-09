@@ -590,10 +590,10 @@
 	Parameters  - name- the name of oponent whom quit.
 	Returns     - Error handle
 	*/
-	int pharseOpponentQuit(char* name)
+	int pharseOpponentQuit(char* name, SOCKET sd)
 	{
-		printf("%s\n", name);
-		return (CONTINUE_RUN);
+		printf(SERVER_QUIT_MESSAGE, name);
+		return(pharseMainMenue(sd));		
 	}
 
 	/*
@@ -673,7 +673,7 @@
 		}
 		else if (strcmp(header, SERVER_OPPONENT_QUIT) == 0)
 		{
-			result = pharseOpponentQuit(params);
+			return(pharseOpponentQuit(params,sd));
 		}
 		else if (strcmp(header, SERVER_NO_OPPONENTS) == 0)
 		{
