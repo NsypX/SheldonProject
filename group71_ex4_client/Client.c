@@ -16,137 +16,194 @@ Last updated by Amnon Drory, Winter 2011.
 #pragma endregion
 
 #pragma region GlobalVars
+	
+	// Socket
+	SOCKET m_socket;
 
-SOCKET m_socket;
-HANDLE hThread;
-int isDone = CONTINUE_RUN;
-char ClientName[MAX_NAME_SIZE];
+	// Thread handler.
+	HANDLE hThread;
 
-char IP_ADRESS[20];
-int PORT;
+	// integer connecting the result of thread and the run of the process.
+	int isDone = CONTINUE_RUN;
+
+	// Client name
+	char ClientName[MAX_NAME_SIZE];
+
+	// Client ip
+	char IP_ADRESS[20];
+
+	// Client port.
+	int PORT;
 
 #pragma endregion
 
 #pragma region NameHandler
-int setName(char* nameToSet)
-{
-	strcat(ClientName, nameToSet);
-	return (NO_ERROR_VAL);
-}
 
-char* getClientName()
-{
-	return(ClientName);
-}
+	/*
+		Description - save the name recived by the client.
+		Parameters  - nameToSet
+		Returns     - Error handle
+	 */
+	int setName(char* nameToSet)
+	{
+		strcat(ClientName, nameToSet);
+		return (NO_ERROR_VAL);
+	}
 
-char* getIP_ADRESS()
-{
-	return(IP_ADRESS);
-}
+	/*
+		Description - get the name of the client.
+		Parameters  - 
+		Returns     - name of client.
+	 */
+	char* getClientName()
+	{
+		return(ClientName);
+	}
 
-int getPORT()
-{
-	return(PORT);
-}
+	/*
+		Description - get the ip adress of the client.
+		Parameters  - 
+		Returns     - ip adress
+	 */
+	char* getIP_ADRESS()
+	{
+		return(IP_ADRESS);
+	}
+
+	/*
+		Description - get the port of the client.
+		Parameters  - 
+		Returns     - port
+	 */
+	int getPORT()
+	{
+		return(PORT);
+	}
+
 #pragma endregion
 
 #pragma region Threads
 
-
-
-int closeThread()
-{
-	TerminateThread(hThread, 0x555);
-	CloseHandle(hThread);
-	hThread = NULL;
-	return(NO_ERROR_VAL);
-}
-
-//Reading data coming from the server
-static DWORD RecvDataThread(void)
-{
-	TransferResult_t RecvRes;
-
-	while (isDone == CONTINUE_RUN)
+	/*
+		Description - close thread and return error if exist.
+		Parameters  - 
+		Returns     - Error handle
+		*/
+	int closeThread()
 	{
-		char *AcceptedStr = NULL;
-		RecvRes = ReceiveString(&AcceptedStr, m_socket);
-
-		if (RecvRes == TRNS_FAILED)
-		{
-			printf("Socket error while trying to write data to socket\n");
-			return SERVER_TIMEOUT;
-		}
-		else if (RecvRes == TRNS_DISCONNECTED)
-		{
-			printf("Server closed connection. Bye!\n");
-			return SERVER_TIMEOUT;
-		}
-		else
-		{
-			isDone = pharseMessage(AcceptedStr, m_socket);
-		}
-
-		free(AcceptedStr);
+		TerminateThread(hThread, 0x555);
+		CloseHandle(hThread);
+		hThread = NULL;
+		return(NO_ERROR_VAL);
 	}
 
-	return isDone;
-}
+	/*
+	Description - a thread getting data from the client.
+	Parameters  - 
+	Returns     - 
+	*/
+	static DWORD RecvDataThread(void)
+	{
+		TransferResult_t RecvRes;
 
+		while (isDone == CONTINUE_RUN)
+		{
+			char *AcceptedStr = NULL;
+			RecvRes = ReceiveString(&AcceptedStr, m_socket);
+
+			if (RecvRes == TRNS_FAILED)
+			{
+				printf("Socket error while trying to write data to socket\n");
+				return SERVER_TIMEOUT;
+			}
+			else if (RecvRes == TRNS_DISCONNECTED)
+			{
+				printf("Server closed connection. Bye!\n");
+				return SERVER_TIMEOUT;
+			}
+			else
+			{
+				isDone = pharseMessage(AcceptedStr, m_socket);
+			}
+
+			free(AcceptedStr);
+		}
+
+		return isDone;
+	}
 
 #pragma endregion
 
 #pragma region NormalFunctions
 
-int closeClient()
-{
-	closesocket(m_socket);
+	/*
+	Description - Closing the seocket of client and clean wsa.
+	Parameters  - 
+	Returns     - Error handle
+	*/
+	int closeClient()
+	{
+		closesocket(m_socket);
+		WSACleanup();
 
-	WSACleanup();
-
-	return TRUE_VAL;
-}
-
-int reConnectMenue(int* tryToConnect, int* opt)
-{
-	char* printed = NULL;
-
-	switch (*opt)
-	{
-	case(RECONNECT_OPTION):
-	{
-		printed = createTwoParramString(FAILED_CONNECTION_MSSG, getIP_ADRESS(), getPORT());
-		break;
-	}
-	case(QUIT_OPTION):
-	{
-		printed = createTwoParramString(DISCONECT_MSSG, getIP_ADRESS(), getPORT());
-		break;
-	}
-	case(PRINT_DENIE):
-	{
-		printed = createThreeParramString(SERVER_DENIE_MESSAGE_TEMP, SERVER_DENIED_MESSAGE, getIP_ADRESS(), getPORT());
-		break;
-	}
-	default:
-	{
-		break;
-	}
+		return TRUE_VAL;
 	}
 
-
-	if (printed == NULL)
+	/*
+	Description - Ask the client if to reconnect.
+	Parameters  - tryToConnect- should i try or not.
+				  opt- option to return.
+	Returns     - Error handle
+	*/
+	int reConnectMenue(int* tryToConnect, int* opt)
 	{
-		return;
+		char* printed = NULL;
+
+		switch (*opt)
+		{
+		case(RECONNECT_OPTION):
+		{
+			printed = createTwoParramString(FAILED_CONNECTION_MSSG, getIP_ADRESS(), getPORT());
+			break;
+		}
+		case(QUIT_OPTION):
+		{
+			printed = createTwoParramString(DISCONECT_MSSG, getIP_ADRESS(), getPORT());
+			break;
+		}
+		case(PRINT_DENIE):
+		{
+			printed = createThreeParramString(SERVER_DENIE_MESSAGE_TEMP, SERVER_DENIED_MESSAGE, getIP_ADRESS(), getPORT());
+			break;
+		}
+		default:
+		{
+			break;
+		}
+		}
+
+
+		if (printed == NULL)
+		{
+			return;
+		}
+
+		// try connect to server
+		*opt = getOptions(printed, 2);
+		*tryToConnect = TRUE_VAL;
+		free(printed);
+
+		return(NO_ERROR_VAL);
 	}
 
-	// try connect to server
-	*opt = getOptions(printed, 2);
-	*tryToConnect = TRUE_VAL;
-	free(printed);
-}
-
-void MainClient(char* ip, char* charPort, char* name)
+	/*
+	Description - Load client thread, connect to server and wait for thread to finish.
+	Parameters  - ip- ip adress to connect.
+				  port- the port to connect.
+				  name- client name.
+	Returns     - Error handle
+	*/
+	void MainClient(char* ip, char* charPort, char* name)
 {
 	SOCKADDR_IN clientService;
 
@@ -245,6 +302,5 @@ void MainClient(char* ip, char* charPort, char* name)
 	}
 	return;
 }
-
 
 #pragma endregion
