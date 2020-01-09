@@ -109,6 +109,12 @@ int closeClient()
 
 void MainClient(char* ip, char* charPort, char* name)
 {
+
+	if (strlen(name) > MAX_NAME_SIZE)
+	{
+		printf("Name isnt valid. going down.");
+		return;
+	}
 	SOCKADDR_IN clientService;
 
 	// Initialize Winsock.
