@@ -368,7 +368,7 @@ int pharseClientLeader(SockParams * param, int isUpdate)
 	return(NO_ERROR_VAL);
 }
 
-char* getOtherMoveFromGameSessionFile(int result)
+char* getOtherMoveFromGameSessionFile(int* result)
 {
 	char OtherMove[20];
 
@@ -376,7 +376,7 @@ char* getOtherMoveFromGameSessionFile(int result)
 
 	if (sessionFile == NULL)
 	{
-		return(FILE_READ_ERROR);
+		*result = FILE_READ_ERROR;		
 	}
 	else
 	{
@@ -406,6 +406,7 @@ int writeMoveToGameSession(char move[])
 int pharseClientMove(char* move, SockParams * param)
 {
 	char OtherMove[LINE_SIZE] = "";
+	int result = NO_ERROR_VAL;
 
 	if (isVsPlayer == TRUE_VAL)
 	{
@@ -416,7 +417,7 @@ int pharseClientMove(char* move, SockParams * param)
 			waitGameSessionMutex();
 			
 			// Get player 2 move.
-			getOtherMoveFromGameSessionFile(OtherMove);
+			strcpy(OtherMove,getOtherMoveFromGameSessionFile(result));
 
 			// Write my move.
 			writeMoveToGameSession(move);
@@ -453,7 +454,7 @@ int pharseClientMove(char* move, SockParams * param)
 			waitGameSessionMutex();
 
 			// Get player 1 move.
-			getOtherMoveFromGameSessionFile(OtherMove);
+			strcpy(OtherMove, getOtherMoveFromGameSessionFile(result));
 
 			releaseGameSessionMutex();
 
@@ -469,7 +470,6 @@ int pharseClientMove(char* move, SockParams * param)
 
 	// Check who won.
 	char* won = checkWin(move, OtherMove);
-	int result = NO_ERROR_VAL;
 
 	if (strcmp(won, PLAYER1_WIN) == 0)
 	{
