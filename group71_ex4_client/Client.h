@@ -30,8 +30,7 @@
 		#define PRINT_TIMEOUT 100
 		#define eyal 100
 		#define PRINT_DENIE 200
-		#define PRINT_RETRY 300
-		#define SERVER_TIMEOUT 0x555
+		#define PRINT_RETRY 300		
 	#pragma endregion
 
 	#pragma region Strings

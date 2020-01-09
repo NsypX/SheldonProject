@@ -86,10 +86,10 @@
 		#define CONTINUE_RUN 22
 		#define QUIT_CLIENT 23
 		#define DISCONNECT_TRY_CONNECT 24
+		#define SERVER_TIMEOUT 0x555
 		#define FALSE_VAL 0
 		#define TRUE_VAL 1
 	#pragma endregion
-
 
 #pragma endregion
 
