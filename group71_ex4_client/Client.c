@@ -147,21 +147,14 @@ int reConnectMenue(int* tryToConnect, int* opt)
 }
 void MainClient(char* ip, char* charPort, char* name)
 {
-	if (strlen(name) > MAX_NAME_SIZE)
-	{
-		printf("Name isnt valid. going down.");
-		return;
-	}
 	SOCKADDR_IN clientService;
 
 	// Initialize Winsock.
 	WSADATA wsaData; //Create a WSADATA object called wsaData.
-
 	int printOption = PRINT_RETRY;
 	int connectHelper = SOCKET_ERROR;
 	int opt = RECONNECT_OPTION;
 	int tryToConnect = TRUE_VAL;
-
 	strcpy(IP_ADRESS, ip);
 	PORT = atoi(charPort);
 	setName(name);

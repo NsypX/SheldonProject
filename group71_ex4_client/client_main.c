@@ -1,5 +1,6 @@
 
 #include "Client.h"
+#include "string.h"
 #include "MessegeHead.h"
 
 int main(int argc, char* argv[])
@@ -9,7 +10,15 @@ int main(int argc, char* argv[])
 	{
 		
 		// run client.
-		MainClient(argv[1],argv[2],argv[3]);
+		if (strlen(argv[3]) > MAX_NAME_SIZE)
+		{
+			printf("Name isnt valid. going down.");
+		
+		}
+		else
+		{
+			MainClient(argv[1],argv[2], argv[3]);
+		}
 	}
 	else
 	{
