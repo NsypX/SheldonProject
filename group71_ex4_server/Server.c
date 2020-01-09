@@ -33,6 +33,18 @@ Last updated by Amnon Drory, Winter 2011.
 #pragma region Main Functions
 
 	/*
+		Description - Close all the handles of the server.
+		Parameters  -
+		Returns     -
+	*/
+	void closeHandles(void)
+	{
+		CloseHandle(gameSessionMutex);
+		CloseHandle(waitForPlayerMutex);
+		CloseHandle(gameHandlerSemaphore);
+	}
+
+	/*
 	Description - Runs the server threads.
 	Parameters  - ip- the adress the server runs from.
 	Returns     - 
@@ -251,18 +263,6 @@ Last updated by Amnon Drory, Winter 2011.
 	{
 		countLogedIn++;
 	}
-
-	/*
-		Description - Close all the handles of the server.
-		Parameters  - 
-		Returns     - 
-	*/
-	void closeHandles(void)
-	{
-		CloseHandle(gameSessionMutex);
-		CloseHandle(waitForPlayerMutex);
-		CloseHandle(gameHandlerSemaphore);
-	}	
 
 	/*
 		Description - Find the first unused slot to run thread.
