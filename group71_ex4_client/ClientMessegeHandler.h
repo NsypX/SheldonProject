@@ -34,9 +34,7 @@
 #define SERVER_GAME_RESULT_MESSAGE_DREW "You played: %s\n%s played: %s\nThe game resulted in Draw!\n"
 #define SERVER_LEADER_MENU  "\nChoose what to do next:\n1. Refresh leaderboard\n2. Return to the main menu\n"
 
-#define FAILED_CONNECTION_MSSG "Connection to server on %s:%d has been lost. Choose what to do next:\n1. Try to reconnect\n2. Exit\n"
-#define DISCONECT_MSSG "Connection to server on %s:%d has been lost. Choose what to do next:\n1. Try to reconnect\n2. Exit\n"
-#define SERVER_DENIE_MESSAGE_TEMP "Server Denied because- %s\nServer on %s:%d denied the connection request. Choose what to do next:\n1. Try to reconnect\n2. Exit\n"
+
 #define SERVER_DENIED_MESSAGE "To many Clients already log in."
 #define SERVER_LEADER_UP_TO_DATE "The leaderboard you view is already up to date.\n"
 #define RECONNECT_OPTION 1

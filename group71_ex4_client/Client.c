@@ -129,7 +129,7 @@ void MainClient(char* ip, char* charPort, char* name)
 	PORT = atoi(charPort);
 	setName(name);
 
-
+	// While not quit.
 	while (opt != QUIT_OPTION)
 	{
 		// Set quit if not answered..
@@ -155,18 +155,16 @@ void MainClient(char* ip, char* charPort, char* name)
 		clientService.sin_addr.s_addr = inet_addr(IP_ADRESS);
 		clientService.sin_port = htons(PORT); 
 
-
-		// Call the connect function, passing the created socket and the sockaddr_in structure as parameters. 
-		// Check for general errors.
+		// Try to connect..
 		if (tryToConnect == TRUE_VAL)
 		{
 			tryToConnect = FALSE_VAL;
 			connectHelper = connect(m_socket, (SOCKADDR*)&clientService, sizeof(clientService));
 		}
 
+		// If connection failed.
 		if (connectHelper == SOCKET_ERROR)
 		{
-			printf("Failed to connect.\n");
 			WSACleanup();
 			char* printed = NULL;
 
@@ -206,6 +204,12 @@ void MainClient(char* ip, char* charPort, char* name)
 		}
 		else
 		{
+			// Print connection message to client.
+			char* printed = NULL;
+			printed = createTwoParramString(SERVER_CONNECTED_MESSAGE, getIP_ADRESS(), getPORT());
+			printf("%s", printed);
+			free(printed);
+
 			// Sending the name to the server.
 			sendClientRequest(CLIENT_REQUEST, getClientName(), m_socket);
 
