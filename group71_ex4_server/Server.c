@@ -482,6 +482,11 @@ Last updated by Amnon Drory, Winter 2011.
 		return 0;
 	}
 
+	/*
+		Description - Waiting for exit to close program.
+		Parameters  - 
+		Returns     -
+	*/
 	static DWORD ExitThreadFunction(void)
 	{	
 		char* txt = getStringFromUser("");
