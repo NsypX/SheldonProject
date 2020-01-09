@@ -22,7 +22,7 @@
 #define SERVER_DENIE_RETRY 29
 
 
-#define SERVER_MENUE_MESSAGE  "Choose what to do next:\n1. Play against another client\n2. Play against the server\n3. View the leaderboard\n4. Quit\n5. Play Agints Sheldon\n"
+#define SERVER_MENUE_MESSAGE  "Choose what to do next:\n1. Play against another client\n2. Play against the server\n3. View the leaderboard\n4. Quit\n5. Play Against Sheldon\n"
 #define SERVER_GAME_OVER_MESSAGE "\nChoose what to do next:\n1. Play again\n2. Return to the main menu\n"
 #define INPUT_ERROR_MESSAGE "Please enter a valid input.\n"
 #define SERVER_MOVE_REQUEST_MESSAGE "Choose a move from the list: Rock, Paper, Scissors, Lizard or Spock:\n"
