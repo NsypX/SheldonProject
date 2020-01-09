@@ -10,7 +10,13 @@
 #define ClientMessegeHandler_h
 
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
 #include "SocketSendRecvTools.h"
+#include "Client.h"
+#include "MessegeHead.h"
 
 
 #define SERVER_MENUE_OPT_AMOUNT 5

@@ -9,11 +9,8 @@
 #pragma region Includes
 #define _CRT_SECURE_NO_WARNINGS
 #include "ClientMessegeHandler.h"
-#include "Client.h"
-#include "MessegeHead.h"
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
+
+
 #pragma endregion
 
 #pragma region SendMessageFuncs
@@ -100,7 +97,7 @@ int sendGeneralMesseage(char* messageID, SOCKET sd)
 		return ERROR_IN_CONNECTION;
 	}
 
-	return(NO_ER);
+	return(NO_ERROR_VAL);
 }
 #pragma endregion
 
