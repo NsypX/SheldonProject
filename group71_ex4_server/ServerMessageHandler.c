@@ -485,6 +485,35 @@ int pharseClientDisconnect(SockParams * param)
 	return(NO_ERROR1);
 }
 
+int pharseSheldon(SockParams * param)
+{
+	sendServerDenieMessage(SERVER_SHELDON, "Pick your move.", param);
+	Sleep(500);
+	sendServerDenieMessage(SERVER_SHELDON, "Pick your move..", param);
+	Sleep(500);
+	sendServerDenieMessage(SERVER_SHELDON, "Pick your move...", param);
+	Sleep(500);
+	sendServerDenieMessage(SERVER_SHELDON, "Pick your move....", param);
+	Sleep(500);
+	sendServerDenieMessage(SERVER_SHELDON, "!##!#!#!#!#!#!#!#!#!#!#! UGHHH TOO SLOW !##!#!#!#!#!#!#!#!#!", param);
+	Sleep(1500);
+	sendGeneralMesseage(SERVER_SPOCK, param);
+	Sleep(3000);
+	sendServerDenieMessage(SERVER_SHELDON, "I pick Spock, i Win!", param);
+	Sleep(500);
+	sendServerDenieMessage(SERVER_SHELDON, "I pick Spock, i Win!!", param);
+	Sleep(500);
+	sendServerDenieMessage(SERVER_SHELDON, "I pick Spock, i Win!!!", param);
+	Sleep(500);
+	sendServerDenieMessage(SERVER_SHELDON, "I pick Spock, i Win!!!!", param);
+	Sleep(500);
+	sendGeneralMesseage(SERVER_BAZINGA, param);
+	Sleep(5000);
+	sendGeneralMesseage(SERVER_MAIN_MENU, param);
+
+	return(NO_ERROR1);
+}
+
 int pharseMessage(char* mssg, SockParams * param)
 {
 	int result = NO_ERROR1;
@@ -535,25 +564,7 @@ int pharseMessage(char* mssg, SockParams * param)
 	}
 	else if (strcmp(header, CLIENT_SHELDON) == 0)
 	{
-		sendServerDenieMessage(SERVER_SHELDON, "Hey i made you pick Rock.",param);
-		Sleep(500);
-		sendServerDenieMessage(SERVER_SHELDON, "Hey i made you pick Rock..", param);
-		Sleep(500);
-		sendServerDenieMessage(SERVER_SHELDON, "Hey i made you pick Rock...", param);
-		Sleep(500);
-		sendServerDenieMessage(SERVER_SHELDON, "Hey i made you pick Rock....", param);
-		Sleep(500);
-		sendGeneralMesseage(SERVER_SPOCK, param);
-		Sleep(3000);
-		sendServerDenieMessage(SERVER_SHELDON, "I pick Spock, i Win!", param);
-		Sleep(500);
-		sendServerDenieMessage(SERVER_SHELDON, "I pick Spock, i Win!!", param);
-		Sleep(500);
-		sendServerDenieMessage(SERVER_SHELDON, "I pick Spock, i Win!!!", param);
-		Sleep(500);
-		sendGeneralMesseage(SERVER_BAZINGA, param);
-		Sleep(5000);
-		sendGeneralMesseage(SERVER_MAIN_MENU, param);
+		result = pharseSheldon(param);
 	}
 	else
 	{
