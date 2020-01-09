@@ -159,36 +159,37 @@ Last updated by Amnon Drory, Winter 2011.
 	{
 		char* printed = NULL;
 
+		// Get the print base on message needed.
 		switch (*opt)
 		{
-		case(RECONNECT_OPTION):
-		{
-			printed = createTwoParramString(FAILED_CONNECTION_MSSG, getIP_ADRESS(), getPORT());
-			break;
-		}
-		case(QUIT_OPTION):
-		{
-			printed = createTwoParramString(DISCONECT_MSSG, getIP_ADRESS(), getPORT());
-			break;
-		}
-		case(PRINT_DENIE):
-		{
-			printed = createThreeParramString(SERVER_DENIE_MESSAGE_TEMP, SERVER_DENIED_MESSAGE, getIP_ADRESS(), getPORT());
-			break;
-		}
-		default:
-		{
-			break;
-		}
+			case(RECONNECT_OPTION):
+			{
+				printed = createTwoParramString(FAILED_CONNECTION_MSSG, getIP_ADRESS(), getPORT());
+				break;
+			}
+			case(QUIT_OPTION):
+			{
+				printed = createTwoParramString(DISCONECT_MSSG, getIP_ADRESS(), getPORT());
+				break;
+			}
+			case(PRINT_DENIE):
+			{
+				printed = createThreeParramString(SERVER_DENIE_MESSAGE_TEMP, SERVER_DENIED_MESSAGE, getIP_ADRESS(), getPORT());
+				break;
+			}
+			default:
+			{
+				break;
+			}
 		}
 
-
+		// If malloc error
 		if (printed == NULL)
 		{
-			return;
+			return(MALLOC_ERROR);
 		}
 
-		// try connect to server
+		// Ask the user for input.
 		*opt = getOptions(printed, 2);
 		*tryToConnect = TRUE_VAL;
 		free(printed);
