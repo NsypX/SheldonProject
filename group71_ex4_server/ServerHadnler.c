@@ -15,7 +15,7 @@
 #include <time.h>
 #include <errno.h>
 #include <sys/types.h>
-#include "MessegeHead.h"
+#include "DefenitionsForServerClient.h"
 #include "ServerMessageHandler.h"
 #pragma endregion
 

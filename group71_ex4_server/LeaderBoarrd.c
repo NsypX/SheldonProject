@@ -8,7 +8,7 @@
 
 #pragma region Includes
 #include "LeaderBoarrd.h"
-#include "MessegeHead.h"
+#include "DefenitionsForServerClient.h"
 #include "Server.h"
 #include <stdio.h>
 #include <stdlib.h>

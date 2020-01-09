@@ -15,7 +15,7 @@
 #include "SocketExampleShared.h"
 #include "SocketSendRecvTools.h"
 #include "ServerMessageHandler.h"
-#include "MessegeHead.h"
+#include "DefenitionsForServerClient.h"
 #include "LeaderBoarrd.h"
 #include "ServerHadnler.h"
 

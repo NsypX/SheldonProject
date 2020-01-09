@@ -15,7 +15,7 @@
 	#include <string.h>
 	#include <winsock2.h>
 
-	#include "MessegeHead.h"
+	#include "DefenitionsForServerClient.h"
 	#include "SocketExampleShared.h"
 	#include "SocketSendRecvTools.h"
 	#include "ClientMessegeHandler.h"

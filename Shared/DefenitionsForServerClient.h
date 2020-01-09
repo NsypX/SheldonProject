@@ -1,5 +1,5 @@
 //
-//  MessegeHead.h
+//  DefenitionsForServerClient.h
 //  Ex04_Server
 //
 //  Created by Dean Zahavy on 26/12/2019.

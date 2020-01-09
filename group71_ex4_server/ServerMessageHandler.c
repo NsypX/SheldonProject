@@ -15,7 +15,7 @@
 #include "SocketSendRecvTools.h"
 #include "ServerHadnler.h"
 #include "LeaderBoarrd.h"
-#include "MessegeHead.h"
+#include "DefenitionsForServerClient.h"
 #pragma endregion
 
 #pragma region Globals

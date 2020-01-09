@@ -1,7 +1,7 @@
 
 #include "Client.h"
 #include "string.h"
-#include "MessegeHead.h"
+#include "DefenitionsForServerClient.h"
 
 int main(int argc, char* argv[])
 {	

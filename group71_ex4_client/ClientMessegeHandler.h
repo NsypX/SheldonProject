@@ -18,7 +18,7 @@
 
 #include "SocketSendRecvTools.h"
 #include "Client.h"
-#include "MessegeHead.h"
+#include "DefenitionsForServerClient.h"
 
 #pragma endregion
 
