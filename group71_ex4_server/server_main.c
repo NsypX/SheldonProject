@@ -3,6 +3,7 @@
 
 int main(int argc, char* argv[])
 {
+	// Check if enough params.
 	if(argc == 2)
 	{
 		MainServer(argv[1]);

@@ -19,9 +19,6 @@ Last updated by Amnon Drory, Winter 2011.
 
 #pragma region Globals
 
-	#define NUM_OF_WORKER_THREADS 2
-	#define MAX_LOOPS 3
-	#define SEND_STR_SIZE 35
 	HANDLE ThreadHandles[NUM_OF_WORKER_THREADS];
 	SOCKET ThreadInputs[NUM_OF_WORKER_THREADS];
 	SockParams params[NUM_OF_WORKER_THREADS];
@@ -35,75 +32,11 @@ Last updated by Amnon Drory, Winter 2011.
 
 #pragma region Main Functions
 
-
 	/*
-	Description - get string from the user.
-	Parameters  - mssg- mssg for the user.
-	Returns     - Error handle
+	Description - Runs the server threads.
+	Parameters  - ip- the adress the server runs from.
+	Returns     - 
 	*/
-	char* getStringFromUser(char * mssg)
-	{
-		// Set vars.
-		char currMove = 'a';
-		char* result = calloc(1, INPUT_TXT_SIZE);
-
-		// Check malloc error.
-		if (result == NULL)
-		{
-			return(NULL);
-		}
-
-		// Save begin of string.
-		char* helper = result;
-
-		// Check if to print with error or not.
-		printf("%s", mssg);
-
-		// While std != end of line
-		while (currMove != '\n')
-		{
-			// Get next char.
-			currMove = getchar();
-
-			// if end of std.
-			if ((currMove == '\xff') || (currMove == '\251'))
-			{
-				// free result and return error.
-				free(result);
-				return(NULL);
-			}
-
-			if (currMove != '\n')
-			{
-				*helper = currMove;
-			}
-
-			helper++;
-		}
-
-		// set curr move = a.
-		currMove = 'a';
-
-		// set end of string.
-		*helper = '\0';
-
-
-		// return result.
-		return(result);
-	}
-
-	void increaseCountLogged(void)
-	{
-		countLogedIn++;
-	}
-
-	void closeHandles(void)
-	{
-		CloseHandle(gameSessionMutex);
-		CloseHandle(waitForPlayerMutex);
-		CloseHandle(gameHandlerSemaphore);
-	}
-
 	void MainServer(char* ip)
 	{
 		cleanNamesList();
@@ -118,14 +51,14 @@ Last updated by Amnon Drory, Winter 2011.
 
 		gameSessionMutex = CreateMutex(NULL, FALSE, NULL);
 		waitForPlayerMutex = CreateMutex(NULL, FALSE, NULL);
-		gameHandlerSemaphore = CreateSemaphore(NULL,0,CLIENT_AMOUNT,NULL);
-		
+		gameHandlerSemaphore = CreateSemaphore(NULL, 0, CLIENT_AMOUNT, NULL);
+
 		if (gameSessionMutex == NULL)
 		{
 			goto server_defaul_clean;
 		}
 
-		if(waitForPlayerMutex == NULL)
+		if (waitForPlayerMutex == NULL)
 		{
 			CloseHandle(gameSessionMutex);
 			goto server_defaul_clean;
@@ -215,13 +148,13 @@ Last updated by Amnon Drory, Winter 2011.
 			Ind = FindFirstUnusedThreadSlot();
 
 			if (Ind == NUM_OF_WORKER_THREADS) //no slot is available
-			{	
+			{
 				// Im allowing 5 connection (to handle denie messages).
 				closesocket(AcceptSocket); //Closing the socket, dropping the connection.
 			}
 			else
-			{				
-				ThreadInputs[Ind] = AcceptSocket;				
+			{
+				ThreadInputs[Ind] = AcceptSocket;
 				params[Ind].sd = AcceptSocket;
 				params[Ind].loc = Ind;
 				ThreadHandles[Ind] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ServiceThread, &params[Ind], 0, NULL);
@@ -253,6 +186,89 @@ Last updated by Amnon Drory, Winter 2011.
 		printf("Going down.");
 	}
 
+	/*
+	Description - get string from the user.
+	Parameters  - mssg- mssg for the user.
+	Returns     - Error handle
+	*/
+	char* getStringFromUser(char * mssg)
+	{
+		// Set vars.
+		char currMove = 'a';
+		char* result = calloc(1, INPUT_TXT_SIZE);
+
+		// Check malloc error.
+		if (result == NULL)
+		{
+			return(NULL);
+		}
+
+		// Save begin of string.
+		char* helper = result;
+
+		// Check if to print with error or not.
+		printf("%s", mssg);
+
+		// While std != end of line
+		while (currMove != '\n')
+		{
+			// Get next char.
+			currMove = getchar();
+
+			// if end of std.
+			if ((currMove == '\xff') || (currMove == '\251'))
+			{
+				// free result and return error.
+				free(result);
+				return(NULL);
+			}
+
+			if (currMove != '\n')
+			{
+				*helper = currMove;
+			}
+
+			helper++;
+		}
+
+		// set curr move = a.
+		currMove = 'a';
+
+		// set end of string.
+		*helper = '\0';
+
+
+		// return result.
+		return(result);
+	}
+
+	/*
+		Description - Publish count logged in to other modules.
+		Parameters  - 
+		Returns     - 
+	*/
+	void increaseCountLogged(void)
+	{
+		countLogedIn++;
+	}
+
+	/*
+		Description - Close all the handles of the server.
+		Parameters  - 
+		Returns     - 
+	*/
+	void closeHandles(void)
+	{
+		CloseHandle(gameSessionMutex);
+		CloseHandle(waitForPlayerMutex);
+		CloseHandle(gameHandlerSemaphore);
+	}	
+
+	/*
+		Description - Find the first unused slot to run thread.
+		Parameters  - 
+		Returns     - The location desired.
+	*/
 	static int FindFirstUnusedThreadSlot()
 	{
 		int Ind;
@@ -278,6 +294,11 @@ Last updated by Amnon Drory, Winter 2011.
 		return Ind;
 	}
 
+	/*
+	Description - Clean up threads in backround.
+	Parameters  - 
+	Returns     -
+	*/
 	static void CleanupWorkerThreads()
 	{
 		int Ind;
@@ -305,42 +326,77 @@ Last updated by Amnon Drory, Winter 2011.
 		}
 	}
 
+	/*
+	Description - Activate mutex outside module.
+	Parameters  -
+	Returns     -
+	*/
 	int waitGameSessionMutex(void)
 	{
 		int time = WaitForSingleObject(gameSessionMutex, INFINITE);
 		return(time);
 	}
 
+	/*
+	Description - Release mutex outside module.
+	Parameters  -
+	Returns     -
+	*/
 	int releaseGameSessionMutex(void)
 	{
 		int time = ReleaseMutex(gameSessionMutex);
 		return(time);
 	}
 
+	/*
+	Description - Activate mutex outside module.
+	Parameters  -
+	Returns     -
+	*/
 	int waitFileMutex(void)
 	{
 		int time = WaitForSingleObject(waitForPlayerMutex, INFINITE);
 		return(time);
 	}
 
+	/*
+	Description - Release mutex outside module.
+	Parameters  -
+	Returns     -
+	*/
 	int releasFileMutex(void)
 	{
 		int time = ReleaseMutex(waitForPlayerMutex);
 		return(time);
 	}
 
+	/*
+	Description - Activate mutex outside module timed.
+	Parameters  -
+	Returns     -
+	*/
 	int waitOtherPlayerMove(void)
 	{
 		int time = WaitForSingleObject(gameHandlerSemaphore, WAIT_FOR_CLIENT_TIME);
 		return(time);
 	}
 
+	/*
+	Description - Activate mutex outside module.
+	Parameters  -
+	Returns     -
+	*/
 	int waitOtherPlayerMoveINF(void)
 	{
 		int time = WaitForSingleObject(gameHandlerSemaphore, INFINITE);
 		return(time);
 	}
 
+	/*
+	Description - Release mutex outside module.
+	Parameters  -
+	Returns     -
+	*/
 	int releaseOtherPlayerMove(void)
 	{
 		// Release one of the smaphores...
@@ -348,6 +404,11 @@ Last updated by Amnon Drory, Winter 2011.
 		return(time);
 	}
 
+	/*
+	Description - Check if to approve client or to denie access.
+	Parameters  -
+	Returns     -
+	*/
 	int isLocationAvilableForClient()
 	{
 		if (countLogedIn > 1)
@@ -363,7 +424,12 @@ Last updated by Amnon Drory, Winter 2011.
 #pragma endregion
 
 #pragma region Thread
-	//Service thread is the thread that opens for each successful client connection and "talks" to the client.
+	
+	/*
+		Description - Service thread runs in the back, getting messages and pharsing them.
+		Parameters  - soc- socks params- the socket and its location in the array.
+		Returns     -
+	*/
 	static DWORD ServiceThread(SockParams *soc)
 	{
 		char SendStr[SEND_STR_SIZE];
@@ -414,6 +480,17 @@ Last updated by Amnon Drory, Winter 2011.
 		printf("Conversation ended.\n");
 		closesocket(*t_socket);
 		return 0;
+	}
+
+	static DWORD ExitThreadFunction(void)
+	{	
+		char* txt = getStringFromUser("");
+
+		while (strcmp(txt, "EXIT") != 0)
+		{
+			// Waiting for input from server
+			txt = getStringFromUser("");
+		}
 	}
 
 #pragma endregion

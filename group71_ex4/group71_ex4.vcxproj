@@ -121,16 +121,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\group71_ex4_client\ClientMessegeHandler.h" />
     <ClInclude Include="..\group71_ex4_server\LeaderBoarrd.h" />
     <ClInclude Include="..\group71_ex4_server\MessegeHead.h" />
     <ClInclude Include="..\group71_ex4_server\ServerHadnler.h" />
     <ClInclude Include="..\group71_ex4_server\ServerMessageHandler.h" />
     <ClInclude Include="..\group71_ex4_server\Server.h" />
-    <ClInclude Include="..\Shared\MessegeHead.h" />
     <ClInclude Include="..\Shared\SocketExampleShared.h" />
     <ClInclude Include="..\Shared\SocketSendRecvTools.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\group71_ex4_client\DefenitionsForServerClient.c" />
     <ClCompile Include="..\group71_ex4_server\LeaderBoarrd.c" />
     <ClCompile Include="..\group71_ex4_server\ServerHadnler.c" />
     <ClCompile Include="..\group71_ex4_server\ServerMessageHandler.c" />

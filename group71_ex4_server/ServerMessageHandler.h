@@ -50,7 +50,7 @@ typedef struct SockParams
 #define MAX_LINE_CVS 30
 #define ERROR_IN_CONNECTION -100
 #define SERVER_DENIE_CLIENT 124
-#define FILE_ERROR -400
+
 
 int sendGeneralMesseage(char* messageID, SockParams * params);
 int sendServerDenieMessage(char* messageID, char* message, SockParams * params);

@@ -21,9 +21,6 @@
     <ClInclude Include="..\Shared\SocketSendRecvTools.h">
       <Filter>Shared</Filter>
     </ClInclude>
-    <ClInclude Include="..\Shared\MessegeHead.h">
-      <Filter>Shared</Filter>
-    </ClInclude>
     <ClInclude Include="..\Shared\SocketExampleShared.h">
       <Filter>Shared</Filter>
     </ClInclude>
@@ -41,6 +38,9 @@
     </ClInclude>
     <ClInclude Include="..\group71_ex4_server\Server.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\group71_ex4_client\ClientMessegeHandler.h">
+      <Filter>Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +61,9 @@
     </ClCompile>
     <ClCompile Include="..\group71_ex4_server\Server.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\group71_ex4_client\DefenitionsForServerClient.c">
+      <Filter>Shared</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

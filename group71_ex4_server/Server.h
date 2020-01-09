@@ -22,6 +22,9 @@
 #define CLIENT_AMOUNT 2
 #define WAIT_FOR_CLIENT_TIME 15000
 #define INPUT_TXT_SIZE 100
+#define NUM_OF_WORKER_THREADS 2
+#define MAX_LOOPS 3
+#define SEND_STR_SIZE 35
 
 
 void MainServer(char* ip);
