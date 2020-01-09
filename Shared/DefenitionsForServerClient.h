@@ -121,5 +121,4 @@
 
 #pragma endregion
 
-
 #endif /* DefenitionsForServerClient_h */

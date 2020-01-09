@@ -84,7 +84,6 @@
 
 	#pragma region InputFunctions
 
-		
 		void clearScrean(char* code);
 
 	#pragma endregion
