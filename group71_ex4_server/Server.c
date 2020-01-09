@@ -20,6 +20,7 @@ Last updated by Amnon Drory, Winter 2011.
 #pragma region Globals
 
 	HANDLE ThreadHandles[NUM_OF_WORKER_THREADS];
+	HANDLE ExitHandle;
 	SOCKET ThreadInputs[NUM_OF_WORKER_THREADS];
 	SockParams params[NUM_OF_WORKER_THREADS];
 	int countLogedIn = 0;
@@ -27,6 +28,7 @@ Last updated by Amnon Drory, Winter 2011.
 	HANDLE gameSessionMutex;
 	HANDLE waitForPlayerMutex;
 	HANDLE gameHandlerSemaphore;
+	int isToExit = FALSE_VAL;
 
 #pragma endregion
 
@@ -51,6 +53,7 @@ Last updated by Amnon Drory, Winter 2011.
 	*/
 	void MainServer(char* ip)
 	{
+		// Initial stuff
 		cleanNamesList();
 		strcpy(IP_ADRESS, ip);
 		int Ind;
@@ -61,21 +64,25 @@ Last updated by Amnon Drory, Winter 2011.
 		int bindRes;
 		int ListenRes;
 
+		// Create mutex
 		gameSessionMutex = CreateMutex(NULL, FALSE, NULL);
 		waitForPlayerMutex = CreateMutex(NULL, FALSE, NULL);
 		gameHandlerSemaphore = CreateSemaphore(NULL, 0, CLIENT_AMOUNT, NULL);
 
+		// Mutex error handler.
 		if (gameSessionMutex == NULL)
 		{
 			goto server_defaul_clean;
 		}
 
+		// Mutex error handler.
 		if (waitForPlayerMutex == NULL)
 		{
 			CloseHandle(gameSessionMutex);
 			goto server_defaul_clean;
 		}
 
+		// Mutex error handler.
 		if (gameHandlerSemaphore == NULL)
 		{
 			CloseHandle(gameSessionMutex);
@@ -90,23 +97,27 @@ Last updated by Amnon Drory, Winter 2011.
 		WSADATA wsaData;
 		int StartupRes = WSAStartup(MAKEWORD(2, 2), &wsaData);
 
+		// Check if went up.
 		if (StartupRes != NO_ERROR)
 		{
 			printf("error %ld at WSAStartup( ), ending program.\n", WSAGetLastError());
-			// Tell the user that we could not find a usable WinSock DLL.                                  
 			return;
 		}
 
 		// Create a socket.    
 		MainSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
+		// Check for success
 		if (MainSocket == INVALID_SOCKET)
 		{
 			printf("Error at socket( ): %ld\n", WSAGetLastError());
 			goto server_cleanup_1;
 		}
 
+		// Set the adress.
 		Address = inet_addr(IP_ADRESS);
+
+		// Check if good adress.
 		if (Address == INADDR_NONE)
 		{
 			printf("The string \"%s\" cannot be converted into an ip address. ending program.\n",
@@ -114,13 +125,13 @@ Last updated by Amnon Drory, Winter 2011.
 			goto server_cleanup_2;
 		}
 
+		// Set the serverinfo.
 		service.sin_family = AF_INET;
 		service.sin_addr.s_addr = Address;
 		service.sin_port = htons(SERVER_PORT);
 
 
-		// Call the bind function, passing the created socket and the sockaddr_in structure as parameters. 
-		// Check for general errors.
+		// bind server to ip.
 		bindRes = bind(MainSocket, (SOCKADDR*)&service, sizeof(service));
 		if (bindRes == SOCKET_ERROR)
 		{
@@ -128,13 +139,18 @@ Last updated by Amnon Drory, Winter 2011.
 			goto server_cleanup_2;
 		}
 
-		// Listen on the Socket.
+		// Start listen to sockets.
 		ListenRes = listen(MainSocket, SOMAXCONN);
 		if (ListenRes == SOCKET_ERROR)
 		{
 			printf("Failed listening on socket, error %ld.\n", WSAGetLastError());
 			goto server_cleanup_2;
 		}
+
+		
+		// Start the exit thread.
+		ExitHandle = NULL;
+		ExitHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ExitThreadFunction, NULL, 0, NULL);
 
 		// Initialize all thread handles to NULL, to mark that they have not been initialized
 		for (Ind = 0; Ind < NUM_OF_WORKER_THREADS; Ind++)
@@ -157,6 +173,7 @@ Last updated by Amnon Drory, Winter 2011.
 			// debug print.
 			printf("Client Connected.\n");
 
+			// Find empty thread spot.
 			Ind = FindFirstUnusedThreadSlot();
 
 			if (Ind == NUM_OF_WORKER_THREADS) //no slot is available
@@ -237,7 +254,7 @@ Last updated by Amnon Drory, Winter 2011.
 
 			if (currMove != '\n')
 			{
-				*helper = currMove;
+				*helper = toupper(currMove);
 			}
 
 			helper++;
@@ -489,6 +506,7 @@ Last updated by Amnon Drory, Winter 2011.
 	*/
 	static DWORD ExitThreadFunction(void)
 	{	
+		isToExit = FALSE_VAL;
 		char* txt = getStringFromUser("");
 
 		while (strcmp(txt, "EXIT") != 0)
@@ -496,6 +514,9 @@ Last updated by Amnon Drory, Winter 2011.
 			// Waiting for input from server
 			txt = getStringFromUser("");
 		}
+
+
+		isToExit = TRUE_VAL;
 	}
 
 #pragma endregion

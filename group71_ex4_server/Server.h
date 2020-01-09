@@ -27,15 +27,15 @@
 #define SEND_STR_SIZE 35
 
 
+static DWORD ServiceThread(SockParams *soc);
+static DWORD ExitThreadFunction(void);
 void MainServer(char* ip);
 static int FindFirstUnusedThreadSlot();
 static void CleanupWorkerThreads();
-static DWORD ServiceThread(SockParams *soc);
 int isLocationAvilableForClient();
 void increaseCountLogged(void);
 int waitGameSessionMutex(void);
 int releaseGameSessionMutex(void);
-
 int waitOtherPlayerMove(void);
 int releaseOtherPlayerMove(void);
 int waitOtherPlayerMoveINF(void);
