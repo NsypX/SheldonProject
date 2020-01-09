@@ -32,7 +32,7 @@
 #define FAILED_CONNECTION_MSSG "Connection to server on %s:%d has been lost. Choose what to do next:\n1. Try to reconnect\n2. Exit\n"
 #define DISCONECT_MSSG "Connection to server on %s:%d has been lost. Choose what to do next:\n1. Try to reconnect\n2. Exit\n"
 #define SERVER_DENIE_MESSAGE_TEMP "Server Denied because- %s\nServer on %s:%d denied the connection request. Choose what to do next:\n1. Try to reconnect\n2. Exit\n"
-#define SERVER_CONNECTED_MESSAGE "Connected to server on %s:%d"
+#define SERVER_CONNECTED_MESSAGE "Connected to server on %s:%d\n"
 
 /*oOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoO*/
 

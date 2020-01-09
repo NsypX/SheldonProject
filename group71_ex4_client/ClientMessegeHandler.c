@@ -333,6 +333,7 @@ char* getName(char * mssg)
 #pragma endregion
 
 #pragma region Pharsing Functions
+
 int phasreServerGameResult(char* client, char* moveOp, char* moveMe, char* won)
 {
 	// Printed formad.
@@ -497,7 +498,7 @@ int pharseServerLeader(char* board, SOCKET sd)
 			char* ratio = strtok(NULL, SCV_SPLIT);
 
 			// print curr line values with 2 tabs, values padded 6 chars.
-			printf("%20s\t\t%20s\t\t%20s\t\t%20s\n", name, won, lost, ratio);
+			printf(LEADER_BOARD_TEMPLATE, name, won, lost, ratio);
 
 			// Get next line
 			line = strtok_s(NULL, END_LINE, &board);
@@ -647,6 +648,7 @@ int pharseMessage(char* mssg, SOCKET sd)
 
 	return (result);
 }
+
 #pragma endregion
 
 #pragma region StringHandler

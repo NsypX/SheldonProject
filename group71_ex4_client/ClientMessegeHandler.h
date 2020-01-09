@@ -66,10 +66,9 @@
 		#define SERVER_GAME_RESULT_MESSAGE "You played: %s\n%s played: %s\n%s won!\n"
 		#define SERVER_GAME_RESULT_MESSAGE_DREW "You played: %s\n%s played: %s\nThe game resulted in Draw!\n"
 		#define SERVER_LEADER_MENU  "\nChoose what to do next:\n1. Refresh leaderboard\n2. Return to the main menu\n"
-
-
 		#define SERVER_DENIED_MESSAGE "To many Clients already log in."
 		#define SERVER_LEADER_UP_TO_DATE "The leaderboard you view is already up to date.\n"
+		#define LEADER_BOARD_TEMPLATE "%20s\t\t%5s\t\t%5s\t\t%5s\n"
 
 	#pragma endregion
 
