@@ -1,11 +1,11 @@
-/*oOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoO*/
-/* 
- This file was written for instruction purposes for the 
- course "Introduction to Systems Programming" at Tel-Aviv
- University, School of Electrical Engineering, Winter 2011, 
- by Amnon Drory, based on example code by Johnson M. Hart.
+/*
+   Authors     - Dean Zahavy 200770105, Eyal Seifert 205926025
+   Project     - SocketSendRecvTools.
+   Description - This file was written for instruction purposes for the 
+				 course "Introduction to Systems Programming" at Tel-Aviv
+				 University, School of Electrical Engineering, Winter 2011, 
+				 by Amnon Drory, based on example code by Johnson M. Hart..
 */
-/*oOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoO*/
 
 #pragma region Includes
 #include "SocketSendRecvTools.h"

@@ -1,10 +1,9 @@
-//
-//  ClientMessegeHandler.c
-//  Ex04_Client
-//
-//  Created by Dean Zahavy on 26/12/2019.
-//  Copyright © 2019 Dean Zahavy. All rights reserved.
-//
+/*
+   Authors     - Dean Zahavy 200770105, Eyal Seifert 205926025
+   Project     - ClientMessegeHandler.
+   Description - this file is incharge on all the messages between the server
+				 and the client, it pharse the recived messages and send the desire once.
+*/
 
 #pragma region Includes
 #define _CRT_SECURE_NO_WARNINGS

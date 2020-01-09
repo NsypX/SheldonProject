@@ -1,3 +1,11 @@
+/*
+   Authors     - Dean Zahavy 200770105, Eyal Seifert 205926025
+   Project     - DefenitionsForServerClient.
+   Description - this file is incharge of error handling, 
+				 the h file is incharge of all the cross defenistions
+				 between the systems.
+*/
+
 #include "DefenitionsForServerClient.h"
 
 void errorPrinter(int exitCode)

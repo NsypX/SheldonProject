@@ -1,11 +1,10 @@
-/*oOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoO*/
-/* 
- This file was written for instruction purposes for the 
- course "Introduction to Systems Programming" at Tel-Aviv
- University, School of Electrical Engineering.
-Last updated by Amnon Drory, Winter 2011.
- */
-/*oOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoO*/
+/*
+   Authors     - Dean Zahavy 200770105, Eyal Seifert 205926025
+   Project     - Client.
+   Description - this module is incharge of the communication with the 
+				 the server of this program.
+				 base on resriction 8 from class.
+*/
 
 #pragma region Includes
 

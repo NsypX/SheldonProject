@@ -1,3 +1,8 @@
+/*
+   Authors     - Dean Zahavy 200770105, Eyal Seifert 205926025
+   Project     - client_main.
+   Description - this file runs the program.
+*/
 
 #include "Client.h"
 #include "string.h"
