@@ -10,6 +10,42 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "ClientMessegeHandler.h"
 
+	#pragma region PrivateFunctions
+
+	#pragma region SendMessages
+
+	int sendClientRequest(char* messageID, char* name, SOCKET sd);
+	int sendClientMove(char* messageID, char* move, SOCKET sd);
+	int sendGeneralMesseage(char* messageID, SOCKET sd);
+
+	#pragma endregion
+
+	#pragma region pharseMessages
+
+
+	int pharseMainMenue(SOCKET sd);
+	int pharseServerApproved(SOCKET sd);
+	int pharseServerDenie(char* reason, SOCKET sd);
+	int phasreServerGameResult(char* client, char* moveOp, char* moveMe, char* won);
+	int pharseServerMoveRequest(SOCKET sd);
+	int pharseGameOverMenue(SOCKET sd);
+	int pharseServerLeader(char* board, SOCKET sd);
+	int phraseServerLeaderMenue(SOCKET sd);
+	int pharseNoOpponent(SOCKET sd);
+
+	#pragma endregion
+
+	#pragma region InputFunctions
+
+	int getOptions(char * mssg, int optAmount);
+	char* getName(char * mssg);
+	char* getTXT(char * mssg);
+
+
+	#pragma endregion
+
+	#pragma endregion
+
 
 #pragma endregion
 
