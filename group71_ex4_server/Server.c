@@ -13,7 +13,7 @@ Last updated by Amnon Drory, Winter 2011.
 	#define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 	#include "Server.h"
-	#include "ServerHadnler.h"
+
 
 #pragma endregion
 

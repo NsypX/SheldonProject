@@ -17,7 +17,7 @@
 #include "ServerMessageHandler.h"
 #include "MessegeHead.h"
 #include "LeaderBoarrd.h"
-#include "Server.h"
+#include "ServerHadnler.h"
 
 #define CLIENT_AMOUNT 2
 #define WAIT_FOR_CLIENT_TIME 15000
