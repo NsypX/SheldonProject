@@ -6,8 +6,8 @@
 //  Copyright © 2019 Dean Zahavy. All rights reserved.
 //
 
-#ifndef MessegeHead_h
-#define MessegeHead_h
+#ifndef DefenitionsForServerClient_h
+#define DefenitionsForServerClient_h
 
 #pragma region MessegesDefine
 
@@ -64,23 +64,47 @@
 
 #pragma endregion
 
+#pragma region Errors
+
 	#pragma region ErrorCodes
 
-		#define NO_ERROR_VAL 1
-		#define GENERAL_ERROR -100
-		#define DISCONNECTED_FROM_SERVER -200
-		#define INPUT_ERROR -300
-		#define MALLOC_ERROR -400
-		#define ERROR_IN_CONNECTION -500
-		#define FILE_READ_ERROR -600
-		#define NO_PARAM_ERROR -700
-		#define THREAD_HANDLE_ERROR -800
-		#define MUTEX_ERROR -900
-		#define THREAD_WAIT_ERROR -1000
-		#define THREAD_TERMINATE_ERROR -1100
-		#define THREAD_ERROR -1200
+	#define NO_ERROR_VAL 1
+	#define GENERAL_ERROR -100
+	#define DISCONNECTED_FROM_SERVER -200
+	#define INPUT_ERROR -300
+	#define MALLOC_ERROR -400
+	#define ERROR_IN_CONNECTION -500
+	#define FILE_READ_ERROR -600
+	#define NO_PARAM_ERROR -700
+	#define THREAD_HANDLE_ERROR -800
+	#define MUTEX_ERROR -900
+	#define THREAD_WAIT_ERROR -1000
+	#define THREAD_TERMINATE_ERROR -1100
+	#define THREAD_ERROR -1200
 
 	#pragma endregion
+	
+	#pragma region Messages
+
+		#define GENERAL_ERROR_MSG "There was a general error in the system.\n"
+		#define DISCONNECT_FROM_SERVER_MSSG "Disconnected from server.\n"
+		#define INPUT_ERROR_MSSG "There was a problem with one of the inputs.\n"
+		#define MALLOC_ERROR_MSG "There was a problem mallocing mem.\n"		
+		#define ERROR_IN_CONNECTION_ERROR "There was a problem opening one of the files.\n"
+		#define FILE_READ_ERROR_MSG "There was a problem opening one of the files.\n"
+		#define NO_PARAM_ERROR_MSG "Not enough params error.\n"
+		#define THREAD_HANDLE_ERROR_MSG "There was a problem in handleing the thread.\n"
+		#define MUTEX_ERROR_MSG "There was a problem on mutex/semaphore.\n"
+		#define THREAD_WAIT_ERROR_MSG "There was a problem waiting for the thread.\n"
+		#define THREAD_TERMINATE_ERROR_MSG "There was a problem terminating the thread.\n"
+		#define THREAD_ERROR_MSG "There was a problem in the thread.\n"
+
+	#pragma endregion
+
+
+#pragma endregion
+
+
 
 	#pragma region Numbers
 		#define CONTINUE_RUN 22
@@ -93,4 +117,4 @@
 
 #pragma endregion
 
-#endif /* MessegeHead_h */
+#endif /* DefenitionsForServerClient_h */

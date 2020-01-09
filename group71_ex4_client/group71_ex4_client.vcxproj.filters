@@ -21,9 +21,6 @@
     <ClInclude Include="..\Shared\SocketSendRecvTools.h">
       <Filter>Shared</Filter>
     </ClInclude>
-    <ClInclude Include="..\Shared\MessegeHead.h">
-      <Filter>Shared</Filter>
-    </ClInclude>
     <ClInclude Include="..\Shared\SocketExampleShared.h">
       <Filter>Shared</Filter>
     </ClInclude>
@@ -32,6 +29,9 @@
     </ClInclude>
     <ClInclude Include="Client.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\DefenitionsForServerClient.h">
+      <Filter>Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

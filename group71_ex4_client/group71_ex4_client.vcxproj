@@ -120,7 +120,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Shared\MessegeHead.h" />
+    <ClInclude Include="..\Shared\DefenitionsForServerClient.h" />
     <ClInclude Include="..\Shared\SocketExampleShared.h" />
     <ClInclude Include="..\Shared\SocketSendRecvTools.h" />
     <ClInclude Include="ClientMessegeHandler.h" />
