@@ -29,8 +29,8 @@ int isVsPlayer = FALSE_VAL;
 
 #pragma endregion
 
-
 #pragma region SendMessageFunctions
+
 int sendGeneralMesseage(char* messageID, SockParams * params)
 {
 	char* mssg = calloc(1, strlen(messageID) + BUFFER);
@@ -200,6 +200,7 @@ int sendLeaderBoardMessage(char* messageID, char* leaderFileContent, SockParams 
 
 	return(NO_ERROR_VAL);
 }
+
 #pragma endregion
 
 #pragma region Pharseing Functions
@@ -263,7 +264,6 @@ int isFileExist(const char * filename)
 	return FALSE_VAL;
 }
 
-
 void debugThread(void)
 {
 	while (1)
@@ -272,6 +272,19 @@ void debugThread(void)
 		printf("Waiting...");
 	}
 }
+
+int createEmptyGameSession()
+{
+	FILE * gameSession = fopen(GAME_SESSION_LOC, "w");
+
+	if (gameSession == NULL)
+	{
+		return(FILE_ERROR);
+	}
+
+	fclose(gameSession);
+}
+
 int pharseClientVS(SockParams* param)
 {
 	waitGameSessionMutex();
@@ -279,41 +292,48 @@ int pharseClientVS(SockParams* param)
 	if (isFileExist(GAME_SESSION_LOC) == FALSE_VAL)
 	{
 		firstPlayer = param;
-		FILE * gameSession = fopen(GAME_SESSION_LOC, "w");
 		
-		if (gameSession == NULL)
-		{
-			releaseGameSessionMutex();
-			return(FILE_ERROR);
-		}
+		// Creating the file.
+		createEmptyGameSession();
 
-		fclose(gameSession);
-
+		// Letting second player in.
 		releaseGameSessionMutex();
-
+		
+		// Waiting for other player to arrive.
 		int waitTime = waitOtherPlayerMove();
 
+		// If arrived.
 		if (waitTime == 0)
 		{			
+			// Set mutex to send messages.
 			waitGameSessionMutex();
 			sendServerInvite(SERVER_INVITE, getName(secondPlayer->loc), firstPlayer);
 			sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST,firstPlayer);
 			releaseGameSessionMutex();
 		}
 		else
-		{
+		{	
+			// Else no opponent found.
 			sendGeneralMesseage(SERVER_NO_OPPONENTS, param->sd);
 		}
 	}
 	else
 	{
 		secondPlayer = param;
+
+		// Releasing mutex.
 		releaseGameSessionMutex();		
+
+		// Let other player move
 		releaseOtherPlayerMove();
+
+		// Setting mutex to send messages.
 		waitGameSessionMutex();
+
 		sendServerInvite(SERVER_INVITE,getName(firstPlayer->loc), secondPlayer);
 		sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, secondPlayer);
 		isVsPlayer = TRUE_VAL;
+
 		releaseGameSessionMutex();
 	}
 
@@ -346,11 +366,6 @@ int pharseClientLeader(SockParams * param, int isUpdate)
 	result = sendGeneralMesseage(SERVER_LEADERBORAD_MENU, param);
 
 	return(NO_ERROR_VAL);
-}
-
-int createEmptyGameSession()
-{
-
 }
 
 char* getOtherMoveFromGameSessionFile(int result)
@@ -394,32 +409,56 @@ int pharseClientMove(char* move, SockParams * param)
 
 	if (isVsPlayer == TRUE_VAL)
 	{
-		
-
+		// Check if we are the first or second player.
 		if (param->loc == firstPlayer->loc)
 		{
+			// Wait for player 2 to write his move.
 			waitGameSessionMutex();
 			
+			// Get player 2 move.
 			getOtherMoveFromGameSessionFile(OtherMove);
 
+			// Write my move.
 			writeMoveToGameSession(move);
 
 			releaseGameSessionMutex();
+
+			// Release second player.
 			releaseOtherPlayerMove();
 
+			// Let other player get my move.
+			waitOtherPlayerMoveINF();
+
+			// Read inside mutex
+			waitGameSessionMutex();
+
 			remove(GAME_SESSION_LOC);
+
+			releaseGameSessionMutex();
 		}
 		else if (param->loc == secondPlayer->loc)
 		{
+			// Writing the move protected by mutex
 			waitGameSessionMutex();
 			
+			// Write my move
 			writeMoveToGameSession(move);
 
 			releaseGameSessionMutex();
 
+			// Wait for player one to write his move.
 			waitOtherPlayerMoveINF();
 
+			// Read inside mutex
+			waitGameSessionMutex();
+
+			// Get player 1 move.
 			getOtherMoveFromGameSessionFile(OtherMove);
+
+			releaseGameSessionMutex();
+
+			// Release first player
+			releaseOtherPlayerMove();
 		}
 	}
 	else
@@ -572,4 +611,5 @@ int pharseMessage(char* mssg, SockParams * param)
 	}
 	return (result);
 }
+
 #pragma endregion
