@@ -287,7 +287,7 @@ Last updated by Amnon Drory, Winter 2011.
 				closeClient();
 
 				// Check exit code of client thread to know if message disconnect.
-				if (exit < 0)
+				if (exitcode >= 0)
 				{
 					if (exitcode == DISCONNECT_TRY_CONNECT)
 					{			

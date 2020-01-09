@@ -35,6 +35,63 @@ Last updated by Amnon Drory, Winter 2011.
 
 #pragma region Main Functions
 
+
+	/*
+	Description - get string from the user.
+	Parameters  - mssg- mssg for the user.
+	Returns     - Error handle
+	*/
+	char* getStringFromUser(char * mssg)
+	{
+		// Set vars.
+		char currMove = 'a';
+		char* result = calloc(1, INPUT_TXT_SIZE);
+
+		// Check malloc error.
+		if (result == NULL)
+		{
+			return(NULL);
+		}
+
+		// Save begin of string.
+		char* helper = result;
+
+		// Check if to print with error or not.
+		printf("%s", mssg);
+
+		// While std != end of line
+		while (currMove != '\n')
+		{
+			// Get next char.
+			currMove = getchar();
+
+			// if end of std.
+			if ((currMove == '\xff') || (currMove == '\251'))
+			{
+				// free result and return error.
+				free(result);
+				return(NULL);
+			}
+
+			if (currMove != '\n')
+			{
+				*helper = currMove;
+			}
+
+			helper++;
+		}
+
+		// set curr move = a.
+		currMove = 'a';
+
+		// set end of string.
+		*helper = '\0';
+
+
+		// return result.
+		return(result);
+	}
+
 	void increaseCountLogged(void)
 	{
 		countLogedIn++;
