@@ -24,7 +24,7 @@ Last updated by Amnon Drory, Winter 2011.
 	SOCKET ThreadInputs[NUM_OF_WORKER_THREADS];
 	SockParams params[NUM_OF_WORKER_THREADS];
 	int countLogedIn = 0;
-	char IP_ADRESS[20];
+	int SERVER_PORT = 0;
 	HANDLE gameSessionMutex;
 	HANDLE waitForPlayerMutex;
 	HANDLE gameHandlerSemaphore;
@@ -51,11 +51,11 @@ Last updated by Amnon Drory, Winter 2011.
 	Parameters  - ip- the adress the server runs from.
 	Returns     - 
 	*/
-	void MainServer(char* ip)
+	void MainServer(char* port)
 	{
 		// Initial stuff
 		cleanNamesList();
-		strcpy(IP_ADRESS, ip);
+		SERVER_PORT = atoi(port);
 		int Ind;
 		int Loop;
 		SOCKET MainSocket = INVALID_SOCKET;

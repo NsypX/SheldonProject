@@ -14,7 +14,6 @@
 #define LEADER_FILE_LOC ".\\LeaderBoard.csv"
 #define TRUE 1
 #define FALSE 0
-#define PORT 8080
 #define PLAYER1_WIN "PLAYER 1"
 #define PLAYER2_WIN "PLAYER 2"
 

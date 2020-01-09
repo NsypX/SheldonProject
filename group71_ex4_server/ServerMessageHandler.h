@@ -25,7 +25,7 @@ typedef struct SockParams
 #define GAME_SESSION_LOC ".\\GameSession.txt"
 #define TRUE 1
 #define FALSE 0
-#define PORT 8080
+
 #define PLAYER1_WIN "PLAYER 1"
 #define PLAYER2_WIN "PLAYER 2"
 #define DREW_IN_GAME "DRAW"
