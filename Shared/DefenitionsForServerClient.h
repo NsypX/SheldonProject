@@ -64,7 +64,7 @@
 
 #pragma endregion
 
-#pragma region Errors
+	#pragma region Errors
 
 	#pragma region ErrorCodes
 
@@ -104,8 +104,6 @@
 
 #pragma endregion
 
-
-
 	#pragma region Numbers
 		#define CONTINUE_RUN 22
 		#define QUIT_CLIENT 23
@@ -116,5 +114,12 @@
 	#pragma endregion
 
 #pragma endregion
+
+#pragma region Function
+
+	void errorPrinter(int exitCode);
+
+#pragma endregion
+
 
 #endif /* DefenitionsForServerClient_h */

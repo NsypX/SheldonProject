@@ -136,50 +136,6 @@ Last updated by Amnon Drory, Winter 2011.
 
 #pragma region NormalFunctions
 
-	void errorPrinter(int exitCode)
-	{
-		if (exitCode == GENERAL_ERROR)
-		{
-			printf(GENERAL_ERROR_MSG);
-		}
-		else if (exitCode == FILE_READ_ERROR)
-		{
-			printf(FILE_READ_ERROR_MSG);
-		}
-		else if (exitCode == MALLOC_ERROR)
-		{
-			printf(MALLOC_ERROR_MSG);
-		}
-		else if (exitCode == NO_PARAM_ERROR)
-		{
-			printf(NO_PARAM_ERROR_MSG);
-		}
-		else if (exitCode == THREAD_HANDLE_ERROR)
-		{
-			printf(THREAD_HANDLE_ERROR_MSG);
-		}
-		else if (exitCode == THREAD_WAIT_ERROR)
-		{
-			printf(THREAD_WAIT_ERROR_MSG);
-		}
-		else if (exitCode == THREAD_TERMINATE_ERROR)
-		{
-			printf(THREAD_TERMINATE_ERROR_MSG);
-		}
-		else if (exitCode == MUTEX_ERROR)
-		{
-			printf(MUTEX_ERROR_MSG);
-		}
-		else if (exitCode == THREAD_ERROR)
-		{
-			printf(THREAD_ERROR_MSG);
-		}
-		else if (exitCode < 0)
-		{
-			printf(GENERAL_ERROR_MSG);
-		}
-	}
-
 	/*
 	Description - Closing the seocket of client and clean wsa.
 	Parameters  - 
