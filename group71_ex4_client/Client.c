@@ -14,7 +14,7 @@ Last updated by Amnon Drory, Winter 2011.
 #include "SocketExampleShared.h"
 #include "SocketSendRecvTools.h"
 #include "ClientMessegeHandler.h"
-#include "SocketExampleClient.h"
+#include "Client.h"
 #include "MessegeHead.h"
 #pragma endregion
 

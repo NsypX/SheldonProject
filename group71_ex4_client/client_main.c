@@ -1,5 +1,5 @@
 
-#include "SocketExampleClient.h"
+#include "Client.h"
 #include "MessegeHead.h"
 
 int main(int argc, char* argv[])

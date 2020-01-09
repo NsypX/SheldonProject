@@ -9,7 +9,7 @@
 #pragma region Includes
 #define _CRT_SECURE_NO_WARNINGS
 #include "ClientMessegeHandler.h"
-#include "SocketExampleClient.h"
+#include "Client.h"
 #include "MessegeHead.h"
 #include <string.h>
 #include <ctype.h>

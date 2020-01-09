@@ -27,10 +27,10 @@
     <ClInclude Include="..\Shared\SocketExampleShared.h">
       <Filter>Shared</Filter>
     </ClInclude>
-    <ClInclude Include="SocketExampleClient.h">
+    <ClInclude Include="ClientMessegeHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ClientMessegeHandler.h">
+    <ClInclude Include="Client.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,10 +41,10 @@
     <ClCompile Include="ClientMessegeHandler.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SocketExampleClient.c">
+    <ClCompile Include="client_main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client_main.c">
+    <ClCompile Include="Client.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
