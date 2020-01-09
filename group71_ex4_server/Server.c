@@ -12,7 +12,7 @@ Last updated by Amnon Drory, Winter 2011.
 	#define _CRT_SECURE_NO_WARNINGS
 	#define _WINSOCK_DEPRECATED_NO_WARNINGS
 
-	#include "SocketExampleServer.h"
+	#include "Server.h"
 	#include "ServerHadnler.h"
 
 #pragma endregion

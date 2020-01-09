@@ -27,9 +27,6 @@
     <ClInclude Include="..\Shared\SocketExampleShared.h">
       <Filter>Shared</Filter>
     </ClInclude>
-    <ClInclude Include="..\group71_ex4_server\SocketExampleServer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\group71_ex4_server\LeaderBoarrd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -42,15 +39,15 @@
     <ClInclude Include="..\group71_ex4_server\ServerMessageHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\group71_ex4_server\Server.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Shared\SocketSendRecvTools.c">
       <Filter>Shared</Filter>
     </ClCompile>
     <ClCompile Include="..\group71_ex4_server\ServerMessageHandler.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\group71_ex4_server\SocketExampleServer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\group71_ex4_server\LeaderBoarrd.c">
@@ -60,6 +57,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\group71_ex4_server\ServerHadnler.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\group71_ex4_server\Server.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

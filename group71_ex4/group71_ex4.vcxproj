@@ -125,7 +125,7 @@
     <ClInclude Include="..\group71_ex4_server\MessegeHead.h" />
     <ClInclude Include="..\group71_ex4_server\ServerHadnler.h" />
     <ClInclude Include="..\group71_ex4_server\ServerMessageHandler.h" />
-    <ClInclude Include="..\group71_ex4_server\SocketExampleServer.h" />
+    <ClInclude Include="..\group71_ex4_server\Server.h" />
     <ClInclude Include="..\Shared\MessegeHead.h" />
     <ClInclude Include="..\Shared\SocketExampleShared.h" />
     <ClInclude Include="..\Shared\SocketSendRecvTools.h" />
@@ -135,7 +135,7 @@
     <ClCompile Include="..\group71_ex4_server\ServerHadnler.c" />
     <ClCompile Include="..\group71_ex4_server\ServerMessageHandler.c" />
     <ClCompile Include="..\group71_ex4_server\server_main.c" />
-    <ClCompile Include="..\group71_ex4_server\SocketExampleServer.c" />
+    <ClCompile Include="..\group71_ex4_server\Server.c" />
     <ClCompile Include="..\Shared\SocketSendRecvTools.c" />
   </ItemGroup>
   <ItemGroup>
