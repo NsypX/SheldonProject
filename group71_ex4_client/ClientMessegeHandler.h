@@ -16,11 +16,9 @@
 #define SERVER_MENUE_OPT_AMOUNT 5
 #define SERVER_GAME_OVER_AMOUNT 2
 #define SERVER_LEADER_MENU_AMOUNT 2
-
 #define SERVER_DENIE_OPT_REFRESH 1
 #define SERVER_DENIE_OPT_EXIT 2
 #define SERVER_DENIE_RETRY 29
-
 
 #define SERVER_MENUE_MESSAGE  "Choose what to do next:\n1. Play against another client\n2. Play against the server\n3. View the leaderboard\n4. Quit\n5. Play Against Sheldon\n"
 #define SERVER_GAME_OVER_MESSAGE "\nChoose what to do next:\n1. Play again\n2. Return to the main menu\n"
