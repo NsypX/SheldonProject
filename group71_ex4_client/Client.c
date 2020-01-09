@@ -8,14 +8,11 @@ Last updated by Amnon Drory, Winter 2011.
 /*oOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoO*/
 
 #pragma region Includes
+
 #define _CRT_SECURE_NO_WARNINGS
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
-
-#include "SocketExampleShared.h"
-#include "SocketSendRecvTools.h"
-#include "ClientMessegeHandler.h"
 #include "Client.h"
-#include "MessegeHead.h"
+
 #pragma endregion
 
 #pragma region GlobalVars

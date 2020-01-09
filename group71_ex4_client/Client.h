@@ -9,9 +9,14 @@
 
 #ifndef SOCKET_EXAMPLE_CLIENT_H
 #define SOCKET_EXAMPLE_CLIENT_H
+
 #include <stdio.h>
 #include <string.h>
 #include <winsock2.h>
+#include "SocketExampleShared.h"
+#include "SocketSendRecvTools.h"
+#include "ClientMessegeHandler.h"
+#include "MessegeHead.h"
 
 #define TRUE_VAL 1
 #define FALSE_VAL 0
