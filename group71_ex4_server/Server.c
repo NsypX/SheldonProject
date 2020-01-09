@@ -53,11 +53,8 @@ Last updated by Amnon Drory, Winter 2011.
 	*/
 	void MainServer(char* port)
 	{
-
-		if (isFileExist(GAME_SESSION_LOC) == FALSE_VAL)
-		{
-			remove(GAME_SESSION_LOC);
-		}
+		// Remove if exist.
+		remove(GAME_SESSION_LOC);
 
 		// Initial stuff
 		cleanNamesList();
