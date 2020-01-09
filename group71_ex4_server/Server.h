@@ -25,7 +25,7 @@
 #define NUM_OF_WORKER_THREADS 2
 #define MAX_LOOPS 3
 #define SEND_STR_SIZE 35
-#define IP_ADRESS "localhost"
+#define IP_ADRESS "127.0.0.1"
 
 
 static DWORD ServiceThread(SockParams *soc);
