@@ -107,9 +107,46 @@ int closeClient()
 	return TRUE_VAL;
 }
 
+int reConnectMenue(int* tryToConnect, int* opt)
+{
+	char* printed = NULL;
+
+	switch (*opt)
+	{
+	case(RECONNECT_OPTION):
+	{
+		printed = createTwoParramString(FAILED_CONNECTION_MSSG, getIP_ADRESS(), getPORT());
+		break;
+	}
+	case(QUIT_OPTION):
+	{
+		printed = createTwoParramString(DISCONECT_MSSG, getIP_ADRESS(), getPORT());
+		break;
+	}
+	case(PRINT_DENIE):
+	{
+		printed = createThreeParramString(SERVER_DENIE_MESSAGE_TEMP, SERVER_DENIED_MESSAGE, getIP_ADRESS(), getPORT());
+		break;
+	}
+	default:
+	{
+		break;
+	}
+	}
+
+
+	if (printed == NULL)
+	{
+		return;
+	}
+
+	// try connect to server
+	*opt = getOptions(printed, 2);
+	*tryToConnect = TRUE_VAL;
+	free(printed);
+}
 void MainClient(char* ip, char* charPort, char* name)
 {
-
 	if (strlen(name) > MAX_NAME_SIZE)
 	{
 		printf("Name isnt valid. going down.");
@@ -166,41 +203,7 @@ void MainClient(char* ip, char* charPort, char* name)
 		if (connectHelper == SOCKET_ERROR)
 		{
 			WSACleanup();
-			char* printed = NULL;
-
-			switch (opt)
-			{
-				case(RECONNECT_OPTION):
-				{
-					printed = createTwoParramString(FAILED_CONNECTION_MSSG, getIP_ADRESS(), getPORT());
-					break;
-				}
-				case(QUIT_OPTION):
-				{
-					printed = createTwoParramString(DISCONECT_MSSG, getIP_ADRESS(), getPORT());
-					break;
-				}
-				case(PRINT_DENIE):
-				{
-					printed = createThreeParramString(SERVER_DENIE_MESSAGE_TEMP, SERVER_DENIED_MESSAGE, getIP_ADRESS(), getPORT());
-					break;
-				}
-				default:
-				{				
-					break;
-				}
-			}
-		
-
-			if (printed == NULL)
-			{
-				return;
-			}
-
-			// try connect to server
-			opt = getOptions(printed, 2);
-			tryToConnect = TRUE_VAL;
-			free(printed);
+			reConnectMenue(&tryToConnect, &opt);
 		}
 		else
 		{
@@ -229,14 +232,17 @@ void MainClient(char* ip, char* charPort, char* name)
 			// Close all
 			closeClient();
 
+			// Check exit code of client thread to know if message disconnect.
 			if (exitcode == DISCONNECT_TRY_CONNECT)
 			{			
+				// Set params for relogin
 				opt = RECONNECT_OPTION;
 				printOption = PRINT_DENIE;
 				connectHelper = SOCKET_ERROR;
 			}
 			else if (exitcode == SERVER_TIMEOUT)
 			{
+				// Set params for relogin
 				opt = RECONNECT_OPTION;
 				printOption = PRINT_TIMEOUT;
 				connectHelper = SOCKET_ERROR;
