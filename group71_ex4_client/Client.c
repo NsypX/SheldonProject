@@ -31,7 +31,7 @@ int PORT;
 int setName(char* nameToSet)
 {
 	strcat(ClientName, nameToSet);
-	return (NO_ERROR1);
+	return (NO_ERROR_VAL);
 }
 
 char* getClientName()
@@ -59,7 +59,7 @@ int closeThread()
 {
 	TerminateThread(hThread, 0x555);
 	CloseHandle(hThread);
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 //Reading data coming from the server

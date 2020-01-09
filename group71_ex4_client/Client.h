@@ -13,10 +13,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <winsock2.h>
+#include "MessegeHead.h"
 #include "SocketExampleShared.h"
 #include "SocketSendRecvTools.h"
 #include "ClientMessegeHandler.h"
-#include "MessegeHead.h"
+
 
 #define TRUE_VAL 1
 #define FALSE_VAL 0

@@ -43,7 +43,7 @@ int sendClientRequest(char* messageID, char* name, SOCKET sd)
 		return ERROR_IN_CONNECTION;
 	}
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int sendClientMove(char* messageID, char* move, SOCKET sd)
@@ -73,7 +73,7 @@ int sendClientMove(char* messageID, char* move, SOCKET sd)
 		return ERROR_IN_CONNECTION;
 	}
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int sendGeneralMesseage(char* messageID, SOCKET sd)
@@ -100,7 +100,7 @@ int sendGeneralMesseage(char* messageID, SOCKET sd)
 		return ERROR_IN_CONNECTION;
 	}
 
-	return(NO_ERROR1);
+	return(NO_ER);
 }
 #pragma endregion
 
@@ -318,7 +318,7 @@ int phasreServerGameResult(char* client, char* moveOp, char* moveMe, char* won)
 int pharseMainMenue(SOCKET sd)
 {
 	// Set no error.
-	int result = NO_ERROR1;
+	int result = NO_ERROR_VAL;
 
 	// Get main menue options.
 	int option = getOptions(SERVER_MENUE_MESSAGE, SERVER_MENUE_OPT_AMOUNT);

@@ -36,7 +36,7 @@ LeaderList *  getLeaderInstanse(void)
 	waitFileMutex();
 	if (currList == NULL)
 	{
-		int result = NO_ERROR1;
+		int result = NO_ERROR_VAL;
 		
 		result = LeaderBoardCreation();
 
@@ -458,7 +458,7 @@ int writeToFile(char* finalFileInput)
 	fprintf(fp, "%s", finalFileInput);
 	fclose(fp);
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int isLeaderBoardExist()

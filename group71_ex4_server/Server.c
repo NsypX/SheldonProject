@@ -315,7 +315,7 @@ Last updated by Amnon Drory, Winter 2011.
 
 		TransferResult_t RecvRes;
 		SOCKET *t_socket = &soc->sd;
-		int result = NO_ERROR1;
+		int result = NO_ERROR_VAL;
 
 		while (!Done)
 		{
@@ -346,7 +346,7 @@ Last updated by Amnon Drory, Winter 2011.
 				result = pharseMessage(AcceptedStr, soc);
 			}
 
-			if (result != NO_ERROR1)
+			if (result != NO_ERROR_VAL)
 			{
 				//ERROR HANDLE	
 			}

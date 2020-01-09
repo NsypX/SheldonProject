@@ -53,7 +53,7 @@ int sendGeneralMesseage(char* messageID, SockParams * params)
 		return ERROR_IN_CONNECTION;
 	}
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 
@@ -81,7 +81,7 @@ int sendServerDenieMessage(char* messageID, char* message, SockParams * params)
 		return ERROR_IN_CONNECTION;
 	}
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int sendServerInvite(char* messageID, char name[], SockParams * params)
@@ -109,7 +109,7 @@ int sendServerInvite(char* messageID, char name[], SockParams * params)
 		return ERROR_IN_CONNECTION;
 	}
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int sendGameResultMessage(char* messageID, char* client, char* moveOp, char* moveMe, char* won, SockParams * params)
@@ -143,7 +143,7 @@ int sendGameResultMessage(char* messageID, char* client, char* moveOp, char* mov
 		return ERROR_IN_CONNECTION;
 	}
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int sendOponnentQuitMessage(char* messageID, char* otherClient, SockParams * params)
@@ -171,7 +171,7 @@ int sendOponnentQuitMessage(char* messageID, char* otherClient, SockParams * par
 		return ERROR_IN_CONNECTION;
 	}
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int sendLeaderBoardMessage(char* messageID, char* leaderFileContent, SockParams * params)
@@ -198,7 +198,7 @@ int sendLeaderBoardMessage(char* messageID, char* leaderFileContent, SockParams 
 		return ERROR_IN_CONNECTION;
 	}
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 #pragma endregion
 
@@ -206,7 +206,7 @@ int sendLeaderBoardMessage(char* messageID, char* leaderFileContent, SockParams 
 
 int pharseClientRequest(char* name, SockParams * param)
 {
-	int result = NO_ERROR1;
+	int result = NO_ERROR_VAL;
 	if (isLocationAvilableForClient() == TRUE_VAL)
 	{
 		changeName(name,param->loc);
@@ -218,7 +218,7 @@ int pharseClientRequest(char* name, SockParams * param)
 	{
 		result = sendServerDenieMessage(SERVER_DENIED, SERVER_DENIED_MESSAGE, param);
 
-		if (result != NO_ERROR1)
+		if (result != NO_ERROR_VAL)
 		{
 			return(result);
 		}
@@ -235,14 +235,14 @@ int pharseClientMainMenue(SockParams * param)
 {
 	int result = sendGeneralMesseage(SERVER_MAIN_MENU, param);
 
-	return (NO_ERROR1);
+	return (NO_ERROR_VAL);
 }
 
 int pharseClientCPU(SockParams * param)
 {
 	int result = sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, param);
 	isVsPlayer = FALSE_VAL;
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 /*
@@ -317,7 +317,7 @@ int pharseClientVS(SockParams* param)
 		releaseGameSessionMutex();
 	}
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int pharseClientLeader(SockParams * param, int isUpdate)
@@ -345,7 +345,7 @@ int pharseClientLeader(SockParams * param, int isUpdate)
 	// Create Leader Menue.
 	result = sendGeneralMesseage(SERVER_LEADERBORAD_MENU, param);
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int createEmptyGameSession()
@@ -430,7 +430,7 @@ int pharseClientMove(char* move, SockParams * param)
 
 	// Check who won.
 	char* won = checkWin(move, OtherMove);
-	int result = NO_ERROR1;
+	int result = NO_ERROR_VAL;
 
 	if (strcmp(won, PLAYER1_WIN) == 0)
 	{
@@ -453,13 +453,13 @@ int pharseClientMove(char* move, SockParams * param)
 
 
 	result = sendGeneralMesseage(SERVER_GAME_OVER_MENU, param);
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int pharseClientReplay(SockParams * param)
 {
 	int result = sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, param);
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int pharseClientRefresh(SockParams * param)
@@ -482,7 +482,7 @@ int pharseClientDisconnect(SockParams * param)
 {
 	printf("\nWe SUCKKKKKKKKKKKKKKKKKKKKKKK AND DONT DO ANYTHING TO DISCONNECT YOU PROPERLY\n");
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int pharseSheldon(SockParams * param)
@@ -511,12 +511,12 @@ int pharseSheldon(SockParams * param)
 	Sleep(5000);
 	sendGeneralMesseage(SERVER_MAIN_MENU, param);
 
-	return(NO_ERROR1);
+	return(NO_ERROR_VAL);
 }
 
 int pharseMessage(char* mssg, SockParams * param)
 {
-	int result = NO_ERROR1;
+	int result = NO_ERROR_VAL;
 
 	if (mssg == NULL)
 	{
