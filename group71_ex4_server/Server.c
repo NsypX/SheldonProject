@@ -515,7 +515,6 @@
 			txt = getStringFromUser();
 		}
 
-
 		isToExit = TRUE_VAL;
 	}
 
