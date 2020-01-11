@@ -7,7 +7,6 @@
 				  Last updated by Amnon Drory, Winter 2011.
 */
 
-
 #pragma region Includes
 
 	#define _CRT_SECURE_NO_WARNINGS

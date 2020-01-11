@@ -5,7 +5,6 @@
 				  it handle the clients names, and the game.
 */
 
-
 #pragma region Includes
 
 	#define _CRT_SECURE_NO_WARNINGS
