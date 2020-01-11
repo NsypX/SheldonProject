@@ -32,6 +32,13 @@
 
 #pragma region SendMessageFunctions
 
+
+	/*
+		Description- send general mssg to params.
+		Parameters- messageID- the message id to be set.
+					params - sock params (location and socket)
+		Returns-    Error handle
+	 */
 	int sendGeneralMesseage(char* messageID, SockParams * params)
 	{
 		char* mssg = calloc(1, strlen(messageID) + BUFFER);
@@ -57,6 +64,13 @@
 		return(NO_ERROR_VAL);
 	}
 
+	/*
+		Description- send server denie message
+		Parameters- messageID- the message id to be set.
+					message- to be printed on client.
+					params - sock params (location and socket)
+		Returns-    Error handle
+	 */
 	int sendServerDenieMessage(char* messageID, char* message, SockParams * params)
 	{
 		char* mssgDenie = calloc(1, strlen(messageID) + strlen(message) + BUFFER);
@@ -84,6 +98,13 @@
 		return(NO_ERROR_VAL);
 	}
 
+	/*
+		Description- send general mssg to params.
+		Parameters- messageID- the message id to be set.
+					name- the name of the client inviting us.
+					params - sock params (location and socket)
+		Returns-    Error handle
+	 */
 	int sendServerInvite(char* messageID, char name[], SockParams * params)
 	{
 		char* mssg = calloc(1, strlen(messageID) + strlen(name) + BUFFER);
@@ -112,6 +133,16 @@
 		return(NO_ERROR_VAL);
 	}
 
+	/*
+		Description- send game result.
+		Parameters- messageID- the message id to be set.
+					client- the client name.
+					move op- move opponent.
+					move me- my move.
+					won- who won.
+					params - sock params (location and socket)
+		Returns-    Error handle
+	 */
 	int sendGameResultMessage(char* messageID, char* client, char* moveOp, char* moveMe, char* won, SockParams * params)
 	{
 		char* mssg = calloc(1, strlen(messageID) + strlen(client) + strlen(moveOp)
@@ -146,6 +177,13 @@
 		return(NO_ERROR_VAL);
 	}
 
+	/*
+		Description- Send opponent quit.
+		Parameters- messageID- the message id to be set.
+					otherclient- the other client name.
+					params - sock params (location and socket)
+		Returns-    Error handle
+	 */
 	int sendOponnentQuitMessage(char* messageID, char* otherClient, SockParams * params)
 	{
 		char* mssg = calloc(1, strlen(messageID) + strlen(otherClient) + BUFFER);
@@ -174,6 +212,13 @@
 		return(NO_ERROR_VAL);
 	}
 
+	/*
+		Description- send general mssg to params.
+		Parameters- messageID- the message id to be set.
+					leaderFileContent- txt of the leader file.
+					params - sock params (location and socket)
+		Returns-    Error handle
+	 */
 	int sendLeaderBoardMessage(char* messageID, char* leaderFileContent, SockParams * params)
 	{
 		char* mssg = calloc(1, strlen(messageID) + strlen(leaderFileContent) + BUFFER);
@@ -205,6 +250,12 @@
 
 #pragma region Pharseing Functions
 
+	/*
+		Description- pharse client request.
+		Parameters- name - the name of the client.
+					params - sock params (location and socket)
+		Returns-    Error handle
+	*/
 	int pharseClientRequest(char* name, SockParams * param)
 	{
 		int result = NO_ERROR_VAL;
@@ -232,6 +283,11 @@
 		return (result);
 	}
 
+	/*
+		Description- pharse client main menue
+		Parameters- params - sock params (location and socket)
+		Returns-    Error handle
+	*/
 	int pharseClientMainMenue(SockParams * param)
 	{
 		int result = sendGeneralMesseage(SERVER_MAIN_MENU, param);
@@ -239,6 +295,11 @@
 		return (NO_ERROR_VAL);
 	}
 
+	/*
+		Description- pharse client cpu.
+		Parameters-	params - sock params (location and socket)
+		Returns-    Error handle
+	*/
 	int pharseClientCPU(SockParams * param)
 	{
 		int result = sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, param);
@@ -247,44 +308,10 @@
 	}
 
 	/*
-	 * Check if a file exist using fopen() function
-	 * return 1 if the file exist otherwise return 0
-	 */
-	int isFileExist(const char * filename) 
-	{
-		/* try to open file to read */
-		FILE *file;
-
-		if (file = fopen(filename, "r"))
-		{
-			fclose(file);
-			return TRUE_VAL;
-		}
-
-		return FALSE_VAL;
-	}
-
-	void debugThread(void)
-	{
-		while (1)
-		{
-			system("cls");
-			printf("Waiting...");
-		}
-	}
-
-	int createEmptyGameSession()
-	{
-		FILE * gameSession = fopen(GAME_SESSION_LOC, "w");
-
-		if (gameSession == NULL)
-		{
-			return(FILE_ERROR);
-		}
-
-		fclose(gameSession);
-	}
-
+		Description- pharse client vs.
+		Parameters-	params - sock params (location and socket)
+		Returns-    Error handle
+	*/
 	int pharseClientVS(SockParams* param)
 	{
 		waitGameSessionMutex();
@@ -341,6 +368,12 @@
 		return(NO_ERROR_VAL);
 	}
 
+	/*
+		Description- pharse client leader.
+		Parameters-	params - sock params (location and socket)
+					isUpdate- is there anything to update in the file.
+		Returns-    Error handle
+	*/
 	int pharseClientLeader(SockParams * param, int isUpdate)
 	{
 		char* leaderFile = NULL;
@@ -369,41 +402,12 @@
 		return(NO_ERROR_VAL);
 	}
 
-	char* getOtherMoveFromGameSessionFile(int* result)
-	{
-		char OtherMove[20];
-
-		FILE* sessionFile = fopen(GAME_SESSION_LOC, "r");
-
-		if (sessionFile == NULL)
-		{
-			*result = FILE_READ_ERROR;		
-		}
-		else
-		{
-			// Read the first line to pharse. (name/win/lose/ratio)
-			fgets(OtherMove, LINE_SIZE, sessionFile);
-			fclose(sessionFile);
-		}
-
-		return(OtherMove);
-	}
-
-	int writeMoveToGameSession(char move[])
-	{
-		FILE *sessionFile = fopen(GAME_SESSION_LOC, "w");
-
-		if (sessionFile == NULL)
-		{
-			return(FILE_READ_ERROR);
-		}
-		else
-		{
-			fputs(move, sessionFile);
-			fclose(sessionFile);
-		}
-	}
-
+	/*
+		Description- pharse client move.
+		Parameters-	params - sock params (location and socket)
+					move- the clients move.
+		Returns-    Error handle
+	*/
 	int pharseClientMove(char* move, SockParams * param)
 	{
 		char OtherMove[LINE_SIZE] = "";
@@ -545,6 +549,11 @@
 		return(NO_ERROR_VAL);
 	}
 
+	/*
+		Description- pharse client replay.
+		Parameters-	params - sock params (location and socket)
+		Returns-    Error handle
+	*/
 	int pharseClientReplay(SockParams * param)
 	{
 		int result = NO_ERROR_VAL;
@@ -604,6 +613,11 @@
 		return(result);
 	}
 
+	/*
+		Description- pharse client refresh.
+		Parameters-	params - sock params (location and socket)
+		Returns-    Error handle
+	*/
 	int pharseClientRefresh(SockParams * param)
 	{
 		// Check update time.
@@ -620,6 +634,11 @@
 		}
 	}
 
+	/*
+		Description- pharse client disconnect.
+		Parameters-	params - sock params (location and socket)
+		Returns-    Error handle
+	*/
 	int pharseClientDisconnect(SockParams * param)
 	{
 		printf("\nWe SUCKKKKKKKKKKKKKKKKKKKKKKK AND DONT DO ANYTHING TO DISCONNECT YOU PROPERLY\n");
@@ -627,6 +646,11 @@
 		return(NO_ERROR_VAL);
 	}
 
+	/*
+		Description- pharse client sheldon - a special suprise :).
+		Parameters-	params - sock params (location and socket)
+		Returns-    Error handle
+	*/
 	int pharseSheldon(SockParams * param)
 	{
 		sendServerDenieMessage(SERVER_SHELDON, "Pick your move.", param);
@@ -656,6 +680,12 @@
 		return(NO_ERROR_VAL);
 	}
 
+	/*
+		Description- pharse client message
+		Parameters-	params - sock params (location and socket)
+					mssg- mssg recived.
+		Returns-    Error handle
+	*/
 	int pharseMessage(char* mssg, SockParams * param)
 	{
 		int result = NO_ERROR_VAL;
@@ -713,6 +743,90 @@
 			printf(UNSUPPURTED_MESSAGE);
 		}
 		return (result);
+	}
+
+#pragma endregion
+
+#pragma region General Functions
+	
+	/*
+	 * Check if a file exist using fopen() function
+	 * return 1 if the file exist otherwise return 0
+	 */
+	int isFileExist(const char * filename)
+	{
+		/* try to open file to read */
+		FILE *file;
+
+		if (file = fopen(filename, "r"))
+		{
+			fclose(file);
+			return TRUE_VAL;
+		}
+
+		return FALSE_VAL;
+	}
+
+	/*
+		Description- create empty file.
+		Parameters- 
+		Returns-    Error handle
+	*/
+	int createEmptyGameSession()
+	{
+		FILE * gameSession = fopen(GAME_SESSION_LOC, "w");
+
+		if (gameSession == NULL)
+		{
+			return(FILE_ERROR);
+		}
+
+		fclose(gameSession);
+	}
+
+	/*
+		Description- Read the move from file.
+		Parameters- result- error handler.
+		Returns-    
+	*/
+	char* getOtherMoveFromGameSessionFile(int* result)
+	{
+		char OtherMove[20];
+
+		FILE* sessionFile = fopen(GAME_SESSION_LOC, "r");
+
+		if (sessionFile == NULL)
+		{
+			*result = FILE_READ_ERROR;
+		}
+		else
+		{
+			// Read the first line to pharse. (name/win/lose/ratio)
+			fgets(OtherMove, LINE_SIZE, sessionFile);
+			fclose(sessionFile);
+		}
+
+		return(OtherMove);
+	}
+
+	/*
+		Description- Write the move to game session file.
+		Parameters- move- the move to write to game session.
+		Returns-    Error handle
+	*/
+	int writeMoveToGameSession(char move[])
+	{
+		FILE *sessionFile = fopen(GAME_SESSION_LOC, "w");
+
+		if (sessionFile == NULL)
+		{
+			return(FILE_READ_ERROR);
+		}
+		else
+		{
+			fputs(move, sessionFile);
+			fclose(sessionFile);
+		}
 	}
 
 #pragma endregion

@@ -29,6 +29,11 @@
 
 #pragma region NameHandleFunctions
 
+	/*
+	Description- set all names empty.
+	Parameters- 
+	Returns-    
+	 */
 	void cleanNamesList(void)
 	{
 		for (int i = 0; i < NUM_OF_AVILABLE_NAMES; i++)
@@ -37,11 +42,22 @@
 		}
 	}
 
+		/*
+	Description- get the name wanted.
+	Parameters- loc- name location.
+	Returns-    name
+	 */
 	char* getName(int loc)
 	{
 		return(nameList[loc]);
 	}
 
+		/*
+	Description- change name in location.
+	Parameters- name- to change to
+				loc- location of the name.
+	Returns-     
+	 */
 	void changeName(char* name,int loc)
 	{
 		if (strcmp(nameList[loc], "") == 0)
@@ -57,7 +73,13 @@
 #pragma endregion
 
 #pragma region GameFunctions
-
+	
+	/*
+	Description- get random, taken from stack overflaw.
+	Parameters- min_num- min val
+				max_num- max val
+	Returns-     rand between min/max
+	 */
 	int random_number(int min_num, int max_num)
 	{
 		// Randomize int, takend from
@@ -79,6 +101,11 @@
 		return result;
 	}
 
+	/*
+	Description- get random move for cpu
+	Parameters- 
+	Returns-     random  move for cpu
+	 */
 	char* getRandMove(void)
 	{
 		// rnadomize option from 0-4
@@ -113,7 +140,12 @@
 		}
 		}
 	}
-
+	
+	/*
+	Description- chekc if move is valid.
+	Parameters-
+	Returns-     True/False
+	*/
 	int checkValidMove(char* move)
 	{
 		// Check if move is valid one.
@@ -129,6 +161,12 @@
 		return(GAME_MOVE_INVALID);
 	}
 
+	/*
+	Description- check who won.
+	Parameters-
+	Returns-     FIRST_PLAYER/SECOND_PLAYER pre declared strings 
+				 representing who won.
+	*/
 	char*  checkWin(char* movePlayer1, char* movePlayer2)
 	{
 		// Check if a valid move
