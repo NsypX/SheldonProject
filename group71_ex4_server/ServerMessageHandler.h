@@ -51,7 +51,7 @@ typedef struct SockParams
 #define ERROR_IN_CONNECTION -100
 #define SERVER_DENIE_CLIENT 124
 
-
+char* getOtherMoveFromGameSessionFile(int* result);
 int sendGeneralMesseage(char* messageID, SockParams * params);
 int sendServerDenieMessage(char* messageID, char* message, SockParams * params);
 int sendServerInvite(char* messageID, char name[], SockParams * params);
