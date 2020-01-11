@@ -162,7 +162,7 @@
 		printf("Waiting for a client to connect...\n");
 
 		// Waiting for  clients to connect.
-		for (Loop = 0; Loop < MAX_LOOPS; Loop++)
+		while(isToExit == FALSE_VAL)
 		{
 			SOCKET AcceptSocket = accept(MainSocket, NULL, NULL);
 
@@ -190,32 +190,37 @@
 				params[Ind].sd = AcceptSocket;
 				params[Ind].loc = Ind;
 				ThreadHandles[Ind] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ServiceThread, &params[Ind], 0, NULL);
-			}
+			}		
 		}
 
 	server_cleanup_3:
 		{
 			CleanupWorkerThreads();
-			closeHandles();
 		}
 
 	server_cleanup_2:
 		{
 			if (closesocket(MainSocket) == SOCKET_ERROR)
 				printf("Failed to close MainSocket, error %ld. Ending program\n", WSAGetLastError());
-
-			closeHandles();
 		}
 
 	server_cleanup_1:
 		{
-			closeHandles();
+			
 			if (WSACleanup() == SOCKET_ERROR)
 				printf("Failed to close Winsocket, error %ld. Ending program.\n", WSAGetLastError());
 		}
 
+	cleandHandles:
+		{
+			closeHandles();
+		}
+
 	server_defaul_clean:
-		printf("Going down.");
+		{
+			printf("Going down.");
+		}
+
 	}
 
 	/*
