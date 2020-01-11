@@ -1,10 +1,8 @@
-//
-//  LeaderBoarrd.c
-//  EX03_Hotel
-//
-//  Created by Dean Zahavy on 03/01/2020.
-//  Copyright © 2020 Dean Zahavy. All rights reserved.
-//
+/*
+   Authors     - Dean Zahavy 200770105, Eyal Seifert 205926025
+   Project     - LeaderBoard
+   Description - this module is incharge of handeling the leader board.
+*/
 
 #pragma region Includes
 #include "LeaderBoarrd.h"
