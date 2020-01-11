@@ -223,7 +223,7 @@ Last updated by Amnon Drory, Winter 2011.
 	Parameters  - mssg- mssg for the user.
 	Returns     - Error handle
 	*/
-	char* getStringFromUser(char * mssg)
+	char* getStringFromUser()
 	{
 		// Set vars.
 		char currMove = 'a';
@@ -237,9 +237,6 @@ Last updated by Amnon Drory, Winter 2011.
 
 		// Save begin of string.
 		char* helper = result;
-
-		// Check if to print with error or not.
-		printf("%s", mssg);
 
 		// While std != end of line
 		while (currMove != '\n')
@@ -510,12 +507,12 @@ Last updated by Amnon Drory, Winter 2011.
 	static DWORD ExitThreadFunction(void)
 	{	
 		isToExit = FALSE_VAL;
-		char* txt = getStringFromUser("");
+		char* txt = getStringFromUser();
 
 		while (strcmp(txt, "EXIT") != 0)
 		{
 			// Waiting for input from server
-			txt = getStringFromUser("");
+			txt = getStringFromUser();
 		}
 
 
