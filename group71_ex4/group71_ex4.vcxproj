@@ -123,7 +123,6 @@
   <ItemGroup>
     <ClInclude Include="..\group71_ex4_client\ClientMessegeHandler.h" />
     <ClInclude Include="..\group71_ex4_server\LeaderBoarrd.h" />
-    <ClInclude Include="..\group71_ex4_server\MessegeHead.h" />
     <ClInclude Include="..\group71_ex4_server\ServerHadnler.h" />
     <ClInclude Include="..\group71_ex4_server\ServerMessageHandler.h" />
     <ClInclude Include="..\group71_ex4_server\Server.h" />

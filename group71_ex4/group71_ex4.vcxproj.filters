@@ -27,9 +27,6 @@
     <ClInclude Include="..\group71_ex4_server\LeaderBoarrd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\group71_ex4_server\MessegeHead.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\group71_ex4_server\ServerHadnler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
