@@ -17,6 +17,22 @@
 #include <time.h>
 #pragma endregion
 
+#pragma region PrivateFunctions
+
+	LeaderList * readNextLine(char * currLine, LeaderList * rl, int * result);
+
+	LeaderList *getNewLeaderLine(int* result);
+
+	LeaderList * addLineToList(char * name, int win, int lost, float ratio, LeaderList *lb, int * result);
+
+	char* getCVSFormat(LeaderList* currLine);
+
+	char* getFullFileFormat(LeaderList * lb);
+
+	LeaderList * removefromList(LeaderList * lb, char* name);
+
+#pragma endregion
+
 #pragma region Globals
 LeaderList * currList = NULL;
 long updateTime= TRUE_VAL;
@@ -24,9 +40,7 @@ long updateTime= TRUE_VAL;
 
 #pragma region InstanseFunctions
 
-/*
 
-*/
 
 /*
 	Create the instantse.
