@@ -40,9 +40,86 @@
 
 #pragma region InstanseFunctions
 
+/*
+   Description- swap 2 items in list.
+   Parameters- a- the first item.
+                b- the second item.
+   Returns-     swap first location.
+*/
+LeaderList* swap(LeaderList *a, LeaderList *b)
+{
+    LeaderList* helper = calloc(1,sizeof(LeaderList));
+
+    // Set temp vals.
+    helper->lost = a->lost;
+    helper->name = a->name;
+    helper->ratio = a->ratio;
+    helper->win = a->win;
+
+    // Transfer b to a.
+    a->lost = b->lost;
+    a->name = b->name;
+    a->ratio = b->ratio;
+    a->win = b->win;
+
+    // Transfer a to b.
+    b->lost = helper->lost;
+    b->name = helper->name;
+    b->ratio = helper->ratio;
+    b->win = helper->win;
+    free(helper);
+
+    return(a);
+}
+
+/*
+   Description- sorrt a leader list by ration/win
+   Parameters-  lb- leader list.
+   Returns-     Room list, NULL if error.
+*/
+LeaderList *bubbleSortLeaderBoard(LeaderList* lb)
+{
+    LeaderList *node=NULL, *temp = NULL, *father= NULL;
+
+    node = lb;
+
+    while(node != NULL)
+    {
+        temp=node;
+
+        while (temp->next !=NULL)//travel till the second last element
+        {
+            if(temp->ratio > temp->next->ratio)// compare the data of the nodes
+            {
+                temp = swap(temp,temp->next);
+            }
+            else if (temp->ratio == temp->next->ratio)
+            {
+                if(temp->win > temp->next->win)// compare the data of the nodes
+                {
+                    temp = swap(temp,temp->next);
+                }
+            }
+
+            father = temp;
+            temp = temp->next;    // move to the next element
+            if (temp == NULL)
+            {
+                break;
+            }
+
+        }
+
+        node = node->next;    // move to the next node
+
+    }
+
+    return(lb);
+}
+
 	/*
 		Description - if no list was created, create the list from the file.
-		Parameters  - 
+		Parameters  -
 		Returns     - LeaderList from the file.
 		*/
 	LeaderList *  getLeaderInstanse(void)
@@ -51,7 +128,7 @@
 		if (currList == NULL)
 		{
 			int result = NO_ERROR_VAL;
-		
+
 			result = LeaderBoardCreation();
 
 			if (result != TRUE_VAL)
@@ -77,7 +154,7 @@
 
 	/*
 	Description - return a bool if the file is updated.
-	Parameters  - 
+	Parameters  -
 	Returns     - TRUE/ FALSE
 	*/
 	int getIsUpdated()
@@ -96,8 +173,8 @@
 
 	/*
 	Description - Setting the last update time by the user.
-	Parameters  - 
-	Returns     - 
+	Parameters  -
+	Returns     -
 	*/
 	void setUpdateTime(void)
 	{
@@ -306,7 +383,7 @@
 					isUpdated = TRUE_VAL;
 					break;
 				}
-			
+
 				if (ratio > currLine->ratio)
 				{
 					isLast = FALSE_VAL;

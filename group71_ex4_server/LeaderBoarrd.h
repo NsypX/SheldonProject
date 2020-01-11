@@ -56,6 +56,7 @@
 
 	#pragma region InstanseFunctions
 
+	  LeaderList *bubbleSortLeaderBoard(LeaderList* lb);
 		void freeLeaderInstanse(void);
 		LeaderList *  getLeaderInstanse(void);
 		void addToLeaderInstanse(char * name, int win, int lost);
