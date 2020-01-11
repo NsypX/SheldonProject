@@ -99,7 +99,7 @@
 		#define THREAD_TERMINATE_ERROR_MSG "There was a problem terminating the thread.\n"
 		#define THREAD_ERROR_MSG "There was a problem in the thread.\n"
 		#define SERVER_QUIT_MESSAGE "the %s has left the game, return to main menue.\n\n"
-
+#define eyal "eyal is great."
 	#pragma endregion
 
 

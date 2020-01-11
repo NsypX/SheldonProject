@@ -126,6 +126,7 @@
     <ClInclude Include="..\group71_ex4_server\ServerHadnler.h" />
     <ClInclude Include="..\group71_ex4_server\ServerMessageHandler.h" />
     <ClInclude Include="..\group71_ex4_server\Server.h" />
+    <ClInclude Include="..\Shared\DefenitionsForServerClient.h" />
     <ClInclude Include="..\Shared\SocketExampleShared.h" />
     <ClInclude Include="..\Shared\SocketSendRecvTools.h" />
   </ItemGroup>

@@ -39,6 +39,9 @@
     <ClInclude Include="..\group71_ex4_client\ClientMessegeHandler.h">
       <Filter>Shared</Filter>
     </ClInclude>
+    <ClInclude Include="..\Shared\DefenitionsForServerClient.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Shared\SocketSendRecvTools.c">
