@@ -105,6 +105,8 @@
 	{
 		TransferResult_t RecvRes;
 
+		isDone = CONTINUE_RUN;
+
 		while (isDone == CONTINUE_RUN)
 		{
 			char *AcceptedStr = NULL;
@@ -271,7 +273,12 @@
 				hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)RecvDataThread, NULL, 0, NULL);
 
 				// Wait for threads
-				WaitForSingleObject(hThread, INFINITE);
+				result = WaitForSingleObject(hThread, INFINITE);
+
+				if (result == WAIT_OBJECT_0)
+				{
+
+				}
 
 				// Get Exit Code 
 				int exitcode = NO_ERROR;
@@ -282,6 +289,9 @@
 
 				// Close all
 				closeClient();
+
+				// Clena up
+				WSACleanup();
 
 				// Check exit code of client thread to know if message disconnect.
 				if (exitcode >= 0)
@@ -310,7 +320,7 @@
 			system("cls");
 		}
 
-		WSACleanup();
+
 	
 		return;
 }
