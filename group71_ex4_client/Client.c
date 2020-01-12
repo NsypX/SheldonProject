@@ -143,8 +143,6 @@
 	int closeClient()
 	{
 		closesocket(m_socket);
-		WSACleanup();
-
 		return TRUE_VAL;
 	}
 
@@ -309,6 +307,8 @@
 				}
 			}
 		}
+
+		WSACleanup();
 	
 		return;
 }

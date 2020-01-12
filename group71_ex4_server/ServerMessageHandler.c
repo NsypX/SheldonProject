@@ -271,7 +271,7 @@
 		{
 			result = sendServerDenieMessage(SERVER_DENIED, SERVER_DENIED_MESSAGE, param);
 
-			if (result != NO_ERROR_VAL)
+			if (result < 0)
 			{
 				return(result);
 			}

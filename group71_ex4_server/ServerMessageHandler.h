@@ -50,7 +50,6 @@ typedef struct SockParams
 #define END_LINE "\n"
 #define CVS_TEMPLATE "%s,%d,%d,%.3f\n"
 #define MAX_LINE_CVS 30
-#define ERROR_IN_CONNECTION -100
 #define SERVER_DENIE_CLIENT 124
 
 char* getOtherMoveFromGameSessionFile(int* result);
