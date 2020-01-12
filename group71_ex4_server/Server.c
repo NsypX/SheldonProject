@@ -21,6 +21,7 @@
 
 	HANDLE ThreadHandles[NUM_OF_WORKER_THREADS];
 	HANDLE ExitHandle;
+	HANDLE ClientHandle;
 	SOCKET ThreadInputs[NUM_OF_WORKER_THREADS];
 	SockParams params[NUM_OF_WORKER_THREADS];
 	int countLogedIn = 0;
@@ -29,6 +30,8 @@
 	HANDLE waitForPlayerMutex;
 	HANDLE gameHandlerSemaphore;
 	int isToExit = FALSE_VAL;
+	int Ind;
+	SOCKET MainSocket = INVALID_SOCKET;
 
 #pragma endregion
 
@@ -47,6 +50,23 @@
 	}
 
 	/*
+		Description - print all error from clients.
+		Parameters  -
+		Returns     -
+	*/
+	void printErrorFromClient(void)
+	{
+		for (int i = 0; i < NUM_OF_WORKER_THREADS; i++)
+		{			
+			// Get Exit Code 
+			int exitcode = NO_ERROR;
+			GetExitCodeThread(ThreadHandles[i], &exitcode);
+
+			errorPrinter(exitcode);
+		}
+	}
+
+	/*
 	Description - Runs the server threads.
 	Parameters  - ip- the adress the server runs from.
 	Returns     - 
@@ -59,13 +79,12 @@
 		// Initial stuff
 		cleanNamesList();
 		SERVER_PORT = atoi(port);
-		int Ind;
 		int Loop;
-		SOCKET MainSocket = INVALID_SOCKET;
 		unsigned long Address;
 		SOCKADDR_IN service;
 		int bindRes;
 		int ListenRes;
+		int result = NO_ERROR_VAL;
 
 		// Create mutex
 		gameSessionMutex = CreateMutex(NULL, FALSE, NULL);
@@ -161,37 +180,43 @@
 
 		printf("Waiting for a client to connect...\n");
 
-		// Waiting for  clients to connect.
-		while(isToExit == FALSE_VAL)
+		ClientHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)HandleClients, NULL, 0, NULL);
+
+		// Wait for threads
+		int wait = WaitForSingleObject(ExitHandle, INFINITE);
+
+		if (wait == WAIT_OBJECT_0)
 		{
-			SOCKET AcceptSocket = accept(MainSocket, NULL, NULL);
-
-			// if accrepted.
-			if (AcceptSocket == INVALID_SOCKET)
-			{
-				printf("Accepting connection with client failed, error %ld\n", WSAGetLastError());
-				goto server_cleanup_3;
-			}
-
-			// debug print.
-			printf("Client Connected.\n");
-
-			// Find empty thread spot.
-			Ind = FindFirstUnusedThreadSlot();
-
-			if (Ind == NUM_OF_WORKER_THREADS) //no slot is available
-			{
-				// Im allowing 5 connection (to handle denie messages).
-				closesocket(AcceptSocket); //Closing the socket, dropping the connection.
-			}
-			else
-			{
-				ThreadInputs[Ind] = AcceptSocket;
-				params[Ind].sd = AcceptSocket;
-				params[Ind].loc = Ind;
-				ThreadHandles[Ind] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ServiceThread, &params[Ind], 0, NULL);
-			}		
+			result = THREAD_ERROR;
 		}
+
+		// Get Exit Code 
+		int exitcode = NO_ERROR;
+		GetExitCodeThread(ExitHandle, &exitcode);
+
+		if (exitcode < 0)
+		{
+			errorPrinter(exitcode);
+		}
+
+		wait = WaitForSingleObject(ClientHandle, INFINITE);
+
+		if (wait == WAIT_OBJECT_0)
+		{
+			result = THREAD_ERROR;
+		}
+
+		GetExitCodeThread(ClientHandle, &exitcode);
+		
+		if (exitcode < 0)
+		{
+			errorPrinter(exitcode);
+		}
+		
+
+		errorPrinter(result);
+
+		
 
 	server_cleanup_3:
 		{
@@ -349,6 +374,34 @@
 	}
 
 	/*
+		Description - Closing 1 client.
+		Parameters  -
+		Returns     -
+	*/
+	static void closeCurrclient(int i)
+	{
+		// check if null and close.
+		if (params[i].sd != NULL)
+		{
+			closesocket(params[i].sd);
+			params[i].sd = NULL;
+		}
+	}
+
+	/*
+	Description - Closing all the clients.
+	Parameters  -
+	Returns     -
+	*/
+	static void closeallClient()
+	{
+		for (int i = 0; i < NUM_OF_WORKER_THREADS; i++)
+		{
+			closeCurrclient(i);
+		}
+	}
+
+	/*
 	Description - Activate mutex outside module.
 	Parameters  -
 	Returns     -
@@ -489,6 +542,12 @@
 			else
 			{
 				result = pharseMessage(AcceptedStr, soc);
+
+				if (result < 0)
+				{
+					Done = TRUE;
+				}
+
 			}
 
 			if (result != NO_ERROR_VAL)
@@ -501,13 +560,13 @@
 
 		printf("Conversation ended.\n");
 		closesocket(*t_socket);
-		return 0;
+		return result;
 	}
 
 	/*
 		Description - Waiting for exit to close program.
 		Parameters  - 
-		Returns     -
+		Returns     - exit code.
 	*/
 	static DWORD ExitThreadFunction(void)
 	{	
@@ -521,6 +580,74 @@
 		}
 
 		isToExit = TRUE_VAL;
+
+		closeallClient();
+
+		if (MainSocket != NULL)
+		{
+			closesocket(MainSocket);
+			MainSocket = NULL;
+		}
+
+	}
+
+	/*
+		Description - Handle all the clients login
+		Parameters  -
+		Returns     - exit code.
+	*/
+	static DWORD HandleClients(void)
+	{
+		// Setting the result.
+		int result = NO_ERROR_VAL;
+
+		// Waiting for  clients to connect.
+		while (isToExit == FALSE_VAL)
+		{
+			SOCKET AcceptSocket = accept(MainSocket, NULL, NULL);
+
+			// if accrepted.
+			if (AcceptSocket == INVALID_SOCKET)
+			{
+				printf("Accepting connection with client failed, error %ld\n", WSAGetLastError());
+				result = MAIN_SOCKET_ERROR;
+				closesocket(MainSocket);
+				MainSocket = NULL;
+				break;
+			}
+
+			// debug print.
+			printf("Client Connected.\n");
+
+			// Find empty thread spot.
+			Ind = FindFirstUnusedThreadSlot();
+
+			if (Ind == NUM_OF_WORKER_THREADS) //no slot is available
+			{
+				// Im allowing 5 connection (to handle denie messages).
+				closesocket(AcceptSocket); //Closing the socket, dropping the connection.
+			}
+			else
+			{
+				ThreadInputs[Ind] = AcceptSocket;
+				params[Ind].sd = AcceptSocket;
+				params[Ind].loc = Ind;
+				ThreadHandles[Ind] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ServiceThread, &params[Ind], 0, NULL);
+			}
+		}
+
+		closeallClient();
+
+		if (result < 0)
+		{
+			return(result);
+		}
+		else
+		{
+			result = WaitForMultipleObjects(NUM_OF_WORKER_THREADS, ThreadHandles, TRUE, INFINITE);
+		}
+		
+		return (result);
 	}
 
 #pragma endregion

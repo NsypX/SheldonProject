@@ -30,8 +30,9 @@
 
 static DWORD ServiceThread(SockParams *soc);
 static DWORD ExitThreadFunction(void);
-void MainServer(char* ip);
+static DWORD HandleClients(void);
 
+void MainServer(char* ip);
 static int FindFirstUnusedThreadSlot();
 static void CleanupWorkerThreads();
 int isLocationAvilableForClient();
@@ -43,6 +44,8 @@ int releaseOtherPlayerMove(void);
 int waitOtherPlayerMoveINF(void);
 int waitFileMutex(void);
 int releasFileMutex(void);
+static void closeallClient();
+static void closeCurrclient(int i);
 
 
 

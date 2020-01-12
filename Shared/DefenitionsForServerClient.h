@@ -81,6 +81,7 @@
 	#define THREAD_WAIT_ERROR -1000
 	#define THREAD_TERMINATE_ERROR -1100
 	#define THREAD_ERROR -1200
+	#define	MAIN_SOCKET_ERROR -1300
 
 	#pragma endregion
 	
@@ -99,7 +100,8 @@
 		#define THREAD_TERMINATE_ERROR_MSG "There was a problem terminating the thread.\n"
 		#define THREAD_ERROR_MSG "There was a problem in the thread.\n"
 		#define SERVER_QUIT_MESSAGE "the %s has left the game, return to main menue.\n\n"
-#define eyal "eyal is great."
+		#define	MAIN_SOCKET_ERROR_MESSAGE "The main socket didnt close well.\n"
+
 	#pragma endregion
 
 
