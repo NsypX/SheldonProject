@@ -434,90 +434,6 @@
 	}
 
 	/*
-		Description- Handle the winner.
-		Parameters-	OtherMove
-					move- my move.
-					params- socket params.
-		Returns-    Error handle
-	*/
-	int handleWhowon(char OtherMove[], char* move, char* won, SockParams * param)
-	{
-		int result = NO_ERROR_VAL;
-
-		if (isVsPlayer == TRUE_VAL)
-		{
-			if (param->loc == firstPlayer->loc)
-			{
-				if (strcmp(won, PLAYER1_WIN) == 0)
-				{
-					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(secondPlayer->loc), OtherMove, move, getName(firstPlayer->loc), param);
-
-					addToLeaderInstanse(getName(firstPlayer->loc), 1, 0, &result);
-					addToLeaderInstanse(getName(secondPlayer->loc), 0, 1, &result);
-
-					if (result < 0)
-					{
-						return(result);
-					}
-				}
-				else if (strcmp(won, PLAYER2_WIN) == 0)
-				{
-					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(secondPlayer->loc), OtherMove, move, getName(secondPlayer->loc), param);
-
-					addToLeaderInstanse(getName(secondPlayer->loc), 1, 0, &result);
-					addToLeaderInstanse(getName(firstPlayer->loc), 0, 1, &result);
-				}
-				else
-				{
-					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(secondPlayer->loc), OtherMove, move, DREW_IN_GAME, param);
-				}
-			}
-			else
-			{
-				if (strcmp(won, PLAYER1_WIN) == 0)
-				{
-					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(firstPlayer->loc), OtherMove, move, getName(secondPlayer->loc), param);
-
-					addToLeaderInstanse(getName(firstPlayer->loc), 1, 0, &result);
-					addToLeaderInstanse(getName(secondPlayer->loc), 0, 1, &result);
-				}
-				else if (strcmp(won, PLAYER2_WIN) == 0)
-				{
-					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(firstPlayer->loc), OtherMove, move, getName(firstPlayer->loc), param);
-
-					addToLeaderInstanse(getName(secondPlayer->loc), 1, 0, &result);
-					addToLeaderInstanse(getName(firstPlayer->loc), 0, 1, &result);
-				}
-				else
-				{
-					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(firstPlayer->loc), OtherMove, move, DREW_IN_GAME, param);
-				}
-			}
-		}
-		else
-		{
-			if (strcmp(won, PLAYER1_WIN) == 0)
-			{
-				result = sendGameResultMessage(SERVER_GAME_RESULTS, SERVER_NAME, OtherMove, move, getName(param->loc), param);
-
-				addToLeaderInstanse(getName(param->loc), 1, 0,&result);
-				addToLeaderInstanse(SERVER_NAME, 0, 1, &result);
-			}
-			else if (strcmp(won, PLAYER2_WIN) == 0)
-			{
-				result = sendGameResultMessage(SERVER_GAME_RESULTS, SERVER_NAME, OtherMove, move, SERVER_NAME, param);
-
-				addToLeaderInstanse(SERVER_NAME, 1, 0, &result);
-				addToLeaderInstanse(getName(param->loc), 0, 1, &result);
-			}
-			else
-			{
-				result = sendGameResultMessage(SERVER_GAME_RESULTS, SERVER_NAME, OtherMove, move, DREW_IN_GAME, param);
-			}
-		}
-	}
-
-	/*
 		Description- pharse client move.
 		Parameters-	params - sock params (location and socket)
 					move- the clients move.
@@ -885,6 +801,90 @@
 		{
 			fputs(move, sessionFile);
 			fclose(sessionFile);
+		}
+	}
+
+	/*
+		Description- Handle the winner.
+		Parameters-	OtherMove
+					move- my move.
+					params- socket params.
+		Returns-    Error handle
+	*/
+	int handleWhowon(char OtherMove[], char* move, char* won, SockParams * param)
+	{
+		int result = NO_ERROR_VAL;
+
+		if (isVsPlayer == TRUE_VAL)
+		{
+			if (param->loc == firstPlayer->loc)
+			{
+				if (strcmp(won, PLAYER1_WIN) == 0)
+				{
+					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(secondPlayer->loc), OtherMove, move, getName(firstPlayer->loc), param);
+
+					addToLeaderInstanse(getName(firstPlayer->loc), 1, 0, &result);
+					addToLeaderInstanse(getName(secondPlayer->loc), 0, 1, &result);
+
+					if (result < 0)
+					{
+						return(result);
+					}
+				}
+				else if (strcmp(won, PLAYER2_WIN) == 0)
+				{
+					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(secondPlayer->loc), OtherMove, move, getName(secondPlayer->loc), param);
+
+					addToLeaderInstanse(getName(secondPlayer->loc), 1, 0, &result);
+					addToLeaderInstanse(getName(firstPlayer->loc), 0, 1, &result);
+				}
+				else
+				{
+					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(secondPlayer->loc), OtherMove, move, DREW_IN_GAME, param);
+				}
+			}
+			else
+			{
+				if (strcmp(won, PLAYER1_WIN) == 0)
+				{
+					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(firstPlayer->loc), OtherMove, move, getName(secondPlayer->loc), param);
+
+					addToLeaderInstanse(getName(firstPlayer->loc), 1, 0, &result);
+					addToLeaderInstanse(getName(secondPlayer->loc), 0, 1, &result);
+				}
+				else if (strcmp(won, PLAYER2_WIN) == 0)
+				{
+					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(firstPlayer->loc), OtherMove, move, getName(firstPlayer->loc), param);
+
+					addToLeaderInstanse(getName(secondPlayer->loc), 1, 0, &result);
+					addToLeaderInstanse(getName(firstPlayer->loc), 0, 1, &result);
+				}
+				else
+				{
+					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(firstPlayer->loc), OtherMove, move, DREW_IN_GAME, param);
+				}
+			}
+		}
+		else
+		{
+			if (strcmp(won, PLAYER1_WIN) == 0)
+			{
+				result = sendGameResultMessage(SERVER_GAME_RESULTS, SERVER_NAME, OtherMove, move, getName(param->loc), param);
+
+				addToLeaderInstanse(getName(param->loc), 1, 0, &result);
+				addToLeaderInstanse(SERVER_NAME, 0, 1, &result);
+			}
+			else if (strcmp(won, PLAYER2_WIN) == 0)
+			{
+				result = sendGameResultMessage(SERVER_GAME_RESULTS, SERVER_NAME, OtherMove, move, SERVER_NAME, param);
+
+				addToLeaderInstanse(SERVER_NAME, 1, 0, &result);
+				addToLeaderInstanse(getName(param->loc), 0, 1, &result);
+			}
+			else
+			{
+				result = sendGameResultMessage(SERVER_GAME_RESULTS, SERVER_NAME, OtherMove, move, DREW_IN_GAME, param);
+			}
 		}
 	}
 

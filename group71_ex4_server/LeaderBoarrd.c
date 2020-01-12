@@ -200,7 +200,6 @@
 	void addToLeaderInstanse(char * name, int win, int lost, int* result)
 	{
 		*result = waitFileMutex();
-
 		
 		setUpdateTime();
 		currList = addLineToList(name, win, lost, INF_VAL, currList, result);
@@ -208,6 +207,7 @@
 		char* fileToSave = getFullFileFormat(currList);
 		writeToFile(fileToSave);
 		releasFileMutex();
+
 		free(fileToSave);
 	}
 
@@ -373,16 +373,17 @@
 			{
 				if (strcmp(currLine->name, name) == 0)
 				{
-					lineToAdd->win += currLine->win;
-					lineToAdd->lost += currLine->lost;
+					currLine->win = lineToAdd->win;
+					currLine->lost = lineToAdd->lost;
+					
 
-					if (lineToAdd->lost != 0)
+					if (currLine->lost != 0)
 					{
-						lineToAdd->ratio = (float)lineToAdd->win / (float)lineToAdd->lost;
+						currLine->ratio = (float)currLine->win / (float)currLine->lost;
 					}
 					else
 					{
-						lineToAdd->ratio = (float)win;
+						currLine->ratio = (float)win;
 					}				
 
 					isUpdated = TRUE_VAL;
