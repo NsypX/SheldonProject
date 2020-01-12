@@ -14,6 +14,7 @@
 	#include "ServerMessageHandler.h"
 	#include "SocketSendRecvTools.h"
 	#include "ServerHadnler.h"
+	#include "Server.h"
 	#include "LeaderBoarrd.h"
 	#include "DefenitionsForServerClient.h"
 
@@ -698,6 +699,7 @@
 	int pharseClientDisconnect(SockParams * param)
 	{
 		printf("Client number %d has disconnected.\n", param->loc);
+		//closeCurrclient(param->loc);
 
 		return(NO_ERROR_VAL);
 	}

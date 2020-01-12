@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <winsock2.h>
 
+
 typedef struct SockParams
 {
 	SOCKET sd;
