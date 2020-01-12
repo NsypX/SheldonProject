@@ -27,8 +27,7 @@
 
 	#pragma region Nums
 
-		#define FILE_READ_ERROR -200
-		#define NO_ERROR_VAL -300
+		#define FILE_READ_ERROR -200		
 		#define MAX_NAME 20
 		#define MAX_LINE_LENGTH 100
 		#define FALSE_VAL 0

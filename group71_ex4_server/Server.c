@@ -472,6 +472,11 @@
 		}
 	}
 
+	void outCloseClient(int i)
+	{
+		closeCurrclient(i);
+	}
+
 	/*
 	Description - Activate mutex outside module.
 	Parameters  -

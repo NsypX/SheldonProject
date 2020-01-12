@@ -45,6 +45,7 @@ int waitFileMutex(void);
 int releasFileMutex(void);
 static void closeallClient();
 static void closeCurrclient(int i);
+void outCloseClient(int i);
 
 
 
