@@ -486,7 +486,7 @@
 	{
 		int time = WaitForSingleObject(gameSessionMutex, INFINITE);
 
-		if (time != WAIT_OBJECT_0)
+		if (time == WAIT_OBJECT_0)
 		{
 			return time;
 		}
