@@ -207,8 +207,8 @@
 		currList = bubbleSortLeaderBoard(currList);
 		char* fileToSave = getFullFileFormat(currList);
 		writeToFile(fileToSave);
-
 		releasFileMutex();
+		free(fileToSave);
 	}
 
 	/*
@@ -217,8 +217,10 @@
 	char* getLeaderInstanseFileFormat(int* result)
 	{
 		*result = waitFileMutex();
-		return(getFullFileFormat(currList));
+		char* file = getFullFileFormat(currList);
 		releasFileMutex();
+
+		return(file);
 	}
 
 #pragma endregion

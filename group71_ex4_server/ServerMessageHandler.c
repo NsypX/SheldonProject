@@ -45,7 +45,7 @@
 
 		if (mssg == NULL)
 		{
-			return (NULL);
+			return (MALLOC_ERROR);
 		}
 
 		mssg = strcat(mssg, messageID);
@@ -400,6 +400,7 @@
 	int pharseClientLeader(SockParams * param, int isUpdate)
 	{
 		int result = NO_ERROR_VAL;
+
 		char* leaderFile = NULL;
 
 		if (isUpdate == FALSE_VAL)
@@ -696,7 +697,7 @@
 	*/
 	int pharseClientDisconnect(SockParams * param)
 	{
-		printf("\nWe SUCKKKKKKKKKKKKKKKKKKKKKKK AND DONT DO ANYTHING TO DISCONNECT YOU PROPERLY\n");
+		printf("\n");
 
 		return(NO_ERROR_VAL);
 	}

@@ -511,7 +511,7 @@
 	{
 		int time = WaitForSingleObject(waitForPlayerMutex, INFINITE);
 		
-		if (time != WAIT_OBJECT_0)
+		if (time == WAIT_OBJECT_0)
 		{
 			return time;
 		}
@@ -541,7 +541,7 @@
 	{
 		int time = WaitForSingleObject(gameHandlerSemaphore, WAIT_FOR_CLIENT_TIME);
 		
-		if (time != WAIT_OBJECT_0)
+		if (time == WAIT_OBJECT_0)
 		{
 			return time;
 		}
@@ -559,6 +559,16 @@
 	int waitOtherPlayerMoveINF(void)
 	{
 		int time = WaitForSingleObject(gameHandlerSemaphore, INFINITE);
+		
+		if (time == WAIT_OBJECT_0)
+		{
+			return time;
+		}
+		else
+		{
+			return(THREAD_ERROR);
+		}
+
 		return(time);
 	}
 
