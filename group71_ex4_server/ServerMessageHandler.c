@@ -697,7 +697,7 @@
 	*/
 	int pharseClientDisconnect(SockParams * param)
 	{
-		printf("\n");
+		printf("Client number %d has disconnected.\n", param->loc);
 
 		return(NO_ERROR_VAL);
 	}
