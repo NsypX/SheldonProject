@@ -306,6 +306,8 @@
 					errorPrinter(exitcode);
 				}
 			}
+
+			system("cls");
 		}
 
 		WSACleanup();

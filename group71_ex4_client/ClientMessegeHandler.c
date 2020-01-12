@@ -440,7 +440,7 @@
 	int pharseServerDenie(char* reason, SOCKET sd)
 	{
 		// Close the socket to server.
-		closeClient();
+		//closeClient();
 		return(DISCONNECT_TRY_CONNECT);
 	}
 
