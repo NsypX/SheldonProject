@@ -314,26 +314,44 @@
 	*/
 	int pharseClientVS(SockParams* param)
 	{
-		waitGameSessionMutex();
+		int result = NO_ERROR_VAL;
+		
+		result = waitGameSessionMutex();
+
+		if (result < 0)
+		{
+			return(result);
+		}
 
 		if (isFileExist(GAME_SESSION_LOC) == FALSE_VAL)
 		{
 			firstPlayer = param;
 		
 			// Creating the file.
-			createEmptyGameSession();
+			result = createEmptyGameSession();
+
+			if (result < 0)
+			{
+				return(result);
+			}
 
 			// Letting second player in.
 			releaseGameSessionMutex();
 		
 			// Waiting for other player to arrive.
-			int waitTime = waitOtherPlayerMove();
+			result = waitOtherPlayerMove();
 
 			// If arrived.
-			if (waitTime == 0)
+			if (result >= 0)
 			{			
 				// Set mutex to send messages.
-				waitGameSessionMutex();
+				result = waitGameSessionMutex();
+
+				if (result < 0)
+				{
+					return(result);
+				}
+
 				sendServerInvite(SERVER_INVITE, getName(secondPlayer->loc), firstPlayer);
 				sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST,firstPlayer);
 				releaseGameSessionMutex();
@@ -356,7 +374,12 @@
 			releaseOtherPlayerMove();
 
 			// Setting mutex to send messages.
-			waitGameSessionMutex();
+			result = waitGameSessionMutex();
+
+			if (result < 0)
+			{
+				return(result);
+			}
 
 			sendServerInvite(SERVER_INVITE,getName(firstPlayer->loc), secondPlayer);
 			sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, secondPlayer);
@@ -593,16 +616,21 @@
 				firstPlayer = param;
 
 				// Creating the file.
-				createEmptyGameSession();
+				result = createEmptyGameSession();
+
+				if (result < 0)
+				{
+					return(result);
+				}
 
 				// Letting second player in.
 				releaseGameSessionMutex();
 
 				// Waiting for other player to arrive.
-				int waitTime = waitOtherPlayerMove();
+				result = waitOtherPlayerMove();
 
 				// If arrived.
-				if (waitTime == 0)
+				if (result >= 0)
 				{
 					sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, param);
 				}
@@ -627,9 +655,7 @@
 				releaseOtherPlayerMove();
 
 				// Ask for another moove.
-				sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, param);
-			
-
+				sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, param);	
 			}
 		}
 		else
@@ -647,8 +673,10 @@
 	*/
 	int pharseClientRefresh(SockParams * param)
 	{
+		int result = NO_ERROR_VAL;
+
 		// Check update time.
-		int isUpdate = getIsUpdated();
+		int isUpdate = getIsUpdated(&result);
 
 		if (isUpdate == TRUE_VAL)
 		{

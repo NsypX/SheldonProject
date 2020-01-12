@@ -49,6 +49,7 @@
 
 	#pragma region Strings
 
+		#define IPCONFIG_STRING "   IPv4 Address. . . . . . . . . . . "
 		#define UNSUPPURTED_MESSAGE "this message type is unsuppurted in our system.\n"
 		#define SERVER_NO_OPPONENT_MSG "there is no opponent avilable.\n\n"
 		#define ROCK "ROCK"
@@ -114,6 +115,7 @@
 		#define SERVER_TIMEOUT 0x555
 		#define FALSE_VAL 0
 		#define TRUE_VAL 1
+		#define MAX_IP_SIZE 200
 	#pragma endregion
 
 #pragma endregion

@@ -57,7 +57,7 @@
 	#pragma region InstanseFunctions
 
 		LeaderList *bubbleSortLeaderBoard(LeaderList* lb);
-		void freeLeaderInstanse(void);
+		void freeLeaderInstanse(int* result);
 		LeaderList *  getLeaderInstanse(int* result);
 		void addToLeaderInstanse(char * name, int win, int lost, int* result);
 		char * getLeaderInstanseFileFormat(int* result);
@@ -67,7 +67,7 @@
 
 	#pragma region GeneralFunctions
 
-		int getIsUpdated();
+		int getIsUpdated(int* result);
 
 		int writeToFile(char* finalFileInput);
 

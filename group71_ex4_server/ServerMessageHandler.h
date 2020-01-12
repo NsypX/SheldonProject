@@ -23,6 +23,7 @@ typedef struct SockParams
 #define SERVER_NAME "Server"
 #define LEADER_FILE_LOC ".\\LeaderBoard.csv"
 #define GAME_SESSION_LOC ".\\GameSession.txt"
+#define IP_ADRESS_FILE ".\\out.txt"
 #define TRUE 1
 #define FALSE 0
 

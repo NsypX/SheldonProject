@@ -32,6 +32,7 @@
 	int isToExit = FALSE_VAL;
 	int Ind;
 	SOCKET MainSocket = INVALID_SOCKET;
+	char IP_ADRESS[MAX_IP_SIZE] = "127.0.0.1";
 
 #pragma endregion
 
@@ -67,15 +68,83 @@
 	}
 
 	/*
+		Description - delete space from ipconfig.
+		Parameters  -
+		Returns     -
+	*/
+	void deleteIpSpace(void)
+	{
+		int i = 1;
+		for (i = 1; i < strlen(IP_ADRESS); i++)
+		{
+			
+			IP_ADRESS[i - 1] = IP_ADRESS[i];
+		}
+		IP_ADRESS[i-1] = '\0';
+	}
+
+	/*
+		Description - get the ip from ipconfig remain 127.0.0.1 as default.
+		Parameters  -
+		Returns     -
+	*/
+	char* getIpAdress(int* result)
+	{
+		// Remove file if exist.
+		remove(IP_ADRESS_FILE);
+
+		// Save ip config to out.txt
+		system("ipconfig | findstr \"IPv4\" > out.txt");
+
+		// Open the file.
+		FILE* ipfile = fopen(IP_ADRESS_FILE, "r");
+		char ip[MAX_IP_SIZE] = "";
+
+		// Check if file open.
+		if (ipfile == NULL)
+		{
+			*result = FILE_READ_ERROR;
+		}
+		else
+		{
+			// Read lines.
+			while (fgets(ip, MAXCHAR, ipfile) != NULL)
+			{	
+
+				// Get first part.
+				char* mssg = strtok(ip, ":");
+
+				// If ipv4
+				if (strcmp(mssg, IPCONFIG_STRING) == 0)
+				{
+					// Save ip.
+					char* helper = strtok(NULL, ":");
+					helper = strtok(helper, "\n");
+					strcpy(IP_ADRESS, helper);
+					deleteIpSpace();
+				}
+			}
+
+			fclose(ipfile);
+		}
+
+		// Remove file.
+		remove(IP_ADRESS_FILE);
+	}
+
+	/*
 	Description - Runs the server threads.
 	Parameters  - ip- the adress the server runs from.
 	Returns     - 
 	*/
 	void MainServer(char* port)
 	{
+		// Clear screen.
+		system("cls");
+
 		// Remove if exist.
 		remove(GAME_SESSION_LOC);
-
+		
 		// Initial stuff
 		cleanNamesList();
 		SERVER_PORT = atoi(port);
@@ -85,6 +154,8 @@
 		int bindRes;
 		int ListenRes;
 		int result = NO_ERROR_VAL;
+		
+		getIpAdress(&result);
 
 		// Create mutex
 		gameSessionMutex = CreateMutex(NULL, FALSE, NULL);
@@ -136,7 +207,8 @@
 			goto server_cleanup_1;
 		}
 
-		// Set the adress.
+		
+		// Set the adress.		
 		Address = inet_addr(IP_ADRESS);
 
 		// Check if good adress.
@@ -212,14 +284,10 @@
 		{
 			errorPrinter(exitcode);
 		}
-		
-		
-
+				
+		freeLeaderInstanse(&result);
 		errorPrinter(result);
 
-		freeLeaderInstanse();
-
-		
 
 	server_cleanup_3:
 		{
@@ -412,7 +480,15 @@
 	int waitGameSessionMutex(void)
 	{
 		int time = WaitForSingleObject(gameSessionMutex, INFINITE);
-		return(time);
+
+		if (time != WAIT_OBJECT_0)
+		{
+			return time;
+		}
+		else
+		{
+			return(THREAD_ERROR);
+		}
 	}
 
 	/*
@@ -434,7 +510,15 @@
 	int waitFileMutex(void)
 	{
 		int time = WaitForSingleObject(waitForPlayerMutex, INFINITE);
-		return(time);
+		
+		if (time != WAIT_OBJECT_0)
+		{
+			return time;
+		}
+		else
+		{
+			return(THREAD_ERROR);
+		}
 	}
 
 	/*
@@ -456,7 +540,15 @@
 	int waitOtherPlayerMove(void)
 	{
 		int time = WaitForSingleObject(gameHandlerSemaphore, WAIT_FOR_CLIENT_TIME);
-		return(time);
+		
+		if (time != WAIT_OBJECT_0)
+		{
+			return time;
+		}
+		else
+		{
+			return(THREAD_ERROR);
+		}
 	}
 
 	/*
