@@ -113,7 +113,7 @@
 		}
 
 		// creating the list of cvs file.
-		getLeaderInstanse();
+		getLeaderInstanse(&result);
 
 		// Initialize Winsock.
 		WSADATA wsaData;
@@ -185,7 +185,7 @@
 		// Wait for threads
 		int wait = WaitForSingleObject(ExitHandle, INFINITE);
 
-		if (wait == WAIT_OBJECT_0)
+		if (wait != WAIT_OBJECT_0)
 		{
 			result = THREAD_ERROR;
 		}
@@ -201,7 +201,7 @@
 
 		wait = WaitForSingleObject(ClientHandle, INFINITE);
 
-		if (wait == WAIT_OBJECT_0)
+		if (wait != WAIT_OBJECT_0)
 		{
 			result = THREAD_ERROR;
 		}
@@ -213,8 +213,11 @@
 			errorPrinter(exitcode);
 		}
 		
+		
 
 		errorPrinter(result);
+
+		freeLeaderInstanse();
 
 		
 

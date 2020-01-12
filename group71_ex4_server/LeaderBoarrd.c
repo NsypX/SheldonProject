@@ -29,6 +29,8 @@
 
 	LeaderList * removefromList(LeaderList * lb, char* name);
 
+	void freeLeader(LeaderList *currRoom);
+
 #pragma endregion
 
 #pragma region Globals
@@ -40,91 +42,92 @@
 
 #pragma region InstanseFunctions
 
-/*
-   Description- swap 2 items in list.
-   Parameters- a- the first item.
-                b- the second item.
-   Returns-     swap first location.
-*/
-LeaderList* swap(LeaderList *a, LeaderList *b)
-{
-    LeaderList* helper = calloc(1,sizeof(LeaderList));
+	/*
+	   Description- swap 2 items in list.
+	   Parameters- a- the first item.
+					b- the second item.
+	   Returns-     swap first location.
+	*/
+	LeaderList* swap(LeaderList *a, LeaderList *b)
+	{
+		LeaderList* helper = calloc(1,sizeof(LeaderList));
 
-    // Set temp vals.
-    helper->lost = a->lost;
-    helper->name = a->name;
-    helper->ratio = a->ratio;
-    helper->win = a->win;
+		// Set temp vals.
+		helper->lost = a->lost;
+		helper->name = a->name;
+		helper->ratio = a->ratio;
+		helper->win = a->win;
 
-    // Transfer b to a.
-    a->lost = b->lost;
-    a->name = b->name;
-    a->ratio = b->ratio;
-    a->win = b->win;
+		// Transfer b to a.
+		a->lost = b->lost;
+		a->name = b->name;
+		a->ratio = b->ratio;
+		a->win = b->win;
 
-    // Transfer a to b.
-    b->lost = helper->lost;
-    b->name = helper->name;
-    b->ratio = helper->ratio;
-    b->win = helper->win;
-    free(helper);
+		// Transfer a to b.
+		b->lost = helper->lost;
+		b->name = helper->name;
+		b->ratio = helper->ratio;
+		b->win = helper->win;
+		free(helper);
 
-    return(a);
-}
+		return(a);
+	}
 
-/*
-   Description- sorrt a leader list by ration/win
-   Parameters-  lb- leader list.
-   Returns-     Room list, NULL if error.
-*/
-LeaderList *bubbleSortLeaderBoard(LeaderList* lb)
-{
-    LeaderList *node=NULL, *temp = NULL, *father= NULL;
+	/*
+	   Description- sorrt a leader list by ration/win
+	   Parameters-  lb- leader list.
+	   Returns-     Room list, NULL if error.
+	*/
+	LeaderList *bubbleSortLeaderBoard(LeaderList* lb)
+	{
+		LeaderList *node=NULL, *temp = NULL, *father= NULL;
 
-    node = lb;
+		node = lb;
 
-    while(node != NULL)
-    {
-        temp=node;
+		while(node != NULL)
+		{
+			temp=node;
 
-        while (temp->next !=NULL)//travel till the second last element
-        {
-            if(temp->ratio > temp->next->ratio)// compare the data of the nodes
-            {
-                temp = swap(temp,temp->next);
-            }
-            else if (temp->ratio == temp->next->ratio)
-            {
-                if(temp->win > temp->next->win)// compare the data of the nodes
-                {
-                    temp = swap(temp,temp->next);
-                }
-            }
+			while (temp->next !=NULL)//travel till the second last element
+			{
+				if(temp->ratio > temp->next->ratio)// compare the data of the nodes
+				{
+					temp = swap(temp,temp->next);
+				}
+				else if (temp->ratio == temp->next->ratio)
+				{
+					if(temp->win > temp->next->win)// compare the data of the nodes
+					{
+						temp = swap(temp,temp->next);
+					}
+				}
 
-            father = temp;
-            temp = temp->next;    // move to the next element
-            if (temp == NULL)
-            {
-                break;
-            }
+				father = temp;
+				temp = temp->next;    // move to the next element
+				if (temp == NULL)
+				{
+					break;
+				}
 
-        }
+			}
 
-        node = node->next;    // move to the next node
+			node = node->next;    // move to the next node
 
-    }
+		}
 
-    return(lb);
-}
+		return(lb);
+	}
 
 	/*
 		Description - if no list was created, create the list from the file.
 		Parameters  -
 		Returns     - LeaderList from the file.
 		*/
-	LeaderList *  getLeaderInstanse(void)
+	LeaderList*  getLeaderInstanse(int* result)
 	{
 		waitFileMutex();
+
 		if (currList == NULL)
 		{
 			int result = NO_ERROR_VAL;
@@ -139,16 +142,19 @@ LeaderList *bubbleSortLeaderBoard(LeaderList* lb)
 			currList = getLeaderBoardFromFile(LEADER_FILE_LOC, currList, &result);
 		}
 		releasFileMutex();
+
 		return (currList);
 	}
 
 	/*
 		free the list of the instanse.
 	*/
-	void freeLeaderInstanse(void)
+	void freeLeaderInstanse(int* result)
 	{
 		waitFileMutex();
+
 		freeLeader(currList);
+
 		releasFileMutex();
 	}
 
@@ -157,9 +163,10 @@ LeaderList *bubbleSortLeaderBoard(LeaderList* lb)
 	Parameters  -
 	Returns     - TRUE/ FALSE
 	*/
-	int getIsUpdated()
+	int getIsUpdated(int* result)
 	{
 		waitFileMutex();
+
 		if (updateTime < (long)time(NULL))
 		{
 			return(FALSE_VAL);
@@ -168,6 +175,7 @@ LeaderList *bubbleSortLeaderBoard(LeaderList* lb)
 		{
 			return(TRUE_VAL);
 		}
+
 		releasFileMutex();
 	}
 
@@ -176,12 +184,9 @@ LeaderList *bubbleSortLeaderBoard(LeaderList* lb)
 	Parameters  -
 	Returns     -
 	*/
-	void setUpdateTime(void)
+	void setUpdateTime()
 	{
-		waitFileMutex();
-
 		updateTime = (long)time(NULL);
-		releasFileMutex();
 	}
 
 	/*
@@ -192,24 +197,26 @@ LeaderList *bubbleSortLeaderBoard(LeaderList* lb)
 						lost- the amount of lost to add..
 		 Returns-		nothing.
 	*/
-	void addToLeaderInstanse(char * name, int win, int lost)
+	void addToLeaderInstanse(char * name, int win, int lost, int* result)
 	{
-		waitFileMutex();
+		*result = waitFileMutex();
 
-		int* result = -1;
+		
 		setUpdateTime();
 		currList = addLineToList(name, win, lost, INF_VAL, currList, result);
+		currList = bubbleSortLeaderBoard(currList);
 		char* fileToSave = getFullFileFormat(currList);
 		writeToFile(fileToSave);
+
 		releasFileMutex();
 	}
 
 	/*
 		get the leader board from instanse.
 	*/
-	char* getLeaderInstanseFileFormat()
+	char* getLeaderInstanseFileFormat(int* result)
 	{
-		waitFileMutex();
+		*result = waitFileMutex();
 		return(getFullFileFormat(currList));
 		releasFileMutex();
 	}
@@ -374,11 +381,7 @@ LeaderList *bubbleSortLeaderBoard(LeaderList* lb)
 					else
 					{
 						lineToAdd->ratio = (float)win;
-					}
-
-					// Removing from list to add in order.
-					lb = removefromList(lb, lineToAdd->name);
-					lb = addLineToList(lineToAdd->name, lineToAdd->win, lineToAdd->lost, lineToAdd->ratio, lb, result);
+					}				
 
 					isUpdated = TRUE_VAL;
 					break;

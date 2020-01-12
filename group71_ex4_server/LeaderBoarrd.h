@@ -56,13 +56,12 @@
 
 	#pragma region InstanseFunctions
 
-	  LeaderList *bubbleSortLeaderBoard(LeaderList* lb);
+		LeaderList *bubbleSortLeaderBoard(LeaderList* lb);
 		void freeLeaderInstanse(void);
-		LeaderList *  getLeaderInstanse(void);
-		void addToLeaderInstanse(char * name, int win, int lost);
-		char * getLeaderInstanseFileFormat();
+		LeaderList *  getLeaderInstanse(int* result);
+		void addToLeaderInstanse(char * name, int win, int lost, int* result);
+		char * getLeaderInstanseFileFormat(int* result);
 		LeaderList * getLeaderBoardFromFile(char * loc, LeaderList * lb, int * result);
-		void freeLeader(LeaderList *currRoom);
 
 	#pragma endregion
 
