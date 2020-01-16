@@ -77,8 +77,7 @@
 		free(mssg);
 
 		if (SendRes == TRNS_FAILED)
-		{
-			printf("Service socket error while writing, closing thread.\n");
+		{			
 			closesocket(sd);
 			return ERROR_IN_CONNECTION;
 		}
@@ -113,8 +112,7 @@
 		free(mssg);
 
 		if (SendRes == TRNS_FAILED)
-		{
-			printf("Service socket error while writing, closing thread.\n");
+		{			
 			closesocket(sd);
 			return ERROR_IN_CONNECTION;
 		}
@@ -146,8 +144,7 @@
 		free(mssg);
 
 		if (SendRes == TRNS_FAILED)
-		{
-			printf("Service socket error while writing, closing thread.\n");
+		{		
 			closesocket(sd);
 			return ERROR_IN_CONNECTION;
 		}
@@ -168,7 +165,8 @@
 	{
 		// Check if to clear or not.
 		if ((strcmp(code, SERVER_GAME_OVER_MENU) != 0) &&
-			(strcmp(code, SERVER_LEADERBORAD_MENU) != 0))
+			(strcmp(code, SERVER_LEADERBORAD_MENU) != 0) &&
+			(strcmp(code, SERVER_KEEP_ALIVE) != 0))
 		{
 			system("cls");
 		}
@@ -698,6 +696,10 @@
 		else if (strcmp(header, SERVER_SPOCK) == 0)
 		{
 			printf("%s", SHELDON_SPOCK);
+			result = CONTINUE_RUN;
+		}
+		else if (strcmp(header, SERVER_KEEP_ALIVE) == 0)
+		{			
 			result = CONTINUE_RUN;
 		}
 		else

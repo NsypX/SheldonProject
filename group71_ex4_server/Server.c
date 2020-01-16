@@ -22,6 +22,7 @@
 	HANDLE ThreadHandles[NUM_OF_WORKER_THREADS];
 	HANDLE ExitHandle;
 	HANDLE ClientHandle;
+	HANDLE KeepAliveHandle;
 	SOCKET ThreadInputs[NUM_OF_WORKER_THREADS];
 	SockParams params[NUM_OF_WORKER_THREADS];
 	int countLogedIn = 0;
@@ -214,8 +215,9 @@
 			ThreadHandles[Ind] = NULL;
 
 		// Start the exit thread.
-		ExitHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ExitThreadFunction, NULL, 0, NULL);;		
+		ExitHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ExitThreadFunction, NULL, 0, NULL);
 		ClientHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)HandleClients, NULL, 0, NULL);
+		KeepAliveHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)KeepAlive, NULL, 0, NULL);
 
 		int wait = WaitForSingleObject(ExitHandle, INFINITE);		
 		if (wait != WAIT_OBJECT_0)
@@ -228,6 +230,12 @@
 		if (wait != WAIT_OBJECT_0)
 			result = THREAD_ERROR;		
 		GetExitCodeThread(ClientHandle, &exitcode);		
+		if (exitcode < 0)
+			errorPrinter(exitcode);
+		wait = WaitForSingleObject(KeepAliveHandle, INFINITE);
+		if (wait != WAIT_OBJECT_0)
+			result = THREAD_ERROR;
+		GetExitCodeThread(KeepAliveHandle, &exitcode);
 		if (exitcode < 0)
 			errorPrinter(exitcode);
 		
@@ -690,6 +698,37 @@
 		}
 		
 		return (result);
+	}
+
+	/*
+		Description - Send keep alive mssgs to clients.
+		Parameters  -
+		Returns     - .
+	*/
+	static DWORD KeepAlive(void)
+	{
+		while (isToExit == FALSE_VAL)
+		{
+			for (int i = 0; i < NUM_OF_WORKER_THREADS; i++)
+			{
+				// check if exist.
+				if (params[i].sd != NULL)
+				{
+					// Send keep alive message.
+					int result = sendGeneralMesseage(SERVER_KEEP_ALIVE, &params[i]);
+
+					if (result < 0)
+					{
+						printf("Client in location %d has got timedout.\n", i);
+						closeCurrclient(i);
+					}
+				}
+			}
+
+			Sleep(5000);
+		}
+
+		return(NO_ERROR_VAL);
 	}
 
 #pragma endregion

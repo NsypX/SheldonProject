@@ -57,8 +57,7 @@
 		free(mssg);
 
 		if (SendRes == TRNS_FAILED)
-		{
-			printf("Service socket error while writing, closing thread.\n");
+		{			
 			closesocket(params->sd);
 			return ERROR_IN_CONNECTION;
 		}
