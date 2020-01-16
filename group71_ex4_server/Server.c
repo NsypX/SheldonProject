@@ -633,8 +633,7 @@
 
 			if (RecvRes == TRNS_FAILED)
 			{
-				countLogedIn--;
-				printf("Service socket error while reading, closing thread.\n");
+				countLogedIn--;				
 				closesocket(*t_socket);
 				return 1;
 			}
@@ -644,8 +643,7 @@
 				{
 					countLogedIn--;
 				}
-
-				printf("Connection closed while reading, closing thread.\n");
+				
 				closesocket(*t_socket);
 				return 1;
 			}
@@ -718,8 +716,7 @@
 
 			// if accrepted.
 			if (AcceptSocket == INVALID_SOCKET)
-			{
-				printf("Accepting connection with client failed, error %ld\n", WSAGetLastError());
+			{				
 				result = MAIN_SOCKET_ERROR;
 				closesocket(MainSocket);
 				MainSocket = NULL;

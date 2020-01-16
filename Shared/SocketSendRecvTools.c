@@ -26,8 +26,7 @@ TransferResult_t SendBuffer(const char* Buffer, int BytesToSend, SOCKET sd)
 		/* send does not guarantee that the entire message is sent */
 		BytesTransferred = send(sd, CurPlacePtr, RemainingBytesToSend, 0);
 		if (BytesTransferred == SOCKET_ERROR)
-		{
-			printf("send() failed, error %d\n", WSAGetLastError());
+		{			
 			return TRNS_FAILED;
 		}
 
@@ -78,8 +77,7 @@ TransferResult_t ReceiveBuffer(char* OutputBuffer, int BytesToReceive, SOCKET sd
 		/* send does not guarantee that the entire message is sent */
 		BytesJustTransferred = recv(sd, CurPlacePtr, RemainingBytesToReceive, 0);
 		if (BytesJustTransferred == SOCKET_ERROR)
-		{
-			printf("recv() failed, error %d\n", WSAGetLastError());
+		{			
 			return TRNS_FAILED;
 		}
 		else if (BytesJustTransferred == 0)
@@ -100,11 +98,7 @@ TransferResult_t ReceiveString(char** OutputStrPtr, SOCKET sd)
 	char* StrBuffer = NULL;
 
 	if ((OutputStrPtr == NULL) || (*OutputStrPtr != NULL))
-	{
-		printf("The first input to ReceiveString() must be "
-			"a pointer to a char pointer that is initialized to NULL. For example:\n"
-			"\tchar* Buffer = NULL;\n"
-			"\tReceiveString( &Buffer, ___ )\n");
+	{	
 		return TRNS_FAILED;
 	}
 
