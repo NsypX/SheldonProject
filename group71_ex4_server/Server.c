@@ -45,9 +45,20 @@
 	*/
 	void closeHandles(void)
 	{
-		CloseHandle(gameSessionMutex);
-		CloseHandle(waitForPlayerMutex);
-		CloseHandle(gameHandlerSemaphore);
+		if (gameSessionMutex != NULL)
+		{		
+			CloseHandle(gameSessionMutex);
+		}
+
+		if (waitForPlayerMutex != NULL)
+		{
+			CloseHandle(waitForPlayerMutex);
+		}
+
+		if (gameHandlerSemaphore != NULL)
+		{
+			CloseHandle(gameHandlerSemaphore);
+		}
 	}
 
 	/*
@@ -141,80 +152,55 @@
 	{
 		// Clear screen.
 		system("cls");
-
 		// Remove if exist.
-		remove(GAME_SESSION_LOC);
-		
+		remove(GAME_SESSION_LOC);		
 		// Initial stuff
-		cleanNamesList(); SERVER_PORT = atoi(port);	int Loop; unsigned long Address; SOCKADDR_IN service; int bindRes; int ListenRes; int result = NO_ERROR_VAL;
-		
+		cleanNamesList(); SERVER_PORT = atoi(port);	int Loop; unsigned long Address; SOCKADDR_IN service; int bindRes; int ListenRes; int result = NO_ERROR_VAL;		
 		getIpAdress(&result);
-
 		// Create mutex
 		gameSessionMutex = CreateMutex(NULL, FALSE, NULL); waitForPlayerMutex = CreateMutex(NULL, FALSE, NULL); gameHandlerSemaphore = CreateSemaphore(NULL, 0, CLIENT_AMOUNT, NULL);
-
+		
 		// Mutex error handler.
-		if (gameSessionMutex == NULL)
-		{
-			goto server_defaul_clean;
-		}
-		// Mutex error handler.
-		if (waitForPlayerMutex == NULL)
-		{
-			CloseHandle(gameSessionMutex);
-			goto server_defaul_clean;
-		}
-		// Mutex error handler.
-		if (gameHandlerSemaphore == NULL)
-		{
-			CloseHandle(gameSessionMutex);
-			CloseHandle(waitForPlayerMutex);
-			goto server_defaul_clean;
-		}
+		if ((gameSessionMutex == NULL) || (waitForPlayerMutex == NULL) || (gameHandlerSemaphore == NULL))
+		{goto cleandHandles;}
+	
 		// creating the list of cvs file.
 		getLeaderInstanse(&result);
+
 		// Initialize Winsock.
 		WSADATA wsaData;
 		int StartupRes = WSAStartup(MAKEWORD(2, 2), &wsaData);
-
+		
 		// Check if went up.
 		if (StartupRes != NO_ERROR)
-		{
-			printf("error %ld at WSAStartup( ), ending program.\n", WSAGetLastError());
-			return;
-		}
+		{printf("error %ld at WSAStartup( ), ending program.\n", WSAGetLastError());  goto server_defaul_clean;}
 
 		// Create a socket.    
-		MainSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-		// Check for success
+		MainSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);		
 		if (MainSocket == INVALID_SOCKET)
 		{
-			printf("Error at socket( ): %ld\n", WSAGetLastError());
-			goto server_cleanup_1;
+			printf("Error at socket( ): %ld\n", WSAGetLastError()); goto server_cleanup_1;
 		}
-
 		// Set the adress.		
 		Address = inet_addr(IP_ADRESS);
+		
 		// Check if good adress.
 		if (Address == INADDR_NONE)
 		{
-			printf("The string \"%s\" cannot be converted into an ip address. ending program.\n",IP_ADRESS);
-			goto server_cleanup_2;
+			printf("The string \"%s\" cannot be converted into an ip address. ending program.\n",IP_ADRESS); goto server_cleanup_2;
 		}
 
 		// Set the serverinfo.
-		service.sin_family = AF_INET;
-		service.sin_addr.s_addr = Address;
-		service.sin_port = htons(SERVER_PORT);
-
+		service.sin_family = AF_INET; service.sin_addr.s_addr = Address; service.sin_port = htons(SERVER_PORT);
+		
 		// bind server to ip.
-		bindRes = bind(MainSocket, (SOCKADDR*)&service, sizeof(service));
+		bindRes = bind(MainSocket, (SOCKADDR*)&service, sizeof(service));		
 		if (bindRes == SOCKET_ERROR)
 		{
 			printf("bind( ) failed with error %ld. Ending program\n", WSAGetLastError());
 			goto server_cleanup_2;
 		}
-
+		
 		// Start listen to sockets.
 		ListenRes = listen(MainSocket, SOMAXCONN);
 		if (ListenRes == SOCKET_ERROR)
@@ -222,73 +208,46 @@
 			printf("Failed listening on socket, error %ld.\n", WSAGetLastError());
 			goto server_cleanup_2;
 		}
-
-		// Start the exit thread.
-		ExitHandle = NULL;
-		ExitHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ExitThreadFunction, NULL, 0, NULL);
-
+		
 		// Initialize all thread handles to NULL, to mark that they have not been initialized
 		for (Ind = 0; Ind < NUM_OF_WORKER_THREADS; Ind++)
-		ThreadHandles[Ind] = NULL;
-		printf("Waiting for a client to connect...\n");
+			ThreadHandles[Ind] = NULL;
+
+		// Start the exit thread.
+		ExitHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ExitThreadFunction, NULL, 0, NULL);;		
 		ClientHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)HandleClients, NULL, 0, NULL);
 
-		// Wait for threads
-		int wait = WaitForSingleObject(ExitHandle, INFINITE);
+		int wait = WaitForSingleObject(ExitHandle, INFINITE);		
 		if (wait != WAIT_OBJECT_0)
-		{
-			result = THREAD_ERROR;
-		}
-
-		// Get Exit Code 
+			result = THREAD_ERROR;	
 		int exitcode = NO_ERROR;
-		GetExitCodeThread(ExitHandle, &exitcode);
+		GetExitCodeThread(ExitHandle, &exitcode);		
 		if (exitcode < 0)
-		{
-			errorPrinter(exitcode);
-		}
-		
-		wait = WaitForSingleObject(ClientHandle, INFINITE);		
+			errorPrinter(exitcode);			
+		wait = WaitForSingleObject(ClientHandle, INFINITE);				
 		if (wait != WAIT_OBJECT_0)
-		{
-			result = THREAD_ERROR;
-		}
-
+			result = THREAD_ERROR;		
 		GetExitCodeThread(ClientHandle, &exitcode);		
 		if (exitcode < 0)
-		{
 			errorPrinter(exitcode);
-		}
-				
+		
 		freeLeaderInstanse(&result);
 		errorPrinter(result);
+
 	server_cleanup_3:
-		{
-			CleanupWorkerThreads();
-		}
+		{CleanupWorkerThreads();}
 	server_cleanup_2:
-		{
-			if(MainSocket != NULL)
-			{
-				if (closesocket(MainSocket) == SOCKET_ERROR)
-					printf("Failed to close MainSocket, error %ld. Ending program\n", WSAGetLastError());
-			}
-		}
+		{if(MainSocket != NULL)
+			{if (closesocket(MainSocket) == SOCKET_ERROR)
+					printf("Failed to close MainSocket, error %ld. Ending program\n", WSAGetLastError());}}
 	server_cleanup_1:
-		{
-			
-			if (WSACleanup() == SOCKET_ERROR)
-				printf("Failed to close Winsocket, error %ld. Ending program.\n", WSAGetLastError());
-		}
+		{if (WSACleanup() == SOCKET_ERROR)
+				printf("Failed to close Winsocket, error %ld. Ending program.\n", WSAGetLastError());}
 	cleandHandles:
-		{
-			closeHandles();
-		}
+		{closeHandles();}
 
 	server_defaul_clean:
-		{
-			printf("Going down.");
-		}
+		{printf("Going down.");}
 	}
 
 	/*
@@ -678,6 +637,8 @@
 	*/
 	static DWORD HandleClients(void)
 	{
+		
+		printf("Waiting for a client to connect...\n");
 		// Setting the result.
 		int result = NO_ERROR_VAL;
 
