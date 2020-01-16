@@ -24,6 +24,7 @@
 
 	SockParams* firstPlayer = NULL;
 	SockParams* secondPlayer = NULL;
+	int isFirstToAvrrive = FALSE_VAL;
 
 	char firstPlayerName[MAX_NAME];
 	char secondPlayerName[MAX_NAME];
@@ -363,6 +364,8 @@
 				remove(GAME_SESSION_LOC);
 				sendGeneralMesseage(SERVER_NO_OPPONENTS, param);
 			}
+
+			isVsPlayer[param->loc] = TRUE_VAL;
 		}
 		else
 		{
@@ -445,65 +448,109 @@
 
 		int result = NO_ERROR_VAL;
 
-		if ((isVsPlayer[param->loc] == TRUE_VAL) || (isVsPlayer[secondPlayer->loc] == TRUE_VAL))
+		// Check if vs server
+		if (isVsPlayer[param->loc] == FALSE_VAL)
 		{
-			// Check if we are the first or second player.
-			if (param->loc == secondPlayer->loc)
+			strcpy(OtherMove, getRandMove());
+		}
+		else if (isFirstToAvrrive == FALSE_VAL)
+		{
+			// Set for next.
+			isFirstToAvrrive = TRUE_VAL;
+
+			// Writing the move protected by mutex
+			result = waitGameSessionMutex();
+
+			if (result < 0)
 			{
-				// Wait for player 2 to write his move.
-				waitGameSessionMutex();
-			
-				// Get player 2 move.
-				strcpy(OtherMove,getOtherMoveFromGameSessionFile(result));
-
-				// Write my move.
-				writeMoveToGameSession(move);
-
-				releaseGameSessionMutex();
-
-				// Release second player.
-				releaseOtherPlayerMove();
-
-				// Let other player get my move.
-				waitOtherPlayerMoveINF();
-
-				// Read inside mutex
-				waitGameSessionMutex();
-
-				remove(GAME_SESSION_LOC);
-
-				releaseGameSessionMutex();
+				return(result);
 			}
-			else if (param->loc == firstPlayer->loc)
+
+			
+			
+
+			// Write my move
+			result = writeMoveToGameSession(move);
+
+			if (result < 0)
 			{
-				// Writing the move protected by mutex
-				waitGameSessionMutex();
-			
-				// Write my move
-				writeMoveToGameSession(move);
-
-				releaseGameSessionMutex();
-
-				// Wait for player one to write his move.
-				waitOtherPlayerMoveINF();
-
-				// Read inside mutex
-				waitGameSessionMutex();
-
-				// Get player 1 move.
-				strcpy(OtherMove, getOtherMoveFromGameSessionFile(result));
-
-				releaseGameSessionMutex();
-
-				// Release first player
-				releaseOtherPlayerMove();
+				return(result);
 			}
+
+			releaseGameSessionMutex();
+
+			// Wait for player one to write his move.
+			result = waitOtherPlayerMoveINF();
+
+			if (result < 0)
+			{
+				return(result);
+			}
+
+			// Read inside mutex
+			result = waitGameSessionMutex();
+
+			if (result < 0)
+			{
+				return(result);
+			}
+
+			// Get player 1 move.
+			strcpy(OtherMove, getOtherMoveFromGameSessionFile(result));
+
+			releaseGameSessionMutex();
+
+			// Release first player
+			releaseOtherPlayerMove();
 		}
 		else
-		{	
-			// Get cpu move.
-			strcpy(OtherMove,getRandMove());		
+		{
+			// Wait for player 2 to write his move.
+			result = waitGameSessionMutex();
+
+			if (result < 0)
+			{
+				return(result);
+			}
+			
+			// Get player 2 move.
+			strcpy(OtherMove,getOtherMoveFromGameSessionFile(result));
+
+			// Write my move.
+			result = writeMoveToGameSession(move);
+
+			if (result < 0)
+			{
+				return(result);
+			}
+
+			releaseGameSessionMutex();
+
+			// Release second player.
+			releaseOtherPlayerMove();
+
+			// Let other player get my move.
+			result = waitOtherPlayerMoveINF();
+
+			if (result < 0)
+			{
+				return(result);
+			}
+
+			// Read inside mutex
+			result = waitGameSessionMutex();
+
+			if (result < 0)
+			{
+				return(result);
+			}
+
+			remove(GAME_SESSION_LOC);
+
+			releaseGameSessionMutex();
 		}
+		
+		isFirstToAvrrive = FALSE_VAL;
 
 		// Check who won.
 		char* won = checkWin(move, OtherMove);
