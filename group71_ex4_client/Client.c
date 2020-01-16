@@ -205,19 +205,13 @@
 	Returns     - Error handle
 	*/
 	void MainClient(char* ip, char* charPort, char* name)
-	{
-		SOCKADDR_IN clientService;
-
+	{		
 		// Initialize Winsock.
-		WSADATA wsaData; //Create a WSADATA object called wsaData.
-		int printOption = RECONNECT_OPTION;
-		int connectHelper = SOCKET_ERROR;
-		int opt = RECONNECT_OPTION;
-		int tryToConnect = TRUE_VAL;
+		WSADATA wsaData; int printOption = RECONNECT_OPTION; int connectHelper = SOCKET_ERROR; int opt = RECONNECT_OPTION; int tryToConnect = TRUE_VAL; int result = NO_ERROR_VAL; SOCKADDR_IN clientService;
+		// Put 127.0.0.1 port and name
 		strcpy(IP_ADRESS, ip);
 		PORT = atoi(charPort);
-		setName(name);
-		int result = NO_ERROR_VAL;
+		setName(name);		
 
 		// While not quit.
 		while (opt != QUIT_OPTION)
@@ -229,29 +223,24 @@
 			int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 			if (iResult != NO_ERROR)
 				printf("Error at WSAStartup()\n");
-
 			// Create a socket.
 			m_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
 			// Check for errors to ensure that the socket is a valid socket.
 			if (m_socket == INVALID_SOCKET) 
 			{
 				printf("Error at socket(): %ld\n", WSAGetLastError());
 				WSACleanup();
 			}
-
 			//Create a sockaddr_in object clientService and set  values.
 			clientService.sin_family = AF_INET;
 			clientService.sin_addr.s_addr = inet_addr(IP_ADRESS);
 			clientService.sin_port = htons(PORT); 
-
 			// Try to connect..
 			if (tryToConnect == TRUE_VAL)
 			{
 				tryToConnect = FALSE_VAL;
 				connectHelper = connect(m_socket, (SOCKADDR*)&clientService, sizeof(clientService));
 			}
-
 			// If connection failed.
 			if (connectHelper == SOCKET_ERROR)
 			{
@@ -266,19 +255,15 @@
 				printed = createTwoParramString(SERVER_CONNECTED_MESSAGE, getIP_ADRESS(), getPORT(), &result);
 				printf("%s", printed);
 				free(printed);
-
 				// Sending the name to the server.
 				sendClientRequest(CLIENT_REQUEST, getClientName(), m_socket);
-
 				// Run thread to read data from client.			
 				hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)RecvDataThread, NULL, 0, NULL);
-
 				// Wait for threads
 				result = WaitForSingleObject(hThread, INFINITE);
-
-				if (result == WAIT_OBJECT_0)
+				if (result != WAIT_OBJECT_0)
 				{
-
+					result = MUTEX_ERROR;
 				}
 
 				// Get Exit Code 
@@ -287,10 +272,8 @@
 
 				// Close Thread stuff.
 				closeThread();
-
 				// Close all
 				closeClient();
-
 				// Clena up
 				WSACleanup();
 
@@ -317,13 +300,8 @@
 					errorPrinter(exitcode);
 				}
 			}
-
 			system("cls");
 		}
-
-
-	
-		return;
 }
 
 #pragma endregion
