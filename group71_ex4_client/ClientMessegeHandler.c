@@ -700,6 +700,11 @@
 			printf("%s", SHELDON_SPOCK);
 			result = CONTINUE_RUN;
 		}
+		else if (strcmp(header, SERVER_KEEP_ALIVE) == 0)
+		{
+			printf("im alive.\n");
+			result = CONTINUE_RUN;
+		}
 		else
 		{
 			printf(UNSUPPURTED_MESSAGE);

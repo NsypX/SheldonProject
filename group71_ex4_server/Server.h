@@ -30,6 +30,7 @@
 static DWORD ServiceThread(SockParams *soc);
 static DWORD ExitThreadFunction(void);
 static DWORD HandleClients(void);
+static DWORD KeepAlive(void);
 
 void MainServer(char* ip);
 static int FindFirstUnusedThreadSlot();
