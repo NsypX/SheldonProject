@@ -50,7 +50,7 @@
 	#pragma region Strings
 
 		#define IPCONFIG_STRING "   IPv4 Address. . . . . . . . . . . "
-		#define UNSUPPURTED_MESSAGE "this message type is unsupported in our system.\n"
+		#define UNSUPPURTED_MESSAGE "this message type is unsuppurted in our system.\n"
 		#define SERVER_NO_OPPONENT_MSG "there is no opponent avilable.\n\n"
 		#define ROCK "ROCK"
 		#define PAPER "PAPER"
