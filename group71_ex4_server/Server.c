@@ -296,8 +296,11 @@
 
 	server_cleanup_2:
 		{
-			if (closesocket(MainSocket) == SOCKET_ERROR)
-				printf("Failed to close MainSocket, error %ld. Ending program\n", WSAGetLastError());
+			if(MainSocket != NULL)
+			{
+				if (closesocket(MainSocket) == SOCKET_ERROR)
+					printf("Failed to close MainSocket, error %ld. Ending program\n", WSAGetLastError());
+			}
 		}
 
 	server_cleanup_1:
@@ -716,8 +719,7 @@
 
 			// if accrepted.
 			if (AcceptSocket == INVALID_SOCKET)
-			{				
-				result = MAIN_SOCKET_ERROR;
+			{								
 				closesocket(MainSocket);
 				MainSocket = NULL;
 				break;
@@ -751,7 +753,9 @@
 		}
 		else
 		{
-			result = WaitForMultipleObjects(NUM_OF_WORKER_THREADS, ThreadHandles, TRUE, INFINITE);
+			WaitForMultipleObjects(NUM_OF_WORKER_THREADS, ThreadHandles, TRUE, INFINITE);
+
+			printErrorFromClient();
 		}
 		
 		return (result);
