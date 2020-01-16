@@ -146,35 +146,24 @@
 		remove(GAME_SESSION_LOC);
 		
 		// Initial stuff
-		cleanNamesList();
-		SERVER_PORT = atoi(port);
-		int Loop;
-		unsigned long Address;
-		SOCKADDR_IN service;
-		int bindRes;
-		int ListenRes;
-		int result = NO_ERROR_VAL;
+		cleanNamesList(); SERVER_PORT = atoi(port);	int Loop; unsigned long Address; SOCKADDR_IN service; int bindRes; int ListenRes; int result = NO_ERROR_VAL;
 		
 		getIpAdress(&result);
 
 		// Create mutex
-		gameSessionMutex = CreateMutex(NULL, FALSE, NULL);
-		waitForPlayerMutex = CreateMutex(NULL, FALSE, NULL);
-		gameHandlerSemaphore = CreateSemaphore(NULL, 0, CLIENT_AMOUNT, NULL);
+		gameSessionMutex = CreateMutex(NULL, FALSE, NULL); waitForPlayerMutex = CreateMutex(NULL, FALSE, NULL); gameHandlerSemaphore = CreateSemaphore(NULL, 0, CLIENT_AMOUNT, NULL);
 
 		// Mutex error handler.
 		if (gameSessionMutex == NULL)
 		{
 			goto server_defaul_clean;
 		}
-
 		// Mutex error handler.
 		if (waitForPlayerMutex == NULL)
 		{
 			CloseHandle(gameSessionMutex);
 			goto server_defaul_clean;
 		}
-
 		// Mutex error handler.
 		if (gameHandlerSemaphore == NULL)
 		{
@@ -182,10 +171,8 @@
 			CloseHandle(waitForPlayerMutex);
 			goto server_defaul_clean;
 		}
-
 		// creating the list of cvs file.
 		getLeaderInstanse(&result);
-
 		// Initialize Winsock.
 		WSADATA wsaData;
 		int StartupRes = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -199,7 +186,6 @@
 
 		// Create a socket.    
 		MainSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
 		// Check for success
 		if (MainSocket == INVALID_SOCKET)
 		{
@@ -207,15 +193,12 @@
 			goto server_cleanup_1;
 		}
 
-		
 		// Set the adress.		
 		Address = inet_addr(IP_ADRESS);
-
 		// Check if good adress.
 		if (Address == INADDR_NONE)
 		{
-			printf("The string \"%s\" cannot be converted into an ip address. ending program.\n",
-				IP_ADRESS);
+			printf("The string \"%s\" cannot be converted into an ip address. ending program.\n",IP_ADRESS);
 			goto server_cleanup_2;
 		}
 
@@ -223,7 +206,6 @@
 		service.sin_family = AF_INET;
 		service.sin_addr.s_addr = Address;
 		service.sin_port = htons(SERVER_PORT);
-
 
 		// bind server to ip.
 		bindRes = bind(MainSocket, (SOCKADDR*)&service, sizeof(service));
@@ -241,22 +223,18 @@
 			goto server_cleanup_2;
 		}
 
-		
 		// Start the exit thread.
 		ExitHandle = NULL;
 		ExitHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ExitThreadFunction, NULL, 0, NULL);
 
 		// Initialize all thread handles to NULL, to mark that they have not been initialized
 		for (Ind = 0; Ind < NUM_OF_WORKER_THREADS; Ind++)
-			ThreadHandles[Ind] = NULL;
-
+		ThreadHandles[Ind] = NULL;
 		printf("Waiting for a client to connect...\n");
-
 		ClientHandle = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)HandleClients, NULL, 0, NULL);
 
 		// Wait for threads
 		int wait = WaitForSingleObject(ExitHandle, INFINITE);
-
 		if (wait != WAIT_OBJECT_0)
 		{
 			result = THREAD_ERROR;
@@ -265,21 +243,18 @@
 		// Get Exit Code 
 		int exitcode = NO_ERROR;
 		GetExitCodeThread(ExitHandle, &exitcode);
-
 		if (exitcode < 0)
 		{
 			errorPrinter(exitcode);
 		}
-
-		wait = WaitForSingleObject(ClientHandle, INFINITE);
-
+		
+		wait = WaitForSingleObject(ClientHandle, INFINITE);		
 		if (wait != WAIT_OBJECT_0)
 		{
 			result = THREAD_ERROR;
 		}
 
-		GetExitCodeThread(ClientHandle, &exitcode);
-		
+		GetExitCodeThread(ClientHandle, &exitcode);		
 		if (exitcode < 0)
 		{
 			errorPrinter(exitcode);
@@ -287,13 +262,10 @@
 				
 		freeLeaderInstanse(&result);
 		errorPrinter(result);
-
-
 	server_cleanup_3:
 		{
 			CleanupWorkerThreads();
 		}
-
 	server_cleanup_2:
 		{
 			if(MainSocket != NULL)
@@ -302,14 +274,12 @@
 					printf("Failed to close MainSocket, error %ld. Ending program\n", WSAGetLastError());
 			}
 		}
-
 	server_cleanup_1:
 		{
 			
 			if (WSACleanup() == SOCKET_ERROR)
 				printf("Failed to close Winsocket, error %ld. Ending program.\n", WSAGetLastError());
 		}
-
 	cleandHandles:
 		{
 			closeHandles();
@@ -319,7 +289,6 @@
 		{
 			printf("Going down.");
 		}
-
 	}
 
 	/*

@@ -444,9 +444,8 @@
 	*/
 	int pharseClientMove(char* move, SockParams * param)
 	{
-		char OtherMove[LINE_SIZE] = "";
-
-		int result = NO_ERROR_VAL;
+		// Init vars.
+		char OtherMove[LINE_SIZE] = ""; int result = NO_ERROR_VAL;
 
 		// Check if vs server
 		if (isVsPlayer[param->loc] == FALSE_VAL)
@@ -457,49 +456,34 @@
 		{
 			// Set for next.
 			isFirstToAvrrive = TRUE_VAL;
-
 			// Writing the move protected by mutex
 			result = waitGameSessionMutex();
-
 			if (result < 0)
 			{
 				return(result);
 			}
-
-			
-			
-
 			// Write my move
 			result = writeMoveToGameSession(move);
-
 			if (result < 0)
 			{
 				return(result);
 			}
-
 			releaseGameSessionMutex();
-
 			// Wait for player one to write his move.
 			result = waitOtherPlayerMoveINF();
-
 			if (result < 0)
 			{
 				return(result);
 			}
-
 			// Read inside mutex
 			result = waitGameSessionMutex();
-
 			if (result < 0)
 			{
 				return(result);
 			}
-
 			// Get player 1 move.
 			strcpy(OtherMove, getOtherMoveFromGameSessionFile(result));
-
 			releaseGameSessionMutex();
-
 			// Release first player
 			releaseOtherPlayerMove();
 		}
@@ -507,31 +491,23 @@
 		{
 			// Wait for player 2 to write his move.
 			result = waitGameSessionMutex();
-
 			if (result < 0)
 			{
 				return(result);
-			}
-			
+			}			
 			// Get player 2 move.
 			strcpy(OtherMove,getOtherMoveFromGameSessionFile(result));
-
 			// Write my move.
 			result = writeMoveToGameSession(move);
-
 			if (result < 0)
 			{
 				return(result);
 			}
-
 			releaseGameSessionMutex();
-
 			// Release second player.
 			releaseOtherPlayerMove();
-
 			// Let other player get my move.
 			result = waitOtherPlayerMoveINF();
-
 			if (result < 0)
 			{
 				return(result);
@@ -539,7 +515,6 @@
 
 			// Read inside mutex
 			result = waitGameSessionMutex();
-
 			if (result < 0)
 			{
 				return(result);
@@ -551,14 +526,10 @@
 		}
 		
 		isFirstToAvrrive = FALSE_VAL;
-
 		// Check who won.
 		char* won = checkWin(move, OtherMove);
-
 		// Send messages based.
 		handleWhowon(OtherMove, move, won, param);
-
-
 		// Result.
 		result = sendGeneralMesseage(SERVER_GAME_OVER_MENU, param);
 

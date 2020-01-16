@@ -323,7 +323,6 @@
 	{
 		// Creating the new line to add.
 		LeaderList * lineToAdd = getNewLeaderLine(result);
-
 		if (ratio == INF_VAL)
 		{
 			if (lost == 0)
@@ -336,17 +335,11 @@
 			}
 		}
 
-		if (result < 0)
-		{
-			return(NULL);
-		}
-
 		lineToAdd->win = win;
 		lineToAdd->lost = lost;
 		lineToAdd->ratio = ratio;
 		lineToAdd->next = NULL;
 		strcpy(lineToAdd->name, name);
-
 		// Check if first.
 		if (lb == NULL)
 		{
