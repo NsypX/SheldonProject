@@ -637,8 +637,8 @@
 	*/
 	static DWORD HandleClients(void)
 	{
-		
 		printf("Waiting for a client to connect...\n");
+
 		// Setting the result.
 		int result = NO_ERROR_VAL;
 
