@@ -210,7 +210,7 @@
 
 		// Initialize Winsock.
 		WSADATA wsaData; //Create a WSADATA object called wsaData.
-		int printOption = PRINT_RETRY;
+		int printOption = RECONNECT_OPTION;
 		int connectHelper = SOCKET_ERROR;
 		int opt = RECONNECT_OPTION;
 		int tryToConnect = TRUE_VAL;
@@ -256,7 +256,8 @@
 			if (connectHelper == SOCKET_ERROR)
 			{
 				WSACleanup();
-				reConnectMenue(&tryToConnect, &opt);
+				reConnectMenue(&tryToConnect, &printOption);
+				opt = printOption;
 			}
 			else
 			{
