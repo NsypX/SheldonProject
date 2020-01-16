@@ -91,13 +91,13 @@
 
 			while (temp->next !=NULL)//travel till the second last element
 			{
-				if(temp->ratio > temp->next->ratio)// compare the data of the nodes
+				if(temp->ratio < temp->next->ratio)// compare the data of the nodes
 				{
 					temp = swap(temp,temp->next);
 				}
 				else if (temp->ratio == temp->next->ratio)
 				{
-					if(temp->win > temp->next->win)// compare the data of the nodes
+					if(temp->win < temp->next->win)// compare the data of the nodes
 					{
 						temp = swap(temp,temp->next);
 					}
@@ -203,7 +203,7 @@
 		
 		setUpdateTime();
 		currList = addLineToList(name, win, lost, INF_VAL, currList, result);
-		//currList = bubbleSortLeaderBoard(currList);
+		currList = bubbleSortLeaderBoard(currList);
 		char* fileToSave = getFullFileFormat(currList);
 		writeToFile(fileToSave);
 		releasFileMutex();

@@ -6,6 +6,7 @@
 */
 
 #include "Server.h"
+#include "LeaderBoarrd.h"
 
 int main(int argc, char* argv[])
 {
