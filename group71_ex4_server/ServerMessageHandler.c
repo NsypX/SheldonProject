@@ -410,7 +410,7 @@
 		}
 		else
 		{
-			leaderFile = calloc(1,1);
+			leaderFile = getLeaderInstanseFileFormat(&result);
 		}
 
 		if (result < 0)
