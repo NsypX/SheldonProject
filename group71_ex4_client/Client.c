@@ -167,7 +167,7 @@
 				printed = createTwoParramString(FAILED_CONNECTION_MSSG, getIP_ADRESS(), getPORT(),&result);
 				break;
 			}
-			case(QUIT_OPTION):
+			case(PRINT_TIMEOUT):
 			{
 				printed = createTwoParramString(DISCONECT_MSSG, getIP_ADRESS(), getPORT(), &result);
 				break;
