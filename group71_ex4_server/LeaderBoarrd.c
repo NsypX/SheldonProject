@@ -343,20 +343,11 @@
 
 		lineToAdd->win = win;
 		lineToAdd->lost = lost;
-
-		// Check if lost == 0.
-		if (lineToAdd->lost != 0)
-		{
-			lineToAdd->ratio = (float)lineToAdd->win / (float)lineToAdd->lost;
-		}
-		else
-		{
-			lineToAdd->ratio = (float)win;
-		}
-
+		lineToAdd->ratio = ratio;
 		lineToAdd->next = NULL;
 		strcpy(lineToAdd->name, name);
 
+		// Check if first.
 		if (lb == NULL)
 		{
 			lb = lineToAdd;
@@ -373,8 +364,8 @@
 			{
 				if (strcmp(currLine->name, name) == 0)
 				{
-					currLine->win = lineToAdd->win;
-					currLine->lost = lineToAdd->lost;
+					currLine->win += lineToAdd->win;
+					currLine->lost += lineToAdd->lost;
 					
 
 					if (currLine->lost != 0)
