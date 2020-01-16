@@ -70,5 +70,8 @@
     <None Include="..\group71_ex4_server\LeaderBoard.csv">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="checkLines.py">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

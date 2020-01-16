@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\group71_ex4_server\LeaderBoard.csv" />
+    <None Include="checkLines.py" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
