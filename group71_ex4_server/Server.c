@@ -711,14 +711,14 @@
 			for (int i = 0; i < NUM_OF_WORKER_THREADS; i++)
 			{
 				// check if exist.
-				if (ThreadInputs[i] != NULL)
+				if (params[i].sd != NULL)
 				{
 					// Send keep alive message.
-					int result = sendGeneralMesseage(SERVER_KEEP_ALIVE, &ThreadInputs[i]);
+					int result = sendGeneralMesseage(SERVER_KEEP_ALIVE, &params[i]);
 
 					if (result < 0)
 					{
-						printf("Client in location %d has got timedout.", i);
+						printf("Client in location %d has got timedout.\n", i);
 						closeCurrclient(i);
 					}
 				}
