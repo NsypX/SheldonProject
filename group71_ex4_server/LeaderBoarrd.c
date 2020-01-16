@@ -203,7 +203,7 @@
 		
 		setUpdateTime();
 		currList = addLineToList(name, win, lost, INF_VAL, currList, result);
-		currList = bubbleSortLeaderBoard(currList);
+		//currList = bubbleSortLeaderBoard(currList);
 		char* fileToSave = getFullFileFormat(currList);
 		writeToFile(fileToSave);
 		releasFileMutex();

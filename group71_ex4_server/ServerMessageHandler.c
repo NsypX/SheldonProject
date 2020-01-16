@@ -27,7 +27,7 @@
 
 	char firstPlayerName[MAX_NAME];
 	char secondPlayerName[MAX_NAME];
-	int isVsPlayer = FALSE_VAL;
+	int isVsPlayer[NUM_OF_AVILABLE_NAMES] = { FALSE_VAL,FALSE_VAL,FALSE_VAL,FALSE_VAL,FALSE_VAL };
 
 #pragma endregion
 
@@ -304,7 +304,7 @@
 	int pharseClientCPU(SockParams * param)
 	{
 		int result = sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, param);
-		isVsPlayer = FALSE_VAL;
+		isVsPlayer[param->loc] = FALSE_VAL;
 		return(NO_ERROR_VAL);
 	}
 
@@ -384,7 +384,7 @@
 
 			sendServerInvite(SERVER_INVITE,getName(firstPlayer->loc), secondPlayer);
 			sendGeneralMesseage(SERVER_PLAYER_MOVE_REQUEST, secondPlayer);
-			isVsPlayer = TRUE_VAL;
+			isVsPlayer[param->loc] = TRUE_VAL;
 
 			releaseGameSessionMutex();
 		}
@@ -442,12 +442,13 @@
 	int pharseClientMove(char* move, SockParams * param)
 	{
 		char OtherMove[LINE_SIZE] = "";
+
 		int result = NO_ERROR_VAL;
 
-		if (isVsPlayer == TRUE_VAL)
+		if ((isVsPlayer[param->loc] == TRUE_VAL) || (isVsPlayer[secondPlayer->loc] == TRUE_VAL))
 		{
 			// Check if we are the first or second player.
-			if (param->loc == firstPlayer->loc)
+			if (param->loc == secondPlayer->loc)
 			{
 				// Wait for player 2 to write his move.
 				waitGameSessionMutex();
@@ -473,7 +474,7 @@
 
 				releaseGameSessionMutex();
 			}
-			else if (param->loc == secondPlayer->loc)
+			else if (param->loc == firstPlayer->loc)
 			{
 				// Writing the move protected by mutex
 				waitGameSessionMutex();
@@ -527,7 +528,7 @@
 		int result = NO_ERROR_VAL;
 
 		// Check what kind of replay.
-		if (isVsPlayer == TRUE_VAL)
+		if ((isVsPlayer[param->loc] == TRUE_VAL) || (isVsPlayer[secondPlayer->loc] == TRUE_VAL))
 		{
 			if (isFileExist(GAME_SESSION_LOC) == FALSE_VAL)
 			{
@@ -559,7 +560,7 @@
 					sendOponnentQuitMessage(SERVER_OPPONENT_QUIT, getName(secondPlayer->loc), param);
 				}
 			}
-			else
+			else 
 			{
 				secondPlayer = param;
 
@@ -815,9 +816,9 @@
 	{
 		int result = NO_ERROR_VAL;
 
-		if (isVsPlayer == TRUE_VAL)
-		{
-			if (param->loc == firstPlayer->loc)
+		
+
+		if (param->loc == firstPlayer->loc)
 			{
 				if (strcmp(won, PLAYER1_WIN) == 0)
 				{
@@ -843,7 +844,7 @@
 					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(secondPlayer->loc), OtherMove, move, DREW_IN_GAME, param);
 				}
 			}
-			else
+			else if (param->loc == secondPlayer->loc)
 			{
 				if (strcmp(won, PLAYER1_WIN) == 0)
 				{
@@ -864,28 +865,28 @@
 					result = sendGameResultMessage(SERVER_GAME_RESULTS, getName(firstPlayer->loc), OtherMove, move, DREW_IN_GAME, param);
 				}
 			}
-		}
-		else
-		{
-			if (strcmp(won, PLAYER1_WIN) == 0)
-			{
-				result = sendGameResultMessage(SERVER_GAME_RESULTS, SERVER_NAME, OtherMove, move, getName(param->loc), param);
-
-				addToLeaderInstanse(getName(param->loc), 1, 0, &result);
-				addToLeaderInstanse(SERVER_NAME, 0, 1, &result);
-			}
-			else if (strcmp(won, PLAYER2_WIN) == 0)
-			{
-				result = sendGameResultMessage(SERVER_GAME_RESULTS, SERVER_NAME, OtherMove, move, SERVER_NAME, param);
-
-				addToLeaderInstanse(SERVER_NAME, 1, 0, &result);
-				addToLeaderInstanse(getName(param->loc), 0, 1, &result);
-			}
+		
 			else
 			{
-				result = sendGameResultMessage(SERVER_GAME_RESULTS, SERVER_NAME, OtherMove, move, DREW_IN_GAME, param);
+				if (strcmp(won, PLAYER1_WIN) == 0)
+				{
+					result = sendGameResultMessage(SERVER_GAME_RESULTS, SERVER_NAME, OtherMove, move, getName(param->loc), param);
+
+					addToLeaderInstanse(getName(param->loc), 1, 0, &result);
+					addToLeaderInstanse(SERVER_NAME, 0, 1, &result);
+				}
+				else if (strcmp(won, PLAYER2_WIN) == 0)
+				{
+					result = sendGameResultMessage(SERVER_GAME_RESULTS, SERVER_NAME, OtherMove, move, SERVER_NAME, param);
+
+					addToLeaderInstanse(SERVER_NAME, 1, 0, &result);
+					addToLeaderInstanse(getName(param->loc), 0, 1, &result);
+				}
+				else
+				{
+					result = sendGameResultMessage(SERVER_GAME_RESULTS, SERVER_NAME, OtherMove, move, DREW_IN_GAME, param);
+				}
 			}
-		}
 	}
 
 #pragma endregion
