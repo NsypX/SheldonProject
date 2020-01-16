@@ -627,7 +627,8 @@
 			closesocket(MainSocket);
 			MainSocket = NULL;
 		}
-
+        
+        free(txt);
 	}
 
 	/*
