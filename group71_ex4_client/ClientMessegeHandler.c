@@ -470,6 +470,9 @@
 
 		// Create move mssg.
 		int result = sendClientMove(CLIENT_PLAYER_MOVE, move, sd);
+        
+        // free move.
+        free(move);
 		return (CONTINUE_RUN);
 	}
 
