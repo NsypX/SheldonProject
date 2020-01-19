@@ -573,24 +573,33 @@
 
 			if (RecvRes == TRNS_FAILED)
 			{			
-				countLogedIn--;				
+				if (result != SERVER_DENIE_CLIENT)
+				{
+					countLogedIn--;
+					result = NO_ERROR_VAL;
+				}
+				else
+				{
+					printf("server denied client at loc-%d\n", params->loc);
+				}
 				closeCurrclient(params->loc);
-				return 1;
+				closeCurrclient(params->loc);
+				break;
 			}
 			else if (RecvRes == TRNS_DISCONNECTED)
 			{
 				if (result != SERVER_DENIE_CLIENT)
 				{
 					countLogedIn--;
+					result = NO_ERROR_VAL;
 				}
 				else
 				{
-					printf("server denied alient at loc-%d\n", params->loc);
-				}
-				
+					printf("server denied client at loc-%d\n", params->loc);
+				}				
 				closeCurrclient(params->loc);
 
-				return 1;
+				break;
 			}
 			else
 			{
@@ -610,9 +619,7 @@
 
 			free(AcceptedStr);
 		}
-
-		printf("Conversation ended.\n");
-		closesocket(*t_socket);
+		
 		return result;
 	}
 
