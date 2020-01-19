@@ -574,7 +574,7 @@
 			if (RecvRes == TRNS_FAILED)
 			{			
 				countLogedIn--;				
-				closesocket(*t_socket);
+				closeCurrclient(params->loc);
 				return 1;
 			}
 			else if (RecvRes == TRNS_DISCONNECTED)
@@ -588,7 +588,8 @@
 					printf("server denied alient at loc-%d\n", params->loc);
 				}
 				
-				closesocket(*t_socket);
+				closeCurrclient(params->loc);
+
 				return 1;
 			}
 			else
