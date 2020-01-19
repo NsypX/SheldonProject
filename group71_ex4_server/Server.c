@@ -573,13 +573,19 @@
 
 			if (RecvRes == TRNS_FAILED)
 			{
-				countLogedIn--;				
+				// Check if one of the players.
+				if(isConnectedSever(params) == TRUE_VAL)
+				{
+					countLogedIn--;				
+				}
+
 				closesocket(*t_socket);
 				return 1;
 			}
 			else if (RecvRes == TRNS_DISCONNECTED)
 			{
-				if (result != SERVER_DENIE_CLIENT)
+				// Check if one of the players.
+				if (isConnectedSever(params) == TRUE_VAL)
 				{
 					countLogedIn--;
 				}

@@ -743,6 +743,25 @@
 #pragma region General Functions
 	
 	/*
+	* Check if the client connected is one of the players.
+	*/
+	int isConnectedSever(SockParams * param)
+	{
+		if (param == firstPlayer)
+		{
+			return(TRUE_VAL);
+		}
+		else if (param == secondPlayer)
+		{
+			return(TRUE_VAL);
+		}
+		else
+		{
+			return(FALSE_VAL);
+		}
+	}
+
+	/*
 	 * Check if a file exist using fopen() function
 	 * return 1 if the file exist otherwise return 0
 	 */

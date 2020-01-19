@@ -71,6 +71,7 @@ int pharseClientRefresh(SockParams *param);
 int pharseClientDisconnect(SockParams *param);
 int handleWhowon(char OtherMove[], char* move, char* won, SockParams * param);
 int isFileExist(const char * filename);
+int isConnectedSever(SockParams * param);
 
 
 #endif /* ServerMessageHandler_h */
