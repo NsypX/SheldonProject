@@ -606,21 +606,8 @@
 		Returns-    Error handle
 	*/
 	int pharseClientRefresh(SockParams * param)
-	{
-		int result = NO_ERROR_VAL;
-
-		// Check update time.
-		int isUpdate = getIsUpdated(&result);
-
-		if (isUpdate == TRUE_VAL)
-		{
-			return(pharseClientLeader(param, FALSE_VAL));
-			setUpdateTime();
-		}
-		else
-		{
-			return(pharseClientLeader(param, TRUE_VAL));
-		}
+	{		
+		return(pharseClientLeader(param, FALSE_VAL));		
 	}
 
 	/*
