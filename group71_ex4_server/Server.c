@@ -268,6 +268,7 @@
 	{
 		// Set vars.
 		char currMove = 'a';
+		int countStrlen = 0;
 		char* result = calloc(1, INPUT_TXT_SIZE);
 
 		// Check malloc error.
@@ -293,12 +294,15 @@
 				return(NULL);
 			}
 
-			if (currMove != '\n')
+			if (countStrlen < INPUT_TXT_SIZE - 1)
 			{
-				*helper = toupper(currMove);
-			}
+				if (currMove != '\n')
+				{
+					*helper = toupper(currMove);
+				}
 
-			helper++;
+				helper++;
+			}
 		}
 
 		// set curr move = a.
