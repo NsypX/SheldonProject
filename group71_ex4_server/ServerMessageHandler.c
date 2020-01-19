@@ -26,8 +26,6 @@
 	SockParams* secondPlayer = NULL;
 	int isFirstToAvrrive = FALSE_VAL;
 
-	char firstPlayerName[MAX_NAME];
-	char secondPlayerName[MAX_NAME];
 	int isVsPlayer[NUM_OF_AVILABLE_NAMES] = { FALSE_VAL,FALSE_VAL,FALSE_VAL,FALSE_VAL,FALSE_VAL };
 
 #pragma endregion
@@ -747,18 +745,7 @@
 	*/
 	int isConnectedSever(SockParams * param)
 	{
-		if (param == firstPlayer)
-		{
-			return(TRUE_VAL);
-		}
-		else if (param == secondPlayer)
-		{
-			return(TRUE_VAL);
-		}
-		else
-		{
-			return(FALSE_VAL);
-		}
+		
 	}
 
 	/*

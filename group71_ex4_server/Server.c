@@ -572,22 +572,20 @@
 			RecvRes = ReceiveString(&AcceptedStr, *t_socket);
 
 			if (RecvRes == TRNS_FAILED)
-			{
-				// Check if one of the players.
-				if(isConnectedSever(params) == TRUE_VAL)
-				{
-					countLogedIn--;				
-				}
-
+			{			
+				countLogedIn--;				
 				closesocket(*t_socket);
 				return 1;
 			}
 			else if (RecvRes == TRNS_DISCONNECTED)
 			{
-				// Check if one of the players.
-				if (isConnectedSever(params) == TRUE_VAL)
+				if (result != SERVER_DENIE_CLIENT)
 				{
 					countLogedIn--;
+				}
+				else
+				{
+					printf("server denied alient at loc-%d\n", params->loc);
 				}
 				
 				closesocket(*t_socket);
