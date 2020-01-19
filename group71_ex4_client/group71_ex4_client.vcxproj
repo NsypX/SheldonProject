@@ -130,7 +130,7 @@
     <ClCompile Include="..\Shared\SocketSendRecvTools.c" />
     <ClCompile Include="DefenitionsForServerClient.c" />
     <ClCompile Include="ClientMessegeHandler.c" />
-    <ClCompile Include="client_main.c" />
+    <ClCompile Include="main.c" />
     <ClCompile Include="Client.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

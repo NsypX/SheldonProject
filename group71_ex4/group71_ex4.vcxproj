@@ -135,7 +135,7 @@
     <ClCompile Include="..\group71_ex4_server\LeaderBoarrd.c" />
     <ClCompile Include="..\group71_ex4_server\ServerHadnler.c" />
     <ClCompile Include="..\group71_ex4_server\ServerMessageHandler.c" />
-    <ClCompile Include="..\group71_ex4_server\server_main.c" />
+    <ClCompile Include="..\group71_ex4_server\main.c" />
     <ClCompile Include="..\group71_ex4_server\Server.c" />
     <ClCompile Include="..\Shared\SocketSendRecvTools.c" />
   </ItemGroup>

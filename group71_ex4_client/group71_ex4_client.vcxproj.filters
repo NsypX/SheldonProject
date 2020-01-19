@@ -41,14 +41,14 @@
     <ClCompile Include="ClientMessegeHandler.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="client_main.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Client.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DefenitionsForServerClient.c">
       <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
