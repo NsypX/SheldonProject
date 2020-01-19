@@ -41,7 +41,7 @@
 		}
 	}
 
-		/*
+	/*
 	Description- get the name wanted.
 	Parameters- loc- name location.
 	Returns-    name
@@ -51,13 +51,14 @@
 		return(nameList[loc]);
 	}
 
-		/*
+
+	/*
 	Description- change name in location.
 	Parameters- name- to change to
 				loc- location of the name.
 	Returns-     
 	 */
-	void changeName(char* name,int loc)
+	void changeName(char name[],int loc)
 	{
 		if (strcmp(nameList[loc], "") == 0)
 		{		

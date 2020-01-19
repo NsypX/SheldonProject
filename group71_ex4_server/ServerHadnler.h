@@ -36,7 +36,7 @@
 #define CVS_TEMPLATE "%s,%d,%d,%.3f\n"
 #define MAX_LINE_CVS 30
 
-void changeName(char* name, int loc);
+void changeName(char name[], int loc);
 char* getRandMove(void);
 char* checkWin(char* movePlayer1,char* movePlayer2);
 int checkValidMove(char* move);

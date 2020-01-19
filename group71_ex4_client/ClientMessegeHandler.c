@@ -237,6 +237,7 @@
 		// Set vars.
 		short isValid = FALSE_VAL;
 		short count = 0;
+		int countstrLen = 0;
 
 		// Continue while value isnt valid.
 		while (isValid == FALSE_VAL)
@@ -269,18 +270,22 @@
 					free(result);
 					return(NULL);
 				}
-
-				// if end of line
-				if (currMove != '\n')
+				if (countstrLen < INPUT_TXT_SIZE - 1)
 				{
-					// Save the string in upper case.
-					*helper = (char)toupper((int)currMove);
-				}
+					// if end of line
+					if (currMove != '\n')
+					{
+						// Save the string in upper case.
+						*helper = (char)toupper((int)currMove);
+					}
 
-				count++;
-				helper++;
+					count++;
+					countstrLen++;
+					helper++;
+				}				
 			}
 
+			countstrLen = 0;
 			// set curr move = a.
 			currMove = 'a';
 

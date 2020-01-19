@@ -680,7 +680,7 @@
 		Returns-    Error handle
 	*/
 	int pharseMessage(char* mssg, SockParams * param)
-	{
+	{		
 		int result = NO_ERROR_VAL;
 
 		if (mssg == NULL)
